@@ -1,0 +1,12 @@
+/* Webfont: Kanakira-ExtraLightInktrap */@font-face {
+    font-family: 'KanakiraExtLt';
+    src: url('Kanakira-ExtraLightInktrap.eot'); /* IE9 Compat Modes */
+    src: url('Kanakira-ExtraLightInktrap.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('Kanakira-ExtraLightInktrap.woff') format('woff'), /* Modern Browsers */
+         url('Kanakira-ExtraLightInktrap.woff2') format('woff2'), /* Modern Browsers */
+         url('Kanakira-ExtraLightInktrap.ttf') format('truetype'); /* Safari, Android, iOS */
+             font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+

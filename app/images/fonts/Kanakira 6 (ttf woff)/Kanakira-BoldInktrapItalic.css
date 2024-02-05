@@ -1,0 +1,12 @@
+/* Webfont: Kanakira-BoldInktrapItalic */@font-face {
+    font-family: 'KanakiraIta';
+    src: url('Kanakira-BoldInktrapItalic.eot'); /* IE9 Compat Modes */
+    src: url('Kanakira-BoldInktrapItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('Kanakira-BoldInktrapItalic.woff') format('woff'), /* Modern Browsers */
+         url('Kanakira-BoldInktrapItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('Kanakira-BoldInktrapItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+             font-style: italic;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+

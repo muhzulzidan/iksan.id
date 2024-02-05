@@ -1,0 +1,12 @@
+/* Webfont: Kanakira-MediumItalic */@font-face {
+    font-family: 'KanakiraMedIta';
+    src: url('Kanakira-MediumItalic.eot'); /* IE9 Compat Modes */
+    src: url('Kanakira-MediumItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('Kanakira-MediumItalic.woff') format('woff'), /* Modern Browsers */
+         url('Kanakira-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('Kanakira-MediumItalic.ttf') format('truetype'); /* Safari, Android, iOS */
+             font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+

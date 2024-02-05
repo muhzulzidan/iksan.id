@@ -1,0 +1,10 @@
+
+.content br{
+  display: none;
+}
+.content > div{
+  @apply pt-4;
+}
+.content a {
+  @apply  bg-stone-700 hover:bg-secondary2 text-stone-50 rounded-full py-3 px-4 lowercase;
+}

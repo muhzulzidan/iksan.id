@@ -1,0 +1,12 @@
+/* Webfont: Kanakira-Regular */@font-face {
+    font-family: 'Kanakira';
+    src: url('Kanakira-Regular.eot'); /* IE9 Compat Modes */
+    src: url('Kanakira-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('Kanakira-Regular.woff') format('woff'), /* Modern Browsers */
+         url('Kanakira-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('Kanakira-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+             font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+

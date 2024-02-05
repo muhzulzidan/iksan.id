@@ -1,113 +1,213 @@
-import Image from "next/image";
+import TwoColumnLayout from "@/components/TwoColumnLayout";
+import Clients from "@/components/clients";
+import CoverImageContentful from "@/components/cover-image-contentful";
+import Layout from "@/components/layout";
+import { Swiper, SwiperSlide } from "@/components/swiperElement";
+import { getHomepage } from "@/lib/contentful";
 
-export default function Home() {
+import React from "react"; // Ensure React is imported for JSX to work
+import Markdown from 'react-markdown'
+// Assuming environment variables are correctly set for the API URL and any auth tokens
+const API_URL = process.env.WORDPRESS_API_URL || "https://default.api.url";
+
+
+
+// Ensure the environment variable is set, otherwise use a fallback URL
+if (!API_URL) {
+  throw new Error("WORDPRESS_API_URL environment variable is not set.");
+}
+
+async function fetchAPI(query: string, variables: Record<string, any> = {}) {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+
+  if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
+    headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+  }
+
+  const res = await fetch(API_URL, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({ query, variables }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Network response was not ok, status: ${res.status}`);
+  }
+
+  const json = await res.json();
+  if (json.errors) {
+    console.error(json.errors);
+    throw new Error('Failed to fetch API');
+  }
+  return json.data;
+}
+
+export async function getAllPostsForHome() {
+  const data = await fetchAPI(
+    `
+    query AllPosts {
+      posts(where: {orderby: {field: DATE, order: DESC}, status: PUBLISH}, first: 100) {
+        edges {
+          node {
+            title
+            excerpt
+            slug
+            date
+            categories {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            author {
+              node {
+                name
+                firstName
+                lastName
+                avatar {
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  return data?.posts;
+}
+
+// Example Page component assuming other necessary imports and definitions
+const Page: React.FC<{ preview?: boolean }> = async ({ preview = false }) => {
+  const allPostsData = await getAllPostsForHome();
+  const homepageDataResult = await getHomepage();
+  const metaDefault = { title: 'Your Site Title', description: 'Your site description' }; // Simplified for example
+  const homepageData: HomepageData = homepageDataResult[0] as unknown as HomepageData;
+
+  // Use optional chaining and nullish coalescing to safely access properties and provide fallback values
+  const blogs = allPostsData?.edges?.slice(0, 3) ?? [];
+  const insights = allPostsData?.edges?.slice(3, 7) ?? [];
+  console.log(homepageData)
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Layout metaDefault={metaDefault}>
+      <main className="flex flex-col flex-wrap ">
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <section className="bg-stone-100 w-full max-w-screen-lg mx-auto text-stone-950">
+          <div className="grid  px-4 py-8 mx-auto lg:gap-2 xl:gap-0 lg:py-16 lg:grid-cols-12 max-w-screen-lg">
+            <div className=" relative  mb-8 md:mb-0 lg:mt-0 lg:col-span-6 md:flex ">
+              {homepageData.hero && (
+                <CoverImageContentful
+                  url={homepageData.hero.fields?.file.url ?? ''}
+                  title={homepageData.hero.fields?.title ?? 'Default Title'}
+                />
+              )}
+            </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            <div className="mr-auto lg:pr-12 lg:pl-8  place-self-center lg:col-span-6">
+              <h3 className="text-2xl  font-semibold mb-2">{homepageData.h2}</h3>
+              <h2 className='font-kanakiraHeavy font-extrabold relative max-w-2xl mb-4 text-2xl  tracking-tight leading-none md:text-4xl text-stone-950 flex flex-col gap-1 '>
+                <Markdown>
+                  {homepageData.ttile}
+                </Markdown>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+              </h2>
+              <div className='flex flex-col gap-1 py-2 mb-4 text-lg'>
+                <p className="">{homepageData.description}</p>
+              </div>
+              <a href={homepageData?.linksPrimary?.fields.links} className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary2 hover:bg-purple-800 focus:ring-4 focus:ring-stone-300 hover:text-stone-50">
+                {homepageData?.linksPrimary?.fields.title}
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+                <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+              </a>
+              <a href={homepageData?.linksSecondary?.fields.links} className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-stone-900 border border-secondary2 rounded-lg hover:bg-purple-600 focus:ring-4 focus:ring-stone-100 hover:text-stone-50  ">
+                {homepageData?.linksSecondary?.fields.title}
+              </a>
+            </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          </div>
+        </section>
+        <section className='bg-stone-100 w-full max-w-screen-lg mx-auto'>
+          <Clients logos={homepageData.logos} />
+        </section>
+
+        <section className='bg-stone-100 px-4 w-full max-w-screen-lg mx-auto py-12 text-stone-950  '>
+
+          <h2 className='text-center text-3xl font-bold py-1 w-[80%] mx-auto'>{homepageData.headingSection3}</h2>
+          <p className='text-center text-lg mb-16'>{homepageData?.descriptionSection3}</p>
+          <div className='hidden md:grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+
+            {homepageData?.greatUpgrade?.map((item, index) => (
+              <div
+                key={index}
+                className={`flex  w-full py-6 max-w-sm bg-${item.fields.color} text-stone-50 border border-stone-200 rounded-xl shadow gap-4`}
+              >
+                <div className='flex items-center justify-center  flex-col'>
+                  <a href={item.fields.links} target="_blank" rel="noopener noreferrer">
+                    <CoverImageContentful
+                      url={item.fields.icons.fields.file.url}
+                      title={item.fields.icons.fields.title}
+                    />
+                    {/* {console.log(item)} */}
+                  </a>
+                  <div className="px-5 pt-3">
+                    <h2 className='font-mabryBold text-center'>{item.fields.title}</h2>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+
+
+
+          </div>
+          <div className='md:hidden block'>
+            <Swiper
+              className='uppercase'
+              loop={false}
+              spaceBetween={20}
+              slidesPerView={1.1}
+            >
+              {homepageData?.greatUpgrade?.map((item, index) => (
+                <SwiperSlide key={index}>
+                  <div
+                    className={`w-full py-6 max-w-sm bg-${item.fields.color} text-stone-50 border border-stone-200 rounded-xl shadow gap-4`}
+                  >
+                    <a href={item.fields.links} target="_blank" rel="noopener noreferrer">
+                      <CoverImageContentful
+                        url={item.fields.icons.fields.file.url}
+                        title={item.fields.icons.fields.title}
+                      />
+                    </a>
+                    <div className="px-5 pt-3">
+                      <h2 className='font-mabryBold text-center'>{item.fields.title}</h2>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          {/* </LazyLoad> */}
+        </section>
+
+
+        <section className='w-full  max-w-screen-lg mx-auto' >
+
+          <TwoColumnLayout blogs={blogs} insights={insights} data={allPostsData} />
+
+        </section>
+
+
+      </main>
+    </Layout>
   );
 }
+
+export default Page;
