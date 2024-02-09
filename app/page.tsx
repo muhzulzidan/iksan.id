@@ -1,12 +1,15 @@
+import React from "react"; // Ensure React is imported for JSX to work
+import { Metadata } from 'next'
+import { getHomepage, getMetaDefault } from "@/lib/contentful";
+import Markdown from 'react-markdown'
+
+import { Product, WithContext } from 'schema-dts'
+
 import TwoColumnLayout from "@/components/TwoColumnLayout";
 import Clients from "@/components/clients";
 import CoverImageContentful from "@/components/cover-image-contentful";
 import Layout from "@/components/layout";
 import { Swiper, SwiperSlide } from "@/components/swiperElement";
-import { getHomepage } from "@/lib/contentful";
-
-import React from "react"; // Ensure React is imported for JSX to work
-import Markdown from 'react-markdown'
 // Assuming environment variables are correctly set for the API URL and any auth tokens
 const API_URL = process.env.WORDPRESS_API_URL || "https://default.api.url";
 
@@ -84,19 +87,89 @@ export async function getAllPostsForHome() {
   return data?.posts;
 }
 
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  // Assuming getMetaDefault is your fetching function
+  const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
+
+  const metaDefault = metaDefaults[0];
+
+
+  const title = metaDefault?.title || 'Default Title';
+  const description = metaDefault?.description || 'Default Description';
+  // Ensure imageUrl is always an absolute URL
+  const imageUrl = metaDefault?.image?.fields?.file?.url ? new URL(metaDefault.image.fields.file.url, process.env.NEXT_PUBLIC_SITE_BASE_URL || 'http://iksan.id').toString() : '/default-image.jpg';
+
+  // Assuming NEXT_PUBLIC_SITE_BASE_URL is properly defined in your environment
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || 'http://iksan.id';
+  const metadataBase = new URL(baseUrl);
+
+``
+  console.log(metaDefaults)
+
+  return {
+    metadataBase, // Set the metadataBase
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: `https://${imageUrl}`, // Ensure the URL is absolute
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    // You can add additional metadata here, such as Twitter cards or specific social media links
+    twitter: {
+      card: 'summary_large_image',
+      site: '@iksanbangsawan', // Replace with actual Twitter username
+      title,
+      description,
+      images: `https://${imageUrl}`,
+    },
+
+  };
+}
+
+
 // Example Page component assuming other necessary imports and definitions
-const Page: React.FC<{ preview?: boolean }> = async ({ preview = false }) => {
+const HomePage: React.FC<{ preview?: boolean }> = async ({ preview = false }) => {
   const allPostsData = await getAllPostsForHome();
   const homepageDataResult = await getHomepage();
-  const metaDefault = { title: 'Your Site Title', description: 'Your site description' }; // Simplified for example
+
   const homepageData: HomepageData = homepageDataResult[0] as unknown as HomepageData;
 
   // Use optional chaining and nullish coalescing to safely access properties and provide fallback values
   const blogs = allPostsData?.edges?.slice(0, 3) ?? [];
   const insights = allPostsData?.edges?.slice(3, 7) ?? [];
-  console.log(homepageData)
+
+  const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
+
+  const metaDefault = metaDefaults[0];
+
+  // Ensure there's a fallback for each field to prevent runtime errors
+  const title = metaDefault?.title || 'Default Title';
+  const description = metaDefault?.description || 'Default Description';
+  const imageUrl = metaDefault?.image?.fields?.file?.url || '/default-image.jpg'; // Adjust according to your object structure
+  const jsonLd: WithContext<Product> = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${title}`,
+    image: imageUrl,
+    description: `${description}`,
+  }
+
   return (
     <Layout metaDefault={metaDefault}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main className="flex flex-col flex-wrap ">
 
         <section className="bg-stone-100 w-full max-w-screen-lg mx-auto text-stone-950">
@@ -210,4 +283,4 @@ const Page: React.FC<{ preview?: boolean }> = async ({ preview = false }) => {
   );
 }
 
-export default Page;
+export default HomePage;

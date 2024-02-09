@@ -195,3 +195,222 @@ interface TemplatesClientProps {
     templatePopular: TemplatePopular[]; // Now correctly an array of TemplatePopular
     metaDefault: any; // Assuming you have a specific type for this elsewhere
 }
+
+// Define interfaces for your data structures
+interface TimelineItem {
+    image: {
+        fields: {
+            file: {
+                url: string;
+            };
+        };
+    };
+    title: string;
+    year: string;
+    description: string;
+}
+
+interface AboutMe {
+    story: string;
+}
+
+// Props interface for MyStory component
+interface MyStoryProps {
+    timelineData: TimelineItem[];
+    aboutme: AboutMe[];
+    metaDefault: any;
+}
+
+
+
+interface ProfilClientProps {
+    timelineData: TimelineItem[];
+    aboutme: AboutMe[]; // This remains an array
+    metaDefault: any; // Specify a more concrete type if available
+}
+
+
+// Define the props interface to type-check the data passed into this component
+interface Course {
+    title: string;
+    price: number;
+    images: Array<{ title: string; fields: { file: { url: string; } }; slug?: string; }>;
+    description: string;
+}
+
+interface CoursesClientProps {
+    courses: Course[];
+    pageTitles: {
+        slug: any; title: string; description: string; 
+}[];
+    metaDefault: any; // Adjust this type based on your actual metaDefault structure
+}
+
+// Define props interface
+interface Wallpaper {
+    title: string;
+    image: {
+        fields: {
+            file: {
+                url: string;
+            };
+        };
+    };
+    // Include other properties as necessary
+}
+
+interface WallpapersClientProps {
+    wallpapers: Wallpaper[];
+    pageTitles: {
+        slug: any; title: string; description: string; 
+}[];
+    metaDefault: any; // Adjust based on your actual structure
+}
+
+
+interface PressKit {
+    presskitlogo: any;
+    title: string;
+    description: string;
+    pressImage: {
+        fields: {
+            title: string;
+            file: {
+                url: string;
+            };
+        };
+        slug?: string; // Include this if you use slugs for press images
+    };
+    url: string; // Assuming there's a URL field in your press kit entries
+    // Add other fields from your press kit entries as needed
+}
+
+interface PressKitLogo {
+    fields: {
+        logo: {
+            fields: {
+                title: string;
+                file: {
+                    url: string;
+                };
+            };
+            slug?: string; // Include if you use slugs for logos
+        };
+    };
+    // Include other properties if your press kit logos have more fields
+}
+
+interface PressKitLogoOrder {
+    order: number; // Assuming you have an order field to sort logos
+    pressKitLogo: PressKitLogo; // Adjust based on how you reference logos in the order entries
+    // Add other fields as needed
+}
+
+interface MetaDefault {
+    title: string;
+    description: string;
+    image: {
+        fields: {
+            file: {
+                url: string;
+            };
+        };
+    };
+    instagram?: string;
+    threads?: string;
+    tiktok?: string;
+    youtube?: string;
+    linkedin?: string;
+    twitter?: string;
+}
+
+
+// Assuming the structure of a photo object based on your usage
+interface Photo {
+    title: string;
+    image: {
+        fields: {
+            file: {
+                url: string;
+            };
+        };
+    };
+}
+
+
+interface PhotosClientProps {
+    photos: Photo[];
+    metaDefault: MetaDefault; // Use the actual structure of your metaDefault
+}
+
+
+
+interface LinktreeClientProps {
+    allPosts: {
+        edges: PostEdge[];
+    };
+    templates: Template[];
+    ebooks: Ebook[];
+    templateCategory: Category[];
+    templatePopular: Popular[];
+}
+
+
+interface GadgetItem {
+    title: string;
+    link: string;
+    categories: string;
+    description: string;
+    image: {
+        fields: {
+            file: {
+                url: string;
+            };
+        };
+    };
+}
+
+
+
+interface GadgetClientProps {
+    gadget: GadgetItem[];
+    pageTitles: PageTitle[];
+    metaDefault: MetaDefault; // Adjust based on actual structure
+}
+
+interface EventItem {
+    slug: string;
+    title: string;
+    date: string;
+    gallery: Array<{
+        fields: {
+            file: {
+                title: string;
+                url: string;
+                fileName: string; // Optional, based on your data structure
+            };
+        };
+    }>;
+}
+
+
+interface EventsPageProps {
+    events: EventItem[];
+    metaDefault: MetaDefault;
+}
+interface Event {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    gallery: GalleryItem[];
+}
+
+interface EventPageServerProps {
+    params: ParsedUrlQuery;
+}
+
+interface EventPageClientProps {
+    event: Event | null;
+    metaDefault: MetaDefault;
+}

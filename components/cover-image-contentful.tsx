@@ -30,7 +30,7 @@ export default function CoverImageContentful({
     )
 
     return (
-        <div className="sm:mx-0 relative">
+        <div className="sm:mx-0 relative ">
             {slug ? (
                 <Link href={`/posts/${slug}`} aria-label={title}>
                     {image}
