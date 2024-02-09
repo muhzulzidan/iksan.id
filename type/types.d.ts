@@ -31,6 +31,15 @@ interface PostNode {
 interface PostsData {
     edges: PostNode[];
 }
+
+// Then, define the props that your page component will receive
+interface BlogPagesProps {
+    post: Post;
+    posts: Post[];
+}
+
+
+
  interface Blog {
     node: {
         slug: string;
@@ -412,5 +421,55 @@ interface EventPageServerProps {
 
 interface EventPageClientProps {
     event: Event | null;
+    metaDefault: MetaDefault;
+}
+
+// Assuming structure of a book object based on your usage in Books component
+interface Book {
+    title: string;
+    desc: string;
+    url?: string;
+    url_alter?: string;
+    image: {
+        fields: {
+            title: string;
+            file: {
+                url: string;
+            };
+        };
+        slug?: string;
+    };
+}
+
+
+interface PostClientProps {
+    post: Post;
+    posts: Post[];
+}
+
+interface BusinessInfo {
+    title: string;
+    description: string;
+    services: string;
+    websiteUrl: string;
+    instagram: string;
+    establishmentYear: number;
+    location: {
+        lat: number;
+        lon: number;
+    };
+    businessImage: Array<{
+        fields: {
+            file: {
+                url: string;
+            };
+        };
+    }>;
+}
+
+
+interface BusinessPageProps {
+    businessInfo: BusinessInfo[]; // Since businessInfo is an array
+
     metaDefault: MetaDefault;
 }

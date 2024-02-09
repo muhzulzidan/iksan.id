@@ -1,8 +1,18 @@
+"use client"
+
 import React, { useState } from 'react';
 import styles from './post-body.module.css'
 import parse from 'html-react-parser';
 import { Dialog, Transition } from '@headlessui/react';
-const GalleryModal = ({ imageUrl, isOpen, closeModal }) => {
+
+interface GalleryModalProps {
+  imageUrl: string;
+  isOpen: boolean;
+  closeModal: () => void;
+}
+
+const GalleryModal: React.FC<GalleryModalProps> = ({ imageUrl, isOpen, closeModal }) => {
+
   return (
     <Transition show={isOpen} as={React.Fragment}>
       <Dialog
@@ -67,11 +77,18 @@ const GalleryModal = ({ imageUrl, isOpen, closeModal }) => {
   );
 };
 
-const PostContent = ({ content }) => {
+
+interface PostContentProps {
+  content: string;
+}
+
+
+const PostContent: React.FC<PostContentProps> = ({ content }) => {
+
   const [modalImageUrl, setModalImageUrl] = useState(null);
 
   // Function to open modal
-  const openModal = (imageUrl) => {
+  const openModal = (imageUrl: React.SetStateAction<null>) => {
     setModalImageUrl(imageUrl);
   };
 
@@ -81,12 +98,12 @@ const PostContent = ({ content }) => {
   };
 
   const options = {
-    replace: (node) => {
+    replace: (node: { name: string; attribs: { class: string | string[]; }; children: any[]; }) => {
       if (
         node.name === 'figure' &&
         node.attribs.class === 'wp-block-image size-large'
       ) {
-        const imgNode = node.children.find((child) => child.name === 'a');
+        const imgNode = node.children.find((child: { name: string; }) => child.name === 'a');
         if (imgNode && imgNode.attribs.href) {
           const imageUrl = imgNode.children[0].attribs.src;
           return (

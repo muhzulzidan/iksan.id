@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react';
 import { ChevronDown, Search } from "react-bootstrap-icons";
 import PostPreview from './post-preview';

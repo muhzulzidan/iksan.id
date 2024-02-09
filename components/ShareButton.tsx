@@ -1,7 +1,13 @@
 import React from 'react';
 import { Facebook, Twitter, Linkedin } from 'react-bootstrap-icons';
-import getURL from "../utils/getURL";
-const ShareButton = ({ title, url }) => {
+import getURL from "@/lib/getURL";
+// Define a type for the component props
+interface ShareButtonProps {
+    title: string;
+    url: string;
+}
+
+const ShareButton: React.FC<ShareButtonProps> = ({ title, url }) => {
     // Encode the URL
     const encodedUrl = encodeURIComponent(url);
     const finalUrl = getURL(`/${encodedUrl}`);
