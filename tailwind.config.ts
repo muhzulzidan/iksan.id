@@ -1,5 +1,8 @@
 import type { Config } from "tailwindcss"
 
+
+import colors from 'tailwindcss/colors'
+
 const config = {
   darkMode: ["class"],
   content: [
@@ -11,6 +14,18 @@ const config = {
 	],
   prefix: "",
   theme: {
+    colors: {
+      "secondary1": '#3B80FF',
+      purple: colors.purple,
+      stone: colors.stone,
+      gray: colors.stone,
+      blue: colors.blue,
+      white: colors.white,
+      green: colors.green,
+      orange: colors.orange,
+      yellow: colors.yellow,
+      pink: colors.pink,
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -23,12 +38,24 @@ const config = {
         'costum': 'rgba(0, 0, 0, 0.075) 0px 10px 30px 0px',
       },
       colors: {
-        primary1: '#FF006E',
-        secondary1: '#3B80FF',
-        secondary2: '#8038E3',
-        secondary3: '#FFB50C',
-        tertiary1: '#00A26E',
-        tertiary2: '#F25607',
+        green: {
+          50: '#00A26E',
+        },
+        orange: {
+          50: '#F25607',
+        },
+        yellow: {
+          50: '#FFB50C',
+        },
+        pink:{
+          50: '#3B80FF',
+        },
+        "primary1": '#FF006E',
+        "secondary1": '#3B80FF',
+        "secondary2": '#8038E3',
+        "secondary3": '#FFB50C',
+        "tertiary1": '#00A26E',
+        "tertiary2": '#F25607',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
