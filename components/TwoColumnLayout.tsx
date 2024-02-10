@@ -38,9 +38,9 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
                         <h2 className="text-2xl md:text-3xl font-bold font-mabryBold mb-4 ">Blog</h2>
                         <hr className="border border-b-2 border-secondary1 w-24" />
                     </div>
-                    <button className="appearance-none border border-solid rounded-lg h-fit px-4 py-2  bg-stone-200 text-xs md:text-base flex items-center gap-2 mt-4 md:mt-0 hover:bg-secondary2 hover:text-stone-50" onClick={() => router.push('/blogs/')}>
+                    <Link href={'/blogs/'} className="appearance-none border border-solid rounded-lg h-fit px-4 py-2  bg-stone-200 text-xs md:text-base flex items-center gap-2 mt-4 md:mt-0 hover:bg-secondary2 hover:text-stone-50" >
                         View More <ArrowRightCircleFill />
-                    </button>
+                    </Link>
                 </div>
 
                 <ul className="font-mabryRegular">

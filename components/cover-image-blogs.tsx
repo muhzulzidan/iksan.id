@@ -41,7 +41,7 @@ export default function CoverImageBlogs({ title, coverImage, slug, blogDetails, 
   );
 
   return (
-    <div className="sm:mx-0 shadow-md bg-gray-200 hover:shadow-lg relative">
+    <div className="sm:mx-0 shadow-md bg-stone-200 hover:shadow-lg relative">
       {slug ? (
         <Link href={`/blogs/${slug}`} aria-label={title}>
           {image}

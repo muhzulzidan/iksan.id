@@ -2,7 +2,7 @@ import Iframe from 'react-iframe'
 import {  ArrowRightCircleFill, Telegram, Folder, Calendar } from 'react-bootstrap-icons';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
-export const LatestContentSection = ({ title, content }) => {
+export const LatestContentSection = ({ title, content }: { title: string, content: { url: string, title: string } }) => {
     return (
         <section className="justify-center items-center px-4">
             <div className="flex justify-between items-center mb-12 ">

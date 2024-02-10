@@ -106,16 +106,16 @@ const MoreStories: React.FC<MoreStoriesProps> = ({ posts, more }) => {
             </h3>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="inline-flex items-center w-full px-4 py-3 text-sm font-medium text-gray-500 border-0 bg-stone-200  hover:bg-gray-200 focus:outline-none rounded-lg justify-between "
+              className="inline-flex items-center w-full px-4 py-3 text-sm font-medium text-stone-500 border-0 bg-stone-200  hover:bg-stone-200 focus:outline-none rounded-lg justify-between "
             >
               {selectedCategory}
               <ChevronDown width={15} height={20} />
             </button>
             {showDropdown && (
-              <div className="absolute mt-0 space-y-2 bg-stone-200 border border-gray-300 rounded-lg  w-full z-10">
+              <div className="absolute mt-0 space-y-2 bg-stone-200 border border-stone-300 rounded-lg  w-full z-10">
                 <button
                   onClick={() => handleCategorySelect('Select Category')}
-                  className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                  className="block w-full px-4 py-2 text-sm text-left text-stone-700 hover:bg-stone-100"
                 >
                   Semua
                 </button>
@@ -123,7 +123,7 @@ const MoreStories: React.FC<MoreStoriesProps> = ({ posts, more }) => {
                   <button
                     key={index}
                     onClick={() => handleCategorySelect(category)}
-                    className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+                    className="block w-full px-4 py-2 text-sm text-left text-stone-700 hover:bg-stone-100"
                   >
                     {category}
                   </button>
@@ -136,9 +136,9 @@ const MoreStories: React.FC<MoreStoriesProps> = ({ posts, more }) => {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Search"
-                className="w-full py-3 pl-10 pr-4 text-sm border rounded-lg focus:outline-none focus:ring focus:ring-opacity-50 bg-stone-200 text-stone-300 focus:outline-0 focus:ring-secondary2  focus:border-stone-50 focus:text-gray-950"
+                className="w-full py-3 pl-10 pr-4 text-sm border rounded-lg focus:outline-none focus:ring focus:ring-opacity-50 bg-stone-200 text-stone-300 focus:outline-0 focus:ring-secondary2  focus:border-stone-50 focus:text-stone-950"
               />
-              <Search className="absolute top-3 left-4 text-gray-400" />
+              <Search className="absolute top-3 left-4 text-stone-400" />
             </div>
           </div>
         </>

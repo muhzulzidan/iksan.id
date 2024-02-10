@@ -473,3 +473,29 @@ interface BusinessPageProps {
 
     metaDefault: MetaDefault;
 }
+
+interface Node {
+    name: string;
+}
+
+interface Edge {
+    node: Node;
+}
+
+interface Categories {
+    edges: Edge[];
+}
+
+interface PostHeaderProps {
+    title: string,
+    coverImage: {
+        node: {
+            sourceUrl: string;
+        };
+    },
+    date: string,
+    excerpt: string,
+    author: string,
+    slug: string,
+    category: string
+}

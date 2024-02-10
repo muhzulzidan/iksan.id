@@ -4,6 +4,7 @@ import Date from './date'
 import CoverImage from './cover-image'
 import CoverImageBlogs from './cover-image-blogs'
 import Link from 'next/link'
+type CoverImageType = string | { node: { sourceUrl: string } };
 
 export default function PostPreview({
   title,
@@ -13,6 +14,14 @@ export default function PostPreview({
   author,
   slug,
   category
+}: {
+  title: string,
+  coverImage: CoverImageType,
+  date: string,
+  excerpt: string,
+  author: string,
+  slug: string,
+  category: string
 }) {
 //  const category = coverImage?.node.categories.edges[0]?.node.name;
   // console.log(category, "post preview")
@@ -22,9 +31,9 @@ export default function PostPreview({
         {
           coverImage ? (
             category ? (
-              <CoverImageBlogs title={title} coverImage={coverImage} slug={slug} category={category} />
+              <CoverImageBlogs title={title} coverImage={coverImage as { node: { sourceUrl: string } }} slug={slug} category={category} />
             ) : (
-              <CoverImage title={title} coverImage={coverImage} slug={slug} />
+              <CoverImage title={title} coverImage={coverImage as { node: { sourceUrl: string } }} slug={slug} />
             )
           ) : (
               

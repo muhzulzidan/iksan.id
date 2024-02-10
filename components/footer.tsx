@@ -8,7 +8,7 @@ import { getAuthToken } from '../lib/Authentication';
 import { getSubscribe } from '../lib/contentful';
 // import { timeLog } from 'console';
 
-export default function FooterWithSocialMediaIcons({ metaDefault }) {
+export default function FooterWithSocialMediaIcons({ metaDefault }: { metaDefault: any }) {
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     // Check if metaDefault exists and has at least one item
@@ -16,8 +16,8 @@ export default function FooterWithSocialMediaIcons({ metaDefault }) {
 
     // Use the first item from metaDefault if it exists
     const metaFirst = shouldUseMeta ? metaDefault[0] : {};
-    console.log(metaFirst)
-    const handleSubmit = async (e) => {
+    // console.log(metaFirst)
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (email.trim() === '' || fullName.trim() === '') {
             // Handle validation or show an error message
@@ -29,7 +29,7 @@ export default function FooterWithSocialMediaIcons({ metaDefault }) {
         // Example usage
         const username = 'iksanbangsawan';
         const apiKey = process.env.NEXT_PUBLIC_EMAIL_API_KEY;
-        const token = await getAuthToken(username, apiKey);
+        const token = await getAuthToken(username, apiKey || ''); // Ensure apiKey is not undefined
         // console.log(token, "token")
 
         const myHeaders = new Headers();
@@ -71,10 +71,10 @@ export default function FooterWithSocialMediaIcons({ metaDefault }) {
     const customTheme = {
         footer: {
             root: {
-                base: "w-full rounded-lg  bg-stone-100  dark:bg-gray-800 md:flex md:items-center md:justify-between",
+                base: "w-full rounded-lg  bg-stone-100  dark:bg-stone-800 md:flex md:items-center md:justify-between",
             },
             groupLink: {
-                "base": "flex flex-wrap text-sm text-gray-500 dark:text-white",
+                "base": "flex flex-wrap text-sm text-stone-500 dark:text-white",
                 "link": {
                     "base": "last:mr-0 md:mr-6",
                     "href": "hover:underline flex gap-2 items-center"
@@ -90,7 +90,7 @@ export default function FooterWithSocialMediaIcons({ metaDefault }) {
                 <Footer container>
                     <div className="w-full">
                         <div className="grid w-full gap-12 justify-between sm:flex sm:justify-between md:flex md:grid-cols-1  ">
-                            <Link href={"/"}>
+                            <Link href={"/"} className='sm:mt-4 '>
                                 <Footer.Brand
                                     alt="iksanbangsawan"
                                     src="https://images.ctfassets.net/1612ijcm5jnx/BJSXzbfipb7T7QD4M8Jyb/f9d3b5cc117f3a9cbb131dbcbfd5954c/Logo-Iksan-Bangsawan_2x.png"

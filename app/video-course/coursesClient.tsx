@@ -47,7 +47,7 @@ const CoursesClient: React.FC<CoursesClientProps> = ({ courses, pageTitles, meta
                                 </Swiper>
                             </div>
                             <div className='flex gap-4 bg-secondary2 px-4 py-2 rounded-lg w-fit text-stone-50 font-medium my-2 text-sm'>
-                                {/* <p className="line-through text-gray-500">Rp{course.priceOld},000</p> */}
+                                {/* <p className="line-through text-stone-500">Rp{course.priceOld},000</p> */}
                                 <p>Rp{course.price},000</p>
                             </div>
                             <h2 className="text-2xl font-semibold">{course.title}</h2>

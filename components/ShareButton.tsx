@@ -27,7 +27,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title, url }) => {
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:text-blue-600"
                 >
-                    <Facebook color='gray' className='hover:fill-secondary2'  />
+                    <Facebook color='stone' className='hover:fill-secondary2'  />
                 </a>
                 <a
                     href={twitterShareUrl}
@@ -35,7 +35,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title, url }) => {
                     rel="noopener noreferrer"
                     className="text-blue-400 hover:text-blue-600"
                 >
-                    <Twitter color='gray' className='hover:fill-secondary2' />
+                    <Twitter color='stone' className='hover:fill-secondary2' />
                 </a>
                 <a
                     href={linkedinShareUrl}
@@ -43,7 +43,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ title, url }) => {
                     rel="noopener noreferrer"
                     className="text-blue-800 hover:text-blue-900"
                 >
-                    <Linkedin color='gray' className='hover:fill-secondary2' />
+                    <Linkedin color='stone' className='hover:fill-secondary2' />
                 </a>
             </div>
         </div>

@@ -32,7 +32,7 @@ const GadgetClient: React.FC<GadgetClientProps> = ({ gadget, pageTitles, metaDef
 
     return (
         <Layout metaDefault={metaDefault}>
-            <div className="max-w-screen-lg mx-auto py-10 px-4 bg-gray-100 text-gray-800">
+            <div className="max-w-screen-lg mx-auto py-10 px-4 bg-stone-100 text-stone-800">
 
                 <div className='space-y-4 flex justify-center items-center flex-col'>
                     <Image width={150} height={150} className="rounded-xl" src={gadgetIcon} alt="product image" />
@@ -62,7 +62,7 @@ const GadgetClient: React.FC<GadgetClientProps> = ({ gadget, pageTitles, metaDef
                                             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
                                         </div>
                                         <h3 className="text-xl text-center font-semibold mt-2">{item.title}</h3>
-                                        <p className="text-gray-600 text-center">{item.description}</p>
+                                        <p className="text-stone-600 text-center">{item.description}</p>
                                     </div>
                                 </a>
                             ))}
@@ -90,7 +90,7 @@ const GadgetClient: React.FC<GadgetClientProps> = ({ gadget, pageTitles, metaDef
                                             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
                                         </div>
                                         <h3 className="text-xl text-center font-semibold mt-2">{item.title}</h3>
-                                        <p className="text-gray-600 text-center">{item.description}</p>
+                                        <p className="text-stone-600 text-center">{item.description}</p>
                                     </div>
                                 </a>
                             ))}

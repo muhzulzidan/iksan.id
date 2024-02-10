@@ -17,18 +17,16 @@ type LayoutProps = {
 
 
 export default function Layout({ children, metaDefault }: LayoutProps) {
-  // console.log(metaDefault, "metaDefault layout")
+
   return (
     <>
-      {/* <Meta metaDefault={metaDefault} /> */}
+   
       
       <div>
         <DynamicHeader />
         <main className=''>{children}</main>
       </div>
-      {/* <LazyLoad offset={100}>
-        <Footer metaDefault={metaDefault} />
-      </LazyLoad> */}
+      <Footer metaDefault={metaDefault} />
     </>
   );
 }

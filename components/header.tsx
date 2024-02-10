@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { Flowbite, Navbar, Dropdown } from "flowbite-react";
+import { Flowbite, Navbar, Dropdown,  } from "flowbite-react";
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import Link from 'next/link'
 import { useRouter } from "next/navigation";
@@ -11,10 +11,22 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useMediaQuery } from 'react-responsive'
 import LazyLoad from 'react-lazy-load';
 import CoverImageContentful from './cover-image-contentful';
-// import dynamic from 'next/dynamic'
-// const DynamicHeader = dynamic(() => import('./header'), {
-//   loading: () => <p>Loading...</p>,
-// })
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ChevronDown } from 'lucide-react';
 
 export default function Header() {
   const router = useRouter();
@@ -51,20 +63,20 @@ export default function Header() {
     floating: {
       item: {
         container: "",
-        base: "flex items-center justify-start py-2 px-4 text-lg text-gray-700 cursor-pointer w-full hover:bg-gray-200 focus:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 focus:outline-none dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white",
+        base: "flex items-center justify-start py-2 px-4 text-lg text-stone-700 cursor-pointer w-full hover:bg-stone-200 focus:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-600 focus:outline-none dark:hover:text-white dark:focus:bg-stone-600 dark:focus:text-white",
         icon: "mr-2 h-4 w-4",
       },
       style: {
-        auto: "border border-gray-200 bg-gray-100 text-gray-950 dark:border-none dark:bg-gray-700 dark:text-white",
+        auto: "border border-stone-200 bg-stone-100 text-stone-950 dark:border-none dark:bg-stone-700 dark:text-white",
       },
-      content: "py-1 text-lg text-gray-700 dark:text-gray-200",
-      base: "z-50 w-fit rounded divide-y divide-gray-100 shadow focus:outline-none ",
+      content: "py-1 text-lg text-stone-700 dark:text-stone-200",
+      base: "z-50 w-fit rounded divide-y divide-stone-100 shadow focus:outline-none ",
       arrow: {
         base: "absolute z-10 h-12 w-12 rotate-180",
         style: {
-          "dark": "bg-gray-900 dark:bg-gray-700",
+          "dark": "bg-stone-900 dark:bg-stone-700",
           "light": "bg-white",
-          "auto": "bg-white dark:bg-gray-700"
+          "auto": "bg-white dark:bg-stone-700"
         },
         placement: "-4px",
 
@@ -77,7 +89,7 @@ export default function Header() {
   const customTheme = {
     navbar: {
       root: {
-        base: "bg-white px-2 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-4 z-10",
+        base: "bg-white px-2 py-2.5 dark:border-stone-700 dark:bg-stone-800 sm:px-4 z-10",
         inner: {
           "base": `mx-auto flex flex-wrap items-center justify-between  ${isScrolled ? 'max-w-screen-lg pb-4 px-0 xl:px-4' : ''}`,
         }
@@ -85,7 +97,7 @@ export default function Header() {
       link: {
         active: {
           on: "text-primary",
-          off: "border-b border-gray-100  text-stone-950 hover:text-secondary2  dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
+          off: "border-b border-stone-100  text-stone-950 hover:text-secondary2  dark:border-stone-700 dark:text-stone-400 dark:hover:bg-stone-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
         },
       },
       collapse: {
@@ -126,6 +138,8 @@ export default function Header() {
     ],
     "CONTACT": { href: "/kontak/", text: "Contact" },
   };
+
+
   const [hoverDropdown, setHoverDropdown] = useState<string | null>(null);
 
 
@@ -180,9 +194,9 @@ export default function Header() {
                       <Dropdown theme={customThemeDropdown} label={dropdownLabel} inline key={dropdownLabel} trigger={'hover'} className='z-50'>
                         {dropdownLinksArray.map(link => (
 
-                          <Dropdown.Item as="div" className='text-lg font-mabryBold hover:bg-gray-200 p-0 z-50' key={link.text}>
+                          <Dropdown.Item as="div" className='text-lg font-mabryBold hover:bg-stone-200 p-0 z-50' key={link.text}>
 
-                            <Link href={link.href} passHref className='hover:bg-gray-200 w-full h-full px-4 py-2 hover:text-gray-950 font-mabryBold'>
+                            <Link href={link.href} passHref className='hover:bg-stone-200 w-full h-full px-4 py-2 hover:text-stone-950 font-mabryBold'>
                               {link.text}
                             </Link>
 
@@ -222,61 +236,57 @@ export default function Header() {
             </Navbar.Brand>
           </Navbar>
         </Flowbite>
-        <div className={`bg-stone-100  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid  ${isScrolled ? 'fixed top-20 left-0 w-full z-50 max-w-none' : ''}`}>
-          <Swiper
-            className='uppercase '
-            loop={false}
-            spaceBetween={0}
-            slidesPerView={2}
-            breakpoints={{
-              200: {
-                slidesPerView: 2.1
-              },
-              400: {
-                slidesPerView: 3.1
-              }
-            }}
-          >
-           {Object.entries(dropdownLinks).map(([dropdownLabel, links], index) => {
-              const isFirstSlide = index === 0;
-              if (dropdownLabel === "CONTACT") {
-                const contactLink = links as { href: string; text: string; };
-                return (
-                  <SwiperSlide
-                    className={` font-mabryBold `}
-                    key={dropdownLabel}
+        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-20 left-0 w-full z-50 max-w-none' : ''}`}>
+          <Carousel>
+            {/* make it 3,half on mobile */}
 
-                  >
-                    <Link key={contactLink.text} as={"button"} className='text-gray-950 capitalize flex items-center  pt-[.1rem] pl-2' href={contactLink.href} passHref>
-
-                      {contactLink.text}
-
-                    </Link>
-                  </SwiperSlide>
-                );
-              } else {
-                const dropdownLinksArray = links as { href: string; text: string; }[];
-                return (
-                  <SwiperSlide
-                    className={`font-mabryBold`}
-                    key={dropdownLabel}
-                    style={isFirstSlide ? { width: firstSlideWidth } : {}}
-                  >
-                    <Dropdown theme={customThemeDropdown} label={dropdownLabel}  inline key={dropdownLabel}>
-                      {dropdownLinksArray.map(link => (
-                        <Link key={link.text} href={link.href} passHref>
-                          <Dropdown.Item as="span">
-                            {link.text}
-                          </Dropdown.Item>
-                        </Link>
-                      ))}
-                    </Dropdown>
-                  </SwiperSlide>
-                );
-              }
-            })}
-
-          </Swiper>
+            
+            <CarouselContent className=''>
+              {Object.entries(dropdownLinks).map(([dropdownLabel, links], index) => {
+                const isFirstSlide = index === 0;
+                if (dropdownLabel === "CONTACT") {
+                  const contactLink = links as { href: string; text: string; };
+                  return (
+                    <CarouselItem
+                      className={` font-mabryBold basis-1/3 `}
+                      key={dropdownLabel}
+                    >
+                      <Link key={contactLink.text}  className='text-stone-950 capitalize flex items-center   pl-2' href={contactLink.href} >
+                        {contactLink.text}
+                      </Link>
+                    </CarouselItem>
+                  );
+                } else {
+                  const dropdownLinksArray = links as { href: string; text: string; }[];
+                  return (
+                    <CarouselItem
+                      className={isFirstSlide ? `font-mabryBold  basis-1/3 -mr-4 ` : `font-mabryBold  basis-1/3 -mr-2`}
+                      key={dropdownLabel}
+                      // style={isFirstSlide ? { width: firstSlideWidth } : {}}
+                    >
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className='flex gap-2 items-center'>
+                          {dropdownLabel} 
+                          <ChevronDown size={20} /> 
+                          </DropdownMenuTrigger>
+                        <DropdownMenuContent >
+                          <DropdownMenuSeparator />
+                          {dropdownLinksArray.map(link => (
+                            <Link key={link.text} href={link.href} passHref>
+                              <DropdownMenuItem>
+                                {link.text} 
+                              </DropdownMenuItem>
+                            </Link>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </CarouselItem>
+                  );
+                }
+              })}
+            </CarouselContent>
+       
+          </Carousel>
         </div>
       </nav>
     </header>

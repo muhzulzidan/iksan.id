@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './post-body.module.css'
-import parse from 'html-react-parser';
+import parse, { DOMNode } from 'html-react-parser';
 import { Dialog, Transition } from '@headlessui/react';
 
 interface GalleryModalProps {
@@ -48,7 +48,7 @@ const GalleryModal: React.FC<GalleryModalProps> = ({ imageUrl, isOpen, closeModa
           >
             <div className="max-w-full h-full w-full fixed flex p-6 my-8 overflow-hidden transition-all transform bg-transparent shadow-xl rounded-lg justify-center">
               <button
-                className="absolute top-4 right-4 text-gray-100 hover:text-gray-100 focus:outline-none"
+                className="absolute top-4 right-4 text-stone-100 hover:text-stone-100 focus:outline-none"
                 onClick={closeModal}
               >
                 <svg
@@ -97,8 +97,39 @@ const PostContent: React.FC<PostContentProps> = ({ content }) => {
     setModalImageUrl(null);
   };
 
+  // const options = {
+  //   replace: (node: { name: string; attribs: { class: string | string[]; }; children: any[]; }) => {
+  //     if (
+  //       node.name === 'figure' &&
+  //       node.attribs.class === 'wp-block-image size-large'
+  //     ) {
+  //       const imgNode = node.children.find((child: { name: string; }) => child.name === 'a');
+  //       if (imgNode && imgNode.attribs.href) {
+  //         const imageUrl = imgNode.children[0].attribs.src;
+  //         return (
+  //           <figure key={imageUrl} onClick={() => openModal(imageUrl)} className=' '>
+  //             <img src={imageUrl} alt="Gallery" />
+  //           </figure>
+  //         );
+  //       }
+  //     }
+  //     if (
+  //       node.name === 'figure' &&
+  //       node.attribs.class.includes('wp-block-gallery')
+  //     ) {
+  //       // Change the class of the wp-block-gallery figure here
+  //       node.attribs.class = 'grid grid-cols-2 md:grid-cols-3  gap-4 pb-4'; // Replace 'your-custom-class' with your desired class name
+
+  //       // Return the modified figure element
+  //       return node;
+  //     }
+  //     return null;
+  //   },
+  // };
+
   const options = {
-    replace: (node: { name: string; attribs: { class: string | string[]; }; children: any[]; }) => {
+    replace: (domNode: DOMNode, index: number) => {
+      const node = domNode as unknown as { name: string; attribs: { class: string | string[]; }; children: any[]; };
       if (
         node.name === 'figure' &&
         node.attribs.class === 'wp-block-image size-large'
@@ -129,9 +160,7 @@ const PostContent: React.FC<PostContentProps> = ({ content }) => {
 
   return (
     <div className={`${styles.content} prose prose-p:m-0 prose-p:mb-4 prose-a:my-4 max-w-none prose-figure:m-0`}>
-      {/* <button onClick={() => openModal("https://iksanbangsawan.com/wp-content/uploads/2023/06/WhatsApp-Image-2023-06-15-at-17.06.21-1-768x1024.jpeg")}>
-        open modal
-      </button> */}
+     
       {parse(content, options)}
       {modalImageUrl && (
         <GalleryModal imageUrl={modalImageUrl} closeModal={closeModal} isOpen={modalImageUrl !== null} />

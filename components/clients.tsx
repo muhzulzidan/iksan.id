@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Marquee from 'react-fast-marquee';
 import CoverImageContentful from '../components/cover-image-contentful';
 
-const Clients = ({ logos }) => {
+const Clients = ({ logos }: { logos: any[] }) => {
     const clients = logos.map((logo, index) => ({
         name: logo.title,
         logo: logo.fields.file.url,

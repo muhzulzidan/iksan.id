@@ -15,7 +15,7 @@ const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault })
 
     return (
         <Layout metaDefault={metaDefault}>
-            <div className="flex flex-col items-center justify-center w-full max-w-screen-lg mx-auto py-10 bg-gray-100 text-gray-900">
+            <div className="flex flex-col items-center justify-center w-full max-w-screen-lg mx-auto py-10 bg-stone-100 text-stone-900">
                 <div className="mb-4 flex justify-start flex-col w-full p-4">
                     <h1 className="text-3xl font-bold ">
                         {event?.title}
@@ -26,7 +26,7 @@ const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault })
                         </Markdown>
                     </div>
                     {/* <p>{event.description}</p> */}
-                    <p className="text-gray-600">
+                    <p className="text-stone-600">
                         Date: {event?.date}
                     </p>
                 </div>

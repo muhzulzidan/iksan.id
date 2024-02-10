@@ -106,7 +106,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const metadataBase = new URL(baseUrl);
 
 ``
-  console.log(metaDefaults)
+
 
   return {
     metadataBase, // Set the metadataBase
@@ -207,7 +207,7 @@ const HomePage: React.FC<{ preview?: boolean }> = async ({ preview = false }) =>
           </div>
         </section>
         <section className='bg-stone-100 w-full max-w-screen-lg mx-auto'>
-          <Clients logos={homepageData.logos} />
+          <Clients logos={homepageData.logos ?? []} />
         </section>
 
         <section className='bg-stone-100 px-4 w-full max-w-screen-lg mx-auto py-12 text-stone-950  '>

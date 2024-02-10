@@ -27,14 +27,14 @@ const ProfilClient = ({ timelineData, aboutme, metaDefault }: ProfilClientProps)
         setReversedTimelineData([...timelineData].reverse());
     }, [timelineData]);
     if (!about) {
-        return null; // or some fallback UI if about is not available
+        return null; 
     }
     return (
         <Layout metaDefault={metaDefault}>
             <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <h1 className="text-3xl font-bold mb-8 hidden">My Story</h1>
 
-                <div className='px-12'>
+                <div className='md:px-12'>
                     <Carousel
                         opts={{
                             align: "start",
@@ -62,7 +62,7 @@ const ProfilClient = ({ timelineData, aboutme, metaDefault }: ProfilClientProps)
                     </Carousel>
                 </div>
 
-                <div className="mt-12 px-12 max-w-2xl mx-auto">
+                <div className="mt-12 px-4 md:px-12 max-w-2xl mx-auto">
                     <h2 className="text-2xl font-bold mb-4">About Me:</h2>
 
                     <div className='prose'>

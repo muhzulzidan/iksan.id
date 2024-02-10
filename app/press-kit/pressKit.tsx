@@ -49,7 +49,7 @@ const PressKitClient: React.FC<PressKitClientProps> = ({ pressKits, pressKitLogo
 
                 <div className="w-full grid grid-cols-1  gap-8 mt-12">
                     {pressKits.map((pressKit, index) => (
-                        <div onClick={() => router.push(pressKit.url)} key={index} className="flex flex-col md:flex-row items-center bg-gray-50 border rounded-md space-x-4 transition transform duration-200 hover:shadow-md cursor-pointer">
+                        <div onClick={() => router.push(pressKit.url)} key={index} className="flex flex-col md:flex-row items-center bg-stone-50 border rounded-md space-x-4 transition transform duration-200 hover:shadow-md cursor-pointer">
                             <div className="flex-shrink-0 w-full md:w-1/3 p-4">
                                 <CoverImageContentful
                                     title={pressKit.pressImage.fields.title}

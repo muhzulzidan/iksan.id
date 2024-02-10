@@ -122,7 +122,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                 </div>
                 <div className='flex flex-col gap-8'>
 
-                    <Link href={"https://wasap.at/bBl7Jg"} className='shadow-costum border border-gray-200 rounded-lg flex  items-center gap-4 '>
+                    <Link href={"https://wasap.at/bBl7Jg"} className='shadow-costum border border-stone-200 rounded-lg flex  items-center gap-4 '>
                         <div className=" relative p-[15%] flex w-1/12 rounded-md">
                             <Image
                                 className='rounded-l-lg'
@@ -137,7 +137,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                         </div>
                         <h3 className="font-bold text-lg">Endorsement  / Invitation</h3>
                     </Link>
-                    <div className='flex flex-col shadow-costum border border-gray-200 rounded-lg '>
+                    <div className='flex flex-col shadow-costum border border-stone-200 rounded-lg '>
                         <Link href={"https://wa.me/message/KAYLHTPTDZ6SD1"} className='flex items-center gap-4 '>
                             <div className=" relative p-[15%] flex w-1/12 rounded-md">
                                 <Image
@@ -162,7 +162,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                         </div>
                     </div>
 
-                    <div className='shadow-costum border border-gray-200 rounded-lg flex flex-col items-start gap-4 p-4'>
+                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col items-start gap-4 p-4'>
 
                         <Image
                             className='rounded-lg'
@@ -179,7 +179,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             <a href='https://skena.co.id/contact/' className='bg-secondary2 text-stone-50 p-2 rounded-md'>Contact</a>
                         </div>
                     </div>
-                    <div className='shadow-costum border border-gray-200 rounded-lg flex flex-col items-start gap-4 p-4'>
+                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col items-start gap-4 p-4'>
                         <div className='flex w-full justify-between'>
                             <h3>Templates</h3>
                             <p className='flex gap-2 text-sm items-center'>Lainnya <ArrowRightCircleFill /></p>
@@ -216,7 +216,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             </Carousel>
                         </div>
                     </div>
-                    <div className='shadow-costum border border-gray-200 rounded-lg flex flex-col items-start gap-4 p-4'>
+                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col items-start gap-4 p-4'>
                         <div className='w-full flex justify-between'>
                             <h3>Ebook</h3>
                             <p className='flex gap-2 text-sm items-center'>Lainnya <ArrowRightCircleFill /></p>
@@ -253,7 +253,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             </Carousel>
                         </div>
                     </div>
-                    <div className='shadow-costum border border-gray-200 rounded-lg flex flex-col items-start gap-4 p-4'>
+                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col items-start gap-4 p-4'>
                         <div className='w-full flex justify-between'>
                             <h3>Video Course</h3>
                             <p className='flex gap-2 text-sm items-center'>Lainnya <ArrowRightCircleFill /></p>
@@ -298,7 +298,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
 
 
                     </div>
-                    <Link href={"https://template.co.id/"} className='shadow-costum border border-gray-200 rounded-lg flex  items-center gap-4 '>
+                    <Link href={"https://template.co.id/"} className='shadow-costum border border-stone-200 rounded-lg flex  items-center gap-4 '>
                         <div className=" relative p-[15%] flex w-1/12 rounded-md">
                             <Image
                                 className='rounded-l-lg'
@@ -316,7 +316,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             <p className='text-xs w-10/12'>Produk template, ebook dan video course</p>
                         </div>
                     </Link>
-                    <Link href={"/business/sapi-perjaka"} className='shadow-costum border border-gray-200 rounded-lg flex  items-center gap-4 '>
+                    <Link href={"/business/sapi-perjaka"} className='shadow-costum border border-stone-200 rounded-lg flex  items-center gap-4 '>
                         <div className=" relative p-[15%] flex w-1/12 rounded-md">
                             <Image
                                 className='rounded-l-lg'
@@ -333,7 +333,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             <h3 className="font-bold text-lg">Sapiperjaka</h3>
                         </div>
                     </Link>
-                    <div className='shadow-costum border border-gray-200 rounded-lg flex flex-col py-6 p-4 items-center gap-6 '>
+                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col py-6 p-4 items-center gap-6 '>
                         <h4 className='text-start font-mabry-bold'>
                             Featured Blog
                         </h4>
@@ -357,7 +357,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             ))}
                         </div>
                     </div>
-                    <div className='shadow-costum border border-gray-200 rounded-lg flex flex-col   gap-4 py-4'>
+                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col   gap-4 py-4'>
                         <h4 className=' font-mabry-bold text-xl text-center px-8'>
                             Join Community
                         </h4>
@@ -395,7 +395,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                         </div>
                     </div>
 
-                    <div className=" shadow-costum border border-gray-200 rounded-lg w-full py-6  bg-secondary2 text-stone-50  gap-4 " >
+                    <div className=" shadow-costum border border-stone-200 rounded-lg w-full py-6  bg-secondary2 text-stone-50  gap-4 " >
                         <Link href="/gadget">
                             <Image width={200} height={200} className="rounded-xl h-52 mx-auto" src="https://images.ctfassets.net/1612ijcm5jnx/4gMJfdpSpO0L3Dc5py9x0P/8d9aab7c026ee223c01a2401c5112ea7/toolbox_iksan_bangasawan_indonesia.png" alt="product image" />
                         </Link>
@@ -406,7 +406,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                     </div>
 
                     <Link href={"/"}>
-                        <div className='shadow-costum border border-gray-200 rounded-lg flex  flex-col items-center p-3 '>
+                        <div className='shadow-costum border border-stone-200 rounded-lg flex  flex-col items-center p-3 '>
                             <h4 className='text-center font-mabry-bold mb-0'>
                                 iksanbangsawan.com
                             </h4>

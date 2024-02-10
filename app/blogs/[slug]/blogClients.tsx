@@ -15,7 +15,6 @@ import PostTitle from '@/components/post-title'
 import Tags from '@/components/tags'
 
 
-
 const PostClient: React.FC<PostClientProps & { metaDefault: MetaDefault }> = ({ post, posts, metaDefault }) => {
 
     const router = useRouter()
@@ -43,8 +42,8 @@ const PostClient: React.FC<PostClientProps & { metaDefault: MetaDefault }> = ({ 
                                 author={post.author}
                                 categories={post.categories}
                                 url={post.slug}
-                                blogDetails={true}
-                                category={undefined}
+                                blogDetails="true" // Fix: Change the value to a string
+                                category="" // Fix: Assign an empty string instead of undefined
                             />
                             {post.content
                                 ?
