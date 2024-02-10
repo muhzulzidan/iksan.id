@@ -221,7 +221,7 @@ const Page = async () => {
             {homepageData?.greatUpgrade?.map((item, index) => (
               <div
                 key={index}
-                className={`flex  w-full py-6 max-w-sm bg-${item.fields.color}  text-stone-50 border border-stone-200 rounded-xl shadow gap-4`}
+                className={item.fields.color == "pink-50" ? `flex w-full py-6 max-w-sm bg-[#FF006E]  text-stone-50 border border-stone-200 rounded-xl shadow gap-4` : `flex  w-full py-6 max-w-sm bg-${item.fields.color} text-stone-50 border border-stone-200 rounded-xl shadow gap-4`}
               >
                 <div className='flex items-center justify-center  flex-col'>
                   <a href={item.fields.links} target="_blank" rel="noopener noreferrer">
