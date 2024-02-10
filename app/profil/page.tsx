@@ -52,7 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
 }
 
-const MyStory = async ({ }: MyStoryProps) => {
+const MyStory = async () => {
     const timelineData = await getTimeline() as unknown as TimelineItem[];
     const aboutme = await getAboutMe() as unknown as AboutMe[];
     const metaDefault = await getMetaDefault();

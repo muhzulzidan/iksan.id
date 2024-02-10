@@ -2,7 +2,7 @@
 import { getPhotos, getMetaDefault } from '@/lib/contentful';
 import PhotosClient from './photosClient'; // Make sure this points to your client component
 
-export async function PhotosPage() {
+ async function PhotosPage() {
     const photos = await getPhotos() as unknown as Photo[];
     const metaDefault = await getMetaDefault() as unknown as MetaDefault;
 

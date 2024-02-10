@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+
 import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
@@ -56,12 +56,10 @@ const mabryRegular = localFont({
 
 interface LayoutProps {
   children: React.ReactNode;
-  metaDefault: Metadata; // Assuming Metadata is the correct type for metaDefault
 }
 
 export default function RootLayout({
   children,
-  metaDefault, // Add metaDefault to the props
 }: LayoutProps) {
   return (
     <html lang="en">

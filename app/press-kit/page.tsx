@@ -48,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // This is the server component responsible for fetching data
-export async function PressKitPageServer() {
+async function PressKitPageServer() {
     const pressKits = await getPressKits() as unknown as PressKit[];
     const pressKitLogos = await getPressKitLogos() as unknown as PressKitLogo[];
     const pressKitLogosOrder = await getPressKitLogosOrder() as unknown as PressKitLogoOrder[];

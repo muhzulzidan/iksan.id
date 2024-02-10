@@ -43,9 +43,12 @@ const MoreStories: React.FC<MoreStoriesProps> = ({ posts, more }) => {
     filterPosts(category, searchQuery);
   };
 
+
+
   const categories = Array.from(
-    new Set(posts.map((post) => post.node.categories.edges[0]?.node.name))
+    new Set(posts.map((post) => post.node.categories?.edges[0]?.node.name))
   ).filter(Boolean);
+
 
   const filterPosts = (category: string, query: string) => {
     const filteredPosts = posts.filter((post) => {
@@ -81,7 +84,7 @@ const MoreStories: React.FC<MoreStoriesProps> = ({ posts, more }) => {
               author={node.author}
               slug={node.slug}
               excerpt={node.excerpt}
-              category={node.categories.edges[0]?.node.name}
+              category={node.categories?.edges[0]?.node.name}
             />
           ))}
        </div>

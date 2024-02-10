@@ -1,7 +1,7 @@
-const API_URL = process.env.WORDPRESS_API_URL
+const API_URL: string = process.env.WORDPRESS_API_URL ?? '';
 
 async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
-  const headers = { 'Content-Type': 'application/json' }
+  const headers: { 'Content-Type': string, 'Authorization'?: string } = { 'Content-Type': 'application/json' }
 
   if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
     headers[
@@ -27,7 +27,7 @@ async function fetchAPI(query = '', { variables }: Record<string, any> = {}) {
   return json.data
 }
 
-export async function getPreviewPost(id, idType = 'DATABASE_ID') {
+export async function getPreviewPost(id: string, idType = 'DATABASE_ID') {
   const data = await fetchAPI(
     `
     query PreviewPost($id: ID!, $idType: PostIdType!) {
@@ -44,22 +44,7 @@ export async function getPreviewPost(id, idType = 'DATABASE_ID') {
   return data.post
 }
 
-export async function getAllPostsWithSlug() {
-  const data = await fetchAPI(`
-    {
-      posts(first: 10000) {
-        edges {
-          node {
-            slug
-          }
-        }
-      }
-    }
-  `)
-  return data?.posts
-}
-
-export async function getAllPostsForHome(preview) {
+export async function getAllPostsForHome(preview: boolean) {
   const data = await fetchAPI(
     `
     query AllPosts {
@@ -108,7 +93,8 @@ export async function getAllPostsForHome(preview) {
   return data?.posts
 }
 
-export async function getPostAndMorePosts(slug, preview, previewData) {
+
+export async function getPostAndMorePosts(slug: string, preview: boolean, previewData: any) {
 
   const postPreview = preview && previewData?.post
   // The slug may be the id of an unpublished post
@@ -212,12 +198,12 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   }
 
   // Filter out the main post
-  data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug)
+  data.posts.edges = data.posts.edges.filter(({ node }: { node: any }) => node.slug !== slug)
   // If there are still 3 posts, remove the last one
   if (data.posts.edges.length > 2) data.posts.edges.pop()
 
  // Filter out the main post
-  data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug);
+  data.posts.edges = data.posts.edges.filter(({ node }: { node: any }) => node.slug !== slug);
 
   return data
 }

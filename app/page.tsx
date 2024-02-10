@@ -45,7 +45,7 @@ async function fetchAPI(query: string, variables: Record<string, any> = {}) {
   return json.data;
 }
 
-export async function getAllPostsForHome() {
+async function getAllPostsForHome() {
   const data = await fetchAPI(
     `
     query AllPosts {
@@ -105,7 +105,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || 'http://iksan.id';
   const metadataBase = new URL(baseUrl);
 
-``
+  ``
 
 
   return {
@@ -138,7 +138,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 // Example Page component assuming other necessary imports and definitions
-const HomePage: React.FC<{ preview?: boolean }> = async ({ preview = false }) => {
+const Page = async () => {
+
+
   const allPostsData = await getAllPostsForHome();
   const homepageDataResult = await getHomepage();
 
@@ -283,4 +285,4 @@ const HomePage: React.FC<{ preview?: boolean }> = async ({ preview = false }) =>
   );
 }
 
-export default HomePage;
+export default Page;

@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 
-export async function WallpapersPageServer() {
+ async function WallpapersPageServer() {
     const wallpapers = await getWallpaper() as unknown as Wallpaper[];
     const pageTitles = await getPageTitles() as unknown as PageTitle[];
     const metaDefault = await getMetaDefault();
