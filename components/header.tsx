@@ -236,7 +236,7 @@ export default function Header() {
             </Navbar.Brand>
           </Navbar>
         </Flowbite>
-        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-20 left-0 w-full z-50 max-w-none' : ''}`}>
+        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-16 left-0 w-full z-50 max-w-none' : ''}`}>
           <Carousel>
             {/* make it 3,half on mobile */}
 

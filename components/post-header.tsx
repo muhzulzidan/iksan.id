@@ -1,7 +1,13 @@
+import React, { lazy, Suspense } from 'react';
+
+
+const CoverImageBlogs = lazy(() => import('./cover-image-blogs'));
+const CoverImage = lazy(() => import('./cover-image'));
+
 import Avatar from './avatar'
 import Date from './date'
-import CoverImage from './cover-image'
-import CoverImageBlogs from './cover-image-blogs'
+// import CoverImage from './cover-image'
+// import CoverImageBlogs from './cover-image-blogs'
 import PostTitle from './post-title'
 import Categories from './categories'
 import ShareButton from './ShareButton'
@@ -21,7 +27,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({ title, coverImage, blogDetails,
 
   const categoryNames = categories.edges.map(edge => edge.node.name);
 
-  console.log(categories, "categories")
+  // console.log(categories, "categories")
   const authorName = author || 'admin';
   return (
     <div className=''>
@@ -43,18 +49,22 @@ const PostHeader: React.FC<PostHeaderProps> = ({ title, coverImage, blogDetails,
           {
             coverImage ? (
                   category ? (
-                    <CoverImageBlogs
-                      title={title}
-                      coverImage={coverImage as unknown as { node: { sourceUrl: string } }}
-                      blogDetails={blogDetails === 'true'}
-                      category={category}
-                    />
+              <Suspense fallback={<div>Loading...</div>}>
+                      <CoverImageBlogs
+                        title={title}
+                        coverImage={coverImage as unknown as { node: { sourceUrl: string } }}
+                        blogDetails={blogDetails === 'true'}
+                        category={category}
+                      />
+              </Suspense>
                   ) : (
-                    <CoverImage
-                      title={title}
-                      coverImage={coverImage as unknown as { node: { sourceUrl: string } }}
-                      blogDetails={blogDetails === 'true'}
-                  />
+                <Suspense fallback={<div>Loading...</div>}>
+                      <CoverImage
+                        title={title}
+                        coverImage={coverImage as unknown as { node: { sourceUrl: string } }}
+                        blogDetails={blogDetails === 'true'}
+                    />
+                </Suspense>
                 )
           ) : (
             <svg
