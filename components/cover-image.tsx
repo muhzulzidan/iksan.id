@@ -1,6 +1,8 @@
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
+import sharp from 'sharp'
+
 
 interface Props {
   title: string
@@ -13,14 +15,17 @@ interface Props {
   blogDetails?: boolean
 }
 
+
 export default function CoverImage({ title, coverImage, slug, blogDetails }: Props) {
 
   const image = (
     <div className='flex w-full '>
       <Image
+      
+        quality={50}
         priority
-        width={1000}
-        height={500}
+        width={500}
+        height={250}
         alt={`Cover Image for ${title}`}
         src={coverImage?.node.sourceUrl}
         className={cn('shadow-small  w-full', {

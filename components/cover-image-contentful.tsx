@@ -9,15 +9,17 @@ export default function CoverImageContentful({
     title,
     url,
     slug,
-    className
+    className, decoding
 }: {
     title: string
     url: string
     slug?: string
     className?: string
+    decoding?: string
 }) {
     const image = (
         <ContentfulImage
+        decoding={decoding}
             alt={`Cover Image for ${title}`}
             priority
             width={2000}

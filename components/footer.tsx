@@ -103,6 +103,7 @@ export default function FooterWithSocialMediaIcons({ metaDefault }: { metaDefaul
                                 <div className='grid col-span-2 justify-center'>
                                    <div className=' flex md:gap-4'> 
                                         <CoverImageContentful 
+                                            decoding='defer'
                                             url='https://images.ctfassets.net/1612ijcm5jnx/3HOaKsON98sHlXEFxRk1Ft/15b7e9a8e9c070cae248b26f1451b7bc/mail-1-901x1024.png'
                                             className='h-10/12 w-[12rem] hidden md:flex object-contain'
                                             title='email iksan bangsawan indonesia'
