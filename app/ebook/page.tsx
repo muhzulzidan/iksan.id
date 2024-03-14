@@ -2,12 +2,12 @@
 import React from 'react';
 import Image from 'next/image';
 import Layout from '@/components/layout';
-import { getEbooks, getMetaDefault } from '@/lib/contentful';
+import { getbooks, getMetaDefault } from '@/lib/contentful';
 import CoverImageContentful from "@/components/cover-image-contentful";
 
 
 async function Books() {
-    const books = await getEbooks() as unknown as Book[];
+    const books = await getbooks() as unknown as Book[];
     const metaDefault = await getMetaDefault();
 
     return (
@@ -15,8 +15,8 @@ async function Books() {
             <div className="flex flex-col items-center justify-center w-full max-w-screen-lg mx-auto py-10 bg-stone-100 text-stone-950 ">
 
                 <div className='space-y-4 flex justify-center items-center flex-col'>
-                    <Image width={150} height={150} className="rounded-xl" src="https://iksanbangsawan.com/wp-content/uploads/2022/10/buku.png" alt="Books" />
-                    
+                    <Image width={150} height={150} className="rounded-xl" src="https://images.ctfassets.net/1612ijcm5jnx/3qHGVpis2rQSskLkldxz7W/b8b1b7b2188c0bd3356089b1a0e095e2/ebook.png" alt="Books" />
+
                     <h1 className="text-4xl font-bold">Buku Iksan Bangsawan</h1>
                 </div>
                 <div className="w-full grid grid-cols-1  md:grid-cols-3 gap-x-4 gap-y-4 mt-12">

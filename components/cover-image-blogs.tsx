@@ -25,9 +25,11 @@ export default function CoverImageBlogs({ title, coverImage, slug, blogDetails, 
         </div>
       )}
       <Image
-        priority  
-        width={1000}
-        height={500}
+
+        quality={50}
+        priority
+        width={500}
+        height={250}
         alt={`Cover Image for ${title}`}
         src={coverImage?.node.sourceUrl}
         className={cn(
