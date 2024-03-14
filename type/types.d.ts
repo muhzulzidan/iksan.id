@@ -441,6 +441,24 @@ interface Book {
     };
 }
 
+interface Ebook  {
+    title: string;
+    slug: string;
+    description: string;
+    oldPrice: number;
+    price: number;
+    image: {
+        fields: {
+            title: string;
+            file: {
+                url: string;
+            };
+        };
+        slug?: string;
+    };
+    url: string;
+};
+
 
 interface PostClientProps {
     post: Post;

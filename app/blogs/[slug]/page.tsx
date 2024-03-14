@@ -12,11 +12,12 @@ import { Metadata } from 'next'
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
     const { slug } = params;
+    
     const data = await getPostAndMorePosts(slug, false, null);
     const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
     const metaDefault = metaDefaults[0];
     
-    // console.log(data.post.content, "data.post.content")
+    // console.log(`/blogs/${slug}`, "data.post.content")
 
     const title = data.post.title || metaDefault?.title || 'Default Title';
 
@@ -31,6 +32,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
     return {
         metadataBase,
+        alternates: {
+            canonical: `/blogs/${slug}`,
+        },
         title,
         description,
         openGraph: {
@@ -58,7 +62,7 @@ async function BlogPages({ params }: { params: { slug: string } }) {
     const { slug } = params;
     const data = await getPostAndMorePosts(slug, false, null);
     const metaDefault = await getMetaDefault()  as unknown as MetaDefault
-
+    // console.log(data, "blogs")
     // Pass fetched data to the client component
     return(
         <PostPageClient

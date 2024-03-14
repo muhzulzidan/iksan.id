@@ -25,6 +25,9 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
         metadataBase, // Set the metadataBase
         title,
+        alternates: {
+            canonical: `/blogs/`,
+        },
         description,
         openGraph: {
             title,
@@ -61,13 +64,14 @@ async function Blogs() {
     // console.log(allPosts)
     // console.log(initialPosts)
 
+
+
     return (
         <Layout metaDefault={metaDefault}>
 
             <Container>
                 <div className="py-12">
                     {initialPosts.length > 4 && <MoreStories posts={initialPosts} more={false} />}
-                    
                 </div>
             </Container>
         </Layout>

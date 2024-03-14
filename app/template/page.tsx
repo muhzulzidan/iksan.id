@@ -1,7 +1,7 @@
 // app/template/page.tsx
 
 
-import { Metadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
 import { getTemplates, getTtemplateCategory, getTtemplatePopular, getPageTitles, getMetaDefault } from '../../lib/contentful';
 import notion from '../../lib/notion';
 import TemplatesClient from './templateclient';
@@ -11,6 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // Assuming getMetaDefault is your fetching function
   const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
   const metaDefault = metaDefaults[0];
+
 
 
   const title = `Template ${metaDefault?.title} ` || 'Template';
@@ -26,9 +27,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
   return {
-    metadataBase, // Set the metadataBase
+    metadataBase,
     title,
     description,
+    alternates: {
+      canonical: `/template/`,
+    },
     openGraph: {
       title,
       description,
@@ -62,6 +66,7 @@ async function Templates () {
     const templatePopular = await getTtemplatePopular() as unknown as TemplatePopular[];
     const metaDefault = await getMetaDefault();
 
+
     return (
       <TemplatesClient 
             metaDefault={metaDefault}
@@ -69,6 +74,7 @@ async function Templates () {
             pageTitles={PageTitles}
             templateCategory={templateCategory}
             templatePopular={templatePopular}
+
       />
     );
 }
