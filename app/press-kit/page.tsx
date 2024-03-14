@@ -23,6 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
         metadataBase, // Set the metadataBase
         title,
         description,
+        alternates: {
+            canonical: `/press-kit/`,
+        },
         openGraph: {
             title,
             description,

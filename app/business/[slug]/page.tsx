@@ -14,6 +14,8 @@ export async function generateMetadata({ params }: { params: ParsedUrlQuery }): 
     if (!slug) {
         throw new Response('Not Found', { status: 404 });
     }
+
+    // console.log(slug, "slug")
     // Assuming getMetaDefault is your fetching function
     const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
     const metaDefault = metaDefaults[0];
@@ -33,6 +35,9 @@ export async function generateMetadata({ params }: { params: ParsedUrlQuery }): 
     return {
         metadataBase,
         title,
+        alternates: {
+            canonical: `/business/${slug}`,
+        },
         description,
         openGraph: {
             title,

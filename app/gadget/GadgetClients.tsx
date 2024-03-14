@@ -7,6 +7,9 @@ import Image from 'next/image';
 import CoverImageContentful from "@/components/cover-image-contentful";
 import gadgetIcon from "@/app/images/toolbox.png"
 import { usePathname } from 'next/navigation';
+import { Metadata } from 'next';
+
+
 
 const GadgetClient: React.FC<GadgetClientProps> = ({ gadget, pageTitles, metaDefault }) => {
 

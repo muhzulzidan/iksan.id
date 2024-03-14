@@ -1,4 +1,5 @@
 
+import { getAllPostsForHome } from "@/lib/api";
 import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
@@ -56,6 +57,25 @@ const mabryRegular = localFont({
 
 interface LayoutProps {
   children: React.ReactNode;
+}
+
+
+
+export const metadata = {
+  applicationName: "Iksan Bangsawan's Blog",
+  authors: [{ name: "Iksan Bangsawan" }],
+  generator: 'Next.js',
+  keywords: ['Iksan Bangsawan', 'instagram', 'creator', 'Entrepreneur', 'Digital Marketing', 'Personal Branding', 'Bisnis', 'Pembicara',],
+  referrer: 'origin-when-cross-origin',
+  creator: 'Iksan Bangsawan',
+  publisher: 'Iksan Bangsawan',
+  metadataBase: new URL('https://iksan.id'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    images: "https://images.ctfassets.net/1612ijcm5jnx/2NLmNoMaqZQxKFNkH5Ke9c/9fccfc9e03057ea4e07b4ffcaa507d9b/kak-iksan-prfl-1.png?w=3840&q=75",
+  },
 }
 
 export default function RootLayout({

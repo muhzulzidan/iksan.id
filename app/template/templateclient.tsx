@@ -8,10 +8,10 @@ import { PersonVideo, Laptop, Globe } from "react-bootstrap-icons"
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { getTemplates, getTtemplateCategory, getTtemplatePopular, getPageTitles, getMetaDefault } from '../../lib/contentful';
+
 import CoverImageContentful from "../../components/cover-image-contentful";
 import Layout from '../../components/layout';
-import notion from '../../lib/notion';
+
 
 
 function TemplatesClient({
@@ -20,12 +20,14 @@ function TemplatesClient({
     templateCategory,
     templatePopular, // Correctly typed as an array of TemplatePopular
     metaDefault,
+
 }: TemplatesClientProps) {
 
 
-
     const pathname = usePathname()
-    const currentSlug = pathname;
+    const currentSlug = pathname
+
+
 
     const filteredPageTitles = pageTitles.filter((page) => `/${page.slug}` === currentSlug);
 

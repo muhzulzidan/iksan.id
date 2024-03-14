@@ -2,6 +2,12 @@
 import React from 'react';
 import CoverImageContentful from "@/components/cover-image-contentful"
 import Layout from '@/components/layout';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: '...',
+    description: '...',
+}
 
 const PhotosClient: React.FC<PhotosClientProps> = ({ photos, metaDefault }) => {
 

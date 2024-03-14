@@ -35,6 +35,9 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
         metadataBase, // Set the metadataBase
         title,
+        alternates: {
+            canonical: `/event/`,
+        },
         description,
         openGraph: {
             title,
