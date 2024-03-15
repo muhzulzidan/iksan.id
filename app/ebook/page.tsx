@@ -56,7 +56,7 @@ async function Books() {
     const ebooks = await getEbooks() as unknown as Ebook[];
     const metaDefault = await getMetaDefault();
 
-    console.log(ebooks[0], "ebooks");
+    // console.log(ebooks[0], "ebooks");
 
     return (
         <Layout metaDefault={metaDefault}>
