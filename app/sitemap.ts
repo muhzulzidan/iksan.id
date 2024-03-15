@@ -4,6 +4,13 @@ interface Blog {
         date: string;
     };
 }
+
+type UrlObject = {
+  url: string;
+  lastModified: Date;
+  priority: number;
+  changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+};
 // app/sitemap.ts  (App Router)
 import { getAllPostsForHome, } from '@/lib/api';
 
@@ -15,7 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogs = allPosts;
     const URL = "https://iksan.id";
 
-    const restUrls = [
+const restUrls: UrlObject[] = [
+
         {
             url: `${URL}/`, // Home Page
             lastModified: new Date(),
@@ -102,14 +110,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     ];
 
-    const allBlogs = blogs.map(({ node: { slug, date } }: Blog) => {
-            return {
-                url: `${URL}/blogs/${slug}`,
-                lastModified: new Date(date),
-                priority: 0.64,
-                changeFrequency: "daily",
-            };
-        });
+    const allBlogs = (blogs.edges).map(({ node }: Blog) => {
+    
+                return {
+                    url: `${URL}/blogs/${node.slug}`,
+                    lastModified: new Date(node.date),
+                    priority: 0.64,
+                    changeFrequency: "daily",
+                };
+            });
 
-    return [...restUrls, ...allBlogs];
+
+    return [...restUrls, ...allBlogs ];
 }

@@ -63,8 +63,21 @@ async function Blogs() {
     // const [morePosts, setMorePosts] = useState(initialPosts);
     // console.log(allPosts)
     // console.log(initialPosts)
+    
+//     const blogs = allPosts;
 
+//     const URL = "https://iksan.id";
+//     console.log(blogs.edges, "blogs");
+// const allBlogs = (blogs.edges).map(({ node }: Blog) => {
 
+//             return {
+//                 url: `${URL}/blogs/${node.slug}`,
+//                 lastModified: new Date(node.date),
+//                 priority: 0.64,
+//                 changeFrequency: "daily",
+//             };
+//         });
+// console.log(allBlogs, "slug");
 
     return (
         <Layout metaDefault={metaDefault}>
