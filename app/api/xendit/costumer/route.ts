@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest } from 'next/server';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    const { reference_id } = req.query;
+export async function GET(req: NextRequest, res: NextApiResponse) {
+    const searchParams = req.nextUrl.searchParams
+    const reference_id = searchParams.get('reference_id')
 
     try {
         const response = await axios.get(`https://api.xendit.co/v2/customers/${reference_id}`, {
@@ -18,8 +20,10 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    const { name, email, phoneNumber, id } = req.body;
+export async function POST(req: NextRequest, res: NextApiResponse) {
+    const body = await req.json();
+    const { name, email, phoneNumber, id } = body;
+
 
     try {
         const response = await axios.post('https://api.xendit.co/v2/customers', {
