@@ -12,7 +12,7 @@ const DynamicHeader = dynamic(() => import('./header'), {
 // Add a type for the props
 type LayoutProps = {
   children: React.ReactNode;
-  metaDefault: any; // You should also provide a specific type for metaDefault if possible
+  metaDefault?: any; // You should also provide a specific type for metaDefault if possible
 };
 
 

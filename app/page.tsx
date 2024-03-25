@@ -2,6 +2,7 @@ import React from "react"; // Ensure React is imported for JSX to work
 import { Metadata } from 'next'
 import { getHomepage, getMetaDefault } from "@/lib/contentful";
 import Markdown from 'react-markdown'
+import { UserButton, SignInButton } from "@clerk/nextjs";
 
 import { Product, WithContext } from 'schema-dts'
 

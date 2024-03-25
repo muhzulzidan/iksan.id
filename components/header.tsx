@@ -2,6 +2,8 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
+import { UserButton, SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
+
 import { Flowbite, Navbar, Dropdown,  } from "flowbite-react";
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import Link from 'next/link'
@@ -27,6 +29,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from 'lucide-react';
+import { Button } from './ui/button';
+
 
 export default function Header() {
   const router = useRouter();
@@ -157,13 +161,7 @@ export default function Header() {
               rounded={true}
             >
               <Navbar.Brand as={Link} href="/">
-                {/* <Image
-                  width={110}
-                  height={120}
-                  src="https://images.ctfassets.net/1612ijcm5jnx/BJSXzbfipb7T7QD4M8Jyb/f9d3b5cc117f3a9cbb131dbcbfd5954c/Logo-Iksan-Bangsawan_2x.png"
-                  // className="mr-3 h-6 sm:h-9"
-                  quality={100}
-                  alt="iksanbangsawan" /> */}
+               
                 <CoverImageContentful
                   className="mr-3 h-6 w-auto sm:h-9"
                   title="iksan bangsawan indonesia"
@@ -178,13 +176,13 @@ export default function Header() {
                     const contactLink = links as { href: string; text: string; };
                     return (
 
-                      <Navbar.Link as="div" className='font-mabryBold text-lg' key={`navlink-${dropdownLabel}`}>
-                        <Link key={contactLink.text} className='font-mabryBold ' href={contactLink.href} passHref>
+                     
+                        <Link key={contactLink.text} className='font-mabryBold text-lg self-center ' href={contactLink.href} passHref>
                           {contactLink.text}
 
                         </Link>
 
-                      </Navbar.Link>
+                    
 
                     );
                   } else {
@@ -208,11 +206,30 @@ export default function Header() {
                     );
                   }
                 })}
+               
+              <div className='flex gap-2'>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                <SignedOut>
+                    <SignInButton >
+                      <Button asChild variant={"outline"} className='border-secondary2 hover:bg-secondary2 bg-stone-100 hover:text-stone-50'>
+                        <Link href={"/sign-in"}> Sign In</Link>
+                      </Button>
+                    </SignInButton>
+                    <SignUpButton >
+                      <Button className='bg-secondary2 hover:bg-purple-700'>
+                        Sign Up
+                      </Button>
+                    </SignUpButton>
+                </SignedOut>
+              </div>
               </Navbar.Collapse>
-
+             
             </Navbar>
-
+           
           </Flowbite>
+
         </nav>
       </LazyLoad>
 

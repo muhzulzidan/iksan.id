@@ -110,12 +110,23 @@ interface TwoColumnLayoutProps {
     insights?: Insight[]; // Assuming insights has a similar structure or adjust as necessary
 }
 
+interface File {
+    fields: {
+        file: {
+            url: string;
+        };
+    };
+}
+
 interface Template {
+    isFeatured?: boolean;
     image: any;
     description: ReactNode;
     price: ReactNode;
     url: string; // Assuming each template has a URL
+    slug: string; // Assuming each template has a URL
     title?: string;
+    file?: File[]; 
     fields?: {
         title: string;
         description: string;

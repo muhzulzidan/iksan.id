@@ -3,6 +3,7 @@ import { getAllPostsForHome } from "@/lib/api";
 import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
+import { ClerkProvider } from '@clerk/nextjs'
 
 const kanakira = localFont({
   src: './images/fonts/Kanakira/Kanakira-BoldInktrap.woff2',
@@ -82,63 +83,66 @@ export default function RootLayout({
   children,
 }: LayoutProps) {
   return (
-    <html lang="en">
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-N9385Q8YHE`}
-      />
-      <Script
-        strategy="afterInteractive"
-        id="gtag-config"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-N9385Q8YHE', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
-      <Script
-        strategy="afterInteractive"
-        id="gtm-script"
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-T87SBL9R');
-          `,
-        }}
-      />
-      <Script
-        id="gtm-body"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T87SBL9R"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-          `,
-        }}
-      />
-      <body className={`
-      ${mabryRegular.variable} 
-      ${kanakira.variable}
-      ${kanakiraItalic.variable}
-      ${kanakiraHeavy.variable}
-      ${kanakiraHeavyItalic.variable}
-      ${mabryBold.variable}
-      ${mabryBoldItalic.variable}
-      ${mabryItalic.variable}
-      ${mabryLight.variable}
-      ${mabryLightItalic.variable}
-      ${mabryLightItalic.variable}
-      `} >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+
+      <html lang="id">
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-N9385Q8YHE`}
+        />
+        <Script
+          strategy="afterInteractive"
+          id="gtag-config"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-N9385Q8YHE', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+        <Script
+          strategy="afterInteractive"
+          id="gtm-script"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-T87SBL9R');
+            `,
+          }}
+        />
+        <Script
+          id="gtm-body"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T87SBL9R"
+              height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+            `,
+          }}
+        />
+        <body className={`
+        ${mabryRegular.variable} 
+        ${kanakira.variable}
+        ${kanakiraItalic.variable}
+        ${kanakiraHeavy.variable}
+        ${kanakiraHeavyItalic.variable}
+        ${mabryBold.variable}
+        ${mabryBoldItalic.variable}
+        ${mabryItalic.variable}
+        ${mabryLight.variable}
+        ${mabryLightItalic.variable}
+        ${mabryLightItalic.variable}
+        `} >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
