@@ -77,7 +77,7 @@ export default function TestInvoice({
         }
     }
     // console.log(user, "user")
-    console.log(templatesOne, "templates");
+    // console.log(templatesOne, "templates");
     if (templatesOne.file) {
         console.log(templatesOne.file[0].fields.file.url.substring(2), "templates");
     } else {

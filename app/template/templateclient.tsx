@@ -109,7 +109,7 @@ console.log(templates, "templatePop");
                      
                         <div className='flex flex-col pt-12 gap-6' >
                             {templates.filter(template => template.isFeatured).map((templatePop, index) => (
-                                <div key={index} className={`flex flex-col md:flex-row  rounded-md space-y-4 w-full max-sm: gap-4 group/edit group/item  hover:bg-stone-50    cursor-pointer px-12 md:py-8 py-12  items-center`}>
+                                <Link href={`/template/${templatePop.slug}`} key={index} className={`flex flex-col md:flex-row  rounded-md space-y-4 w-full max-sm: gap-4 group/edit group/item  hover:bg-stone-50    cursor-pointer px-12 md:py-8 py-12  items-center`}>
                                     <div className='flex flex-col md:w-8/12 gap-2'>
                                         <div className='flex px-4 py-2 border border-solid border-secondary2 text-xs text-stone-950 w-fit rounded-full'>
                                             Most Popular
@@ -122,9 +122,9 @@ console.log(templates, "templatePop");
                                                 {templatePop.description}
                                             </p>
                                         </div>
-                                        <a href={templatePop.url} className='px-4 py-2 bg-secondary2 text-stone-50 w-fit rounded-xl hover:bg-stone-100 hover:border hover:border-secondary2 '>
+                                        <Link href={`/template/${templatePop.slug}`} className='px-4 py-2 bg-secondary2 text-stone-50 w-fit rounded-xl hover:bg-stone-100 hover:border hover:border-secondary2 '>
                                             Dapatkan Segera
-                                        </a>
+                                        </Link>
                                     </div>
                                     <div className='md:w-7/12  flex items-center justify-center' >
                                         <CoverImageContentful
@@ -140,7 +140,7 @@ console.log(templates, "templatePop");
                                             rounded-lg `}
                                         />
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
 
@@ -150,9 +150,9 @@ console.log(templates, "templatePop");
                         <h2 className='text-3xl'>Featured Templates</h2>
                         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 ">
                             {getFilteredTemplates().map((template) => {
-                                const templateUrl = template.url || "#"; // Provide a fallback URL or handle this case accordingly
+                                const templateUrl = template.slug || "#"; // Provide a fallback URL or handle this case accordingly
                                 return (
-                                    <Link href={templateUrl} key={template.title} className="flex flex-col rounded-md space-y-4 w-full max-sm: gap-0 group cursor-pointer ">
+                                    <Link href={`/template/${templateUrl}`} key={template.title} className="flex flex-col rounded-md space-y-4 w-full max-sm: gap-0 group cursor-pointer ">
 
 
                                         <div className="relative group rounded-2xl">

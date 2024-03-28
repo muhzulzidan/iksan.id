@@ -10,7 +10,7 @@ export async function POST(request: Request) {
             external_id: slug + Date.now(), // This should be a unique id for each invoice
             payer_email: userEmail, // Use the user's email from Clerk
             description: title,
-            amount: `${price}000`,
+            amount: price * 1000,
         }, {
             headers: {
                 'Authorization': `Basic ${Buffer.from(process.env.XENDIT_SECRET_KEY + ':').toString('base64')}`, // Use the XENDIT_SECRET_KEY from the environment variable
