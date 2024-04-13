@@ -1,10 +1,7 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model CustomerIksanId {
@@ -16,34 +13,16 @@ model CustomerIksanId {
 
 model DownloadIksanId {
   id          Int      @id @default(autoincrement())
-  userId      String
+  userId      Int
   fileName    String
   downloadDate DateTime @default(now())
 }
 
-model Participant {
-  id         Int     @id @default(autoincrement())
-  name       String
-  gender     String
-  phone      String
-  school     String
-  age        String
-  judulKarya String
-  lomba      String
-  agreement  Boolean
-  pictureUrl String?
-}
-
-model RegistrationTime {
-  id        Int      @id @default(autoincrement())
-  openTime  DateTime
-  closeTime DateTime
-}
-
-model Tenant {
-  id        Int     @id @default(autoincrement())
-  name      String
-  phone     String
-  email     String
-  agreement Boolean
+model User {
+  id          Int    @id @default(autoincrement())
+  customerId  String @unique
+  celeryId    String @unique
+  phoneNumber String
+  email       String @unique
+  username    String @unique
 }

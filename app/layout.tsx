@@ -3,7 +3,12 @@ import { getAllPostsForHome } from "@/lib/api";
 import "./globals.css";
 import localFont from 'next/font/local'
 import Script from "next/script";
-import { ClerkProvider } from '@clerk/nextjs'
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+} from "@clerk/nextjs";
 
 const kanakira = localFont({
   src: './images/fonts/Kanakira/Kanakira-BoldInktrap.woff2',

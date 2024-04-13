@@ -1,4 +1,6 @@
 // types.d.ts or twoColumnLayoutTypes.d.ts
+
+
 interface PostAuthor {
     name: string;
     firstName: string;

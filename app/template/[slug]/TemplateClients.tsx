@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
+
 import axios from 'axios';
 import { UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
@@ -28,6 +30,9 @@ import {
 import { ChevronUp, ChevronLeft, Star } from 'lucide-react';
 
 const TemplateClients = ({ template }: { template: Template }) => {
+
+    const router = useRouter()
+
     const { isSignedIn, user, isLoaded } = useUser();
     const [invoiceUrl, setInvoiceUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -68,8 +73,14 @@ const TemplateClients = ({ template }: { template: Template }) => {
     console.log(user, "user")
 
     const handleCreateInvoice = async () => {
-        console.log(user, "user")
+        console.log("handle Create Invoice")
 
+        if (!user) {
+            router.push('/sign-in')
+            return;
+        }
+
+        console.log(user, "user")
         try {
             // Try to retrieve the customer from Xendit
             let customer;
@@ -77,6 +88,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
                 console.log("make customer")
                 const response = await axios.get(`/api/xendit/customer?reference_id=${user?.id}`);
                 customer = response.data;
+                console.log(customer, "found customer")
             } catch (err) {
                 console.log("the customer doesn't exist")
                 // If the customer doesn't exist, create the customer
@@ -114,6 +126,11 @@ const TemplateClients = ({ template }: { template: Template }) => {
     };
 
     const handleDownloadInvoice = async () => {
+        if (!user) {
+            router.push('/sign-in')
+            return;
+        }
+
         try {
             const response = await axios.get(`/api/file-download?userId=${user?.id}&fileName=${template.slug}`);
             const data = response.data;
@@ -134,21 +151,21 @@ const TemplateClients = ({ template }: { template: Template }) => {
                         </Button>
                     </div>
                 }
-                <div className='flex gap-0  w-full justify-center items-center '>
-                   <div className='flex flex-col'>
+                <div className='md:grid md:grid-cols-2 gap-0 flex flex-col  w-full justify-center items-center '>
+                    <div className='flex flex-col'>
                         <p className='text-lg my-2 font-bold underline w-fit'>
                             {template.price === 0 ? 'Gratis' : `Rp.${template.price}.000`}
                         </p>
 
-                        <h1 className="text-4xl mb-0 w-8/12 font-bold ">{template.title}</h1>
-                       
-                        <div className='flex  gap-2 py-4 justify-start items-center'>
-                           
+                        <h1 className="text-4xl mb-0 w-full md:w-8/12 font-bold ">{template.title}</h1>
+
+                        <div className='flex   gap-2 py-4 justify-start items-center'>
+
                             <div className='flex  gap-4 pt-0 '>
                                 <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105' >Dapatkan Segera</Button>
                                 {/* <Button variant={"outline"} className="" onClick={() => scrollToRef(myRef)}>Pelajari Lagi</Button> */}
                             </div>
-                           
+
                             <div className='flex flex-col items-start justify-center gap-1 text-xs text-stone-800'>
                                 <div className='flex justify-start items-start gap-1'>
                                     <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
@@ -157,24 +174,24 @@ const TemplateClients = ({ template }: { template: Template }) => {
                                     <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                                     <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                                 </div>
-        
+
                                 4.96/5 Dari 5,608 customers
-        
+
                             </div>
                         </div>
-                   </div>
+                    </div>
                     <CoverImageContentful
                         title="template iksan bangsawan indonesia image"
                         url={template?.image.fields.file.url}
                         className="rounded-xl w-auto lg:h-80 my-8"
                     />
                 </div>
-               
+
                 {/* testimony */}
                 <section className='grid grid-cols-1 gap-4 md:grid-cols-3 py-12'>
                     {Array.from({ length: 3 }).map((_, index) => (
                         <Card key={index} className='text-center'>
-                            
+
                             <CardContent className='m-0 pt-12 flex-col flex justify-center items-center'>
                                 <div className='flex gap-1 m-0 pb-4'>
                                     <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
@@ -184,28 +201,28 @@ const TemplateClients = ({ template }: { template: Template }) => {
                                     <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                                 </div>
                                 <p>This is a dummy testimony content for testimony number {index + 1}.</p>
-                                
+
                             </CardContent>
                             <CardFooter className='flex flex-col gap-2 justify-center items-center'>
-                             
+
                                 <Avatar className='h-12 w-12' >
                                     <AvatarImage className='' src="https://github.com/shadcn.png" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                              <div className='felx flex-col gap-0'>
+                                <div className='felx flex-col gap-0'>
                                     <h4 className='m-0 text-lg'>Jasmin Reinhard</h4>
                                     <p className='m-0 text-sm'>YouTuber, Jusuf (500K subscriberss)</p>
-                              </div>
-                            
+                                </div>
+
                             </CardFooter>
                         </Card>
 
 
                     ))}
                 </section>
-                
 
-                <div ref={myRef}>
+
+                <div ref={myRef} className='flex flex-col prose max-w-none px-4 w-full'>
                     <ReactMarkdown className="text-lg" >{template.description}</ReactMarkdown>
                     <div className='flex flex-col w-full'>
                         <h3>Frequently Asked Questions</h3>
@@ -237,7 +254,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
                     </div>
                 </div>
 
-              
+
 
 
                 <div className='flex gap-4'>

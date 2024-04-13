@@ -85,6 +85,8 @@ export async function GET(req: NextRequest,) {
         },
     });
 
+    
+
     console.log(fileUrl,'Download recorded');
     return NextResponse.json({ fileUrl: `https://${fileUrl}` });
     // redirect(`https://${fileUrl}`);

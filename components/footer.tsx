@@ -184,9 +184,10 @@ export default function FooterWithSocialMediaIcons({ metaDefault }: { metaDefaul
                         <div className="w-full sm:flex sm:items-center sm:justify-between">
                             <Footer.Copyright
                                 by="IksanBangsawan"
-                                href="#"
+                                href=""
                                 year={2023}
                             />
+
                             <div className="mt-4 flex  space-x-6 sm:mt-0 sm:justify-center">
                                     <Footer.LinkGroup>
                                         <Footer.Link href="#">
@@ -194,6 +195,9 @@ export default function FooterWithSocialMediaIcons({ metaDefault }: { metaDefaul
                                         </Footer.Link>
                                         <Footer.Link href="#">
                                             Terms & Conditions
+                                        </Footer.Link>
+                                        <Footer.Link href="zulzidan.com">
+                                            Web Developer Zulzidan
                                         </Footer.Link>
                                     </Footer.LinkGroup>
                                
