@@ -28,3 +28,7 @@ export default authMiddleware({
         return NextResponse.next();
     },
 });
+
+export const config = {
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};

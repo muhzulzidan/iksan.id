@@ -212,16 +212,20 @@ export default function Header() {
                     <UserButton />
                   </SignedIn>
                 <SignedOut>
-                    <SignInButton >
-                      <Button asChild variant={"outline"} className='border-secondary2 hover:bg-secondary2 bg-stone-100 hover:text-stone-50'>
+                    {/* <SignInButton > */}
+                      <Button asChild variant={"outline"} className='border-stone-700 hover:bg-secondary2 hover:border-secondary2 bg-stone-100 hover:text-stone-50'>
                         <Link href={"/sign-in"}> Sign In</Link>
                       </Button>
-                    </SignInButton>
-                    <SignUpButton >
-                      <Button className='bg-secondary2 hover:bg-purple-700'>
+                    {/* </SignInButton> */}
+                    {/* <SignUpButton > */}
+                    <Button  asChild className='bg-stone-200 text-stone-950 hover:bg-purple-700 hover:text-stone-50'>
+                       
+                      <Link href={"/sign-up"}>
                         Sign Up
+
+                        </  Link>
                       </Button>
-                    </SignUpButton>
+                    {/* </SignUpButton> */}
                 </SignedOut>
               </div>
               </Navbar.Collapse>
