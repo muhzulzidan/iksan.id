@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
+// import { UserCircleIcon } from '@heroicons/react/24/outline'
+import { UserCircleIcon } from '@heroicons/react/24/solid'
 
 
 export default function Header() {
@@ -160,6 +162,7 @@ export default function Header() {
               fluid={true}
               rounded={true}
             >
+
               <Navbar.Brand as={Link} href="/">
                
                 <CoverImageContentful
@@ -167,7 +170,9 @@ export default function Header() {
                   title="iksan bangsawan indonesia"
                   url="https://images.ctfassets.net/1612ijcm5jnx/BJSXzbfipb7T7QD4M8Jyb/f9d3b5cc117f3a9cbb131dbcbfd5954c/Logo-Iksan-Bangsawan_2x.png"
                 />
+               
               </Navbar.Brand>
+            
               <Navbar.Toggle />
 
               <Navbar.Collapse>
@@ -256,6 +261,21 @@ export default function Header() {
                 height={100}
                 alt="iksanbangsawan" />
             </Navbar.Brand>
+            <div className='flex flex-col gap-2'>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <SignedOut>
+                <Button asChild variant={"ghost"} className=' border-none'>
+                  <Link href={"/sign-in"}> <UserCircleIcon className='w-10 h-auto text-stone-950'/> </Link>
+                </Button>               
+                {/* <Button asChild className='bg-stone-200 text-stone-950 hover:bg-purple-700 hover:text-stone-50'>
+                  <Link href={"/sign-up"}>
+                    Sign Up
+                  </Link>
+                </Button> */}
+              </SignedOut>
+            </div>
           </Navbar>
         </Flowbite>
         <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-16 left-0 w-full z-50 max-w-none' : ''}`}>
