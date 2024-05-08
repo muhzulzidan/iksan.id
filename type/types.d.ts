@@ -530,3 +530,12 @@ interface PostHeaderProps {
     slug: string,
     category: string
 }
+
+interface DownloadData {
+    id: number;
+    userId: string;
+    fileName: string;
+    downloadDate: string;
+    fullname: string;
+    email: string;
+}

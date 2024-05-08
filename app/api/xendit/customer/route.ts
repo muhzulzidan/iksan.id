@@ -1,12 +1,22 @@
 // api/xendit/costumer/route.ts
 
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
+import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 export async function GET(req: NextRequest, res: NextResponse) {
     const searchParams = req.nextUrl.searchParams
     const reference_id = searchParams.get('reference_id')
+    // Check if the user is logged in
+    const user = await currentUser();
+
+
+    if (!user) {
+
+        // Redirect to login page if not authenticated
+        return NextResponse.redirect(new URL('/sign-in', req.url))
+    } 
 
     try {
         const response = await axios.get(`https://api.xendit.co/customers?reference_id=${reference_id}`, {
@@ -27,6 +37,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const body = await req.json();
     const { name, email, phoneNumber, id } = body;
 
+    // Check if the user is logged in
+    const user = await currentUser();
+
+
+    if (!user) {
+
+        // Redirect to login page if not authenticated
+        return NextResponse.redirect(new URL('/sign-in', req.url))
+    } 
 
     try {
         const response = await axios.post('https://api.xendit.co/customers', {

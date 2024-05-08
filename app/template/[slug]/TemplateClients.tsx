@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation'
+import { redirect, usePathname, useRouter } from 'next/navigation'
 
 import axios from 'axios';
 import { UserButton } from "@clerk/nextjs";
@@ -26,12 +26,15 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { setCookie } from 'nookies';
 
 import { ChevronUp, ChevronLeft, Star } from 'lucide-react';
-
+import { toast } from '@/components/ui/use-toast';
+import { SignIn,  } from "@clerk/nextjs";
 const TemplateClients = ({ template }: { template: Template }) => {
 
     const router = useRouter()
+    const pathname = usePathname()
 
     const { isSignedIn, user, isLoaded } = useUser();
     const [invoiceUrl, setInvoiceUrl] = useState<string | null>(null);
@@ -75,9 +78,16 @@ const TemplateClients = ({ template }: { template: Template }) => {
     const handleCreateInvoice = async () => {
         console.log("handle Create Invoice")
 
+
         if (!user) {
-            router.push('/sign-in')
-            return;
+            console.log("handleCreateInvoice user null")
+            toast({
+                variant: "default",
+                title: "Sign In Required",
+                description: "Please sign in to create an invoice.",
+            });
+            localStorage.setItem('redirectURL', pathname);
+            return router.push('/sign-in')
         }
 
         console.log(user, "user")
@@ -127,8 +137,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
 
     const handleDownloadInvoice = async () => {
         if (!user) {
-            router.push('/sign-in')
-            return;
+            return redirect('/sign-in')
         }
 
         try {
@@ -151,6 +160,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
                         </Button>
                     </div>
                 }
+                
                 <div className='md:grid md:grid-cols-2 gap-0 flex flex-col  w-full justify-center items-center '>
                     <div className='flex flex-col'>
                         <p className='text-lg my-2 font-bold underline w-fit'>

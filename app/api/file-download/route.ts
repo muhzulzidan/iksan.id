@@ -15,12 +15,16 @@ export async function GET(req: NextRequest,) {
     const userId = searchParams.get('userId')
     const fileName = searchParams.get('fileName')
 
+    // const formData = await req.formData()
+    // const name = formData.get('name')
+    // const email = formData.get('email')
+
     // Check if the user is logged in
     const user = await currentUser();
 
 
     if (!user) {
-        return NextResponse.redirect('/login');
+        return redirect('/sign-in');
     } 
 
     // Check if the customer exists in Xendit
@@ -76,15 +80,22 @@ export async function GET(req: NextRequest,) {
         return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
     }
 
+    // Prepare the data
+    const data = {
+        userId,
+        fileName: String(fileName),
+        downloadDate: new Date(),
+        fullname: user.firstName + ' ' + user.lastName,
+        email: user.emailAddresses[0].emailAddress,
+    };
+
+    // Log the data
+    console.log(data, "downloadIksanId");
+
     // Record the download in your database
     await prisma.downloadIksanId.create({
-        data: {
-            userId,
-            fileName: String(fileName),
-            downloadDate: new Date(),
-        },
+        data,
     });
-
     
 
     console.log(fileUrl,'Download recorded');

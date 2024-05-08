@@ -2,8 +2,8 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { UserButton, SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
-
+import { UserButton as Ub, SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import {UserButton} from "@/components/UserButton"
 import { Flowbite, Navbar, Dropdown,  } from "flowbite-react";
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import Link from 'next/link'
@@ -210,6 +210,7 @@ export default function Header() {
               <div className='flex gap-2'>
                   <SignedIn>
                     <UserButton />
+                    {/* <Ub /> */}
                   </SignedIn>
                 <SignedOut>
                     {/* <SignInButton > */}

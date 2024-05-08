@@ -1,6 +1,19 @@
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
+interface Category {
+    id: number;
+    name: string;
+    // add other properties if needed
+}
+interface CategoryDropdownMenuProps {
+    categories: Category[];
+    selectedCategory: string;
+    onCategorySelect: (category: string) => void;
+    selectedCategories: number[]; // Add the missing property
+    setSelectedCategories: (categories: any) => void; // Add the missing property
+}
+
 function CategoryDropdownMenu({
     categories,
     selectedCategories,
@@ -9,9 +22,9 @@ function CategoryDropdownMenu({
     // Helper function to toggle category selection
     // Updated function to handle number type
     const toggleCategory = (categoryId: number) => {
-        setSelectedCategories(prevSelected => {
+        setSelectedCategories((prevSelected: any) => {
             if (prevSelected.includes(categoryId)) {
-                return prevSelected.filter(id => id !== categoryId);
+                return prevSelected.filter((id: number) => id !== categoryId);
             }
             return [...prevSelected, categoryId];
         });

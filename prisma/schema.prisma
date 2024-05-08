@@ -4,6 +4,10 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model CustomerIksanId {
   id        Int      @id @default(autoincrement())
   name      String
@@ -12,10 +16,12 @@ model CustomerIksanId {
 }
 
 model DownloadIksanId {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  fileName    String
+  id           Int      @id @default(autoincrement())
+  userId       String
+  fileName     String
   downloadDate DateTime @default(now())
+  fullname     String
+  email        String
 }
 
 model User {

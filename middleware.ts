@@ -1,10 +1,13 @@
 import { authMiddleware } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from 'cookie';
+// import { parseCookies } from 'nookies';
 
 export default authMiddleware({
     publicRoutes: ["((?!^/api|^/admin).*)"],
     async afterAuth(auth, req: NextRequest) {
+        // const cookies = parseCookies();
+
         if (auth.isPublicRoute) {
             return NextResponse.next();
         }
@@ -23,7 +26,8 @@ export default authMiddleware({
         // Get the stored URL from the cookie
         // This part needs to be handled in your sign in logic
         // const redirectURL = req.cookies.redirectURL;
-
+        // const redirectURL = cookies.redirectURL || '/default-page';
+        // NextResponse.redirect(redirectURL);
         // If there's no stored URL, continue as usual
         return NextResponse.next();
     },
