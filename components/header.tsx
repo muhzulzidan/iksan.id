@@ -3,8 +3,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { UserButton as Ub, SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
-import {UserButton} from "@/components/UserButton"
-import { Flowbite, Navbar, Dropdown,  } from "flowbite-react";
+import { UserButton } from "@/components/UserButton"
+import { Flowbite, Navbar, Dropdown, } from "flowbite-react";
 import type { CustomFlowbiteTheme } from 'flowbite-react';
 import Link from 'next/link'
 import { useRouter } from "next/navigation";
@@ -32,6 +32,7 @@ import { ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 // import { UserCircleIcon } from '@heroicons/react/24/outline'
 import { UserCircleIcon } from '@heroicons/react/24/solid'
+import Cart from './Cart';
 
 
 export default function Header() {
@@ -48,7 +49,7 @@ export default function Header() {
       const isHeaderScrolled = window.scrollY > 0;
       setIsScrolled(isHeaderScrolled);
     };
-    is200 ? ""  : setFirstSlideWidth('7rem');
+    is200 ? "" : setFirstSlideWidth('7rem');
     // setFirstSlideWidth('7rem');
 
     // Attach the event listener when the component mounts
@@ -59,7 +60,7 @@ export default function Header() {
       window.removeEventListener('scroll', handleScroll);
     };
 
-   
+
   }, []);
 
 
@@ -164,15 +165,15 @@ export default function Header() {
             >
 
               <Navbar.Brand as={Link} href="/">
-               
+
                 <CoverImageContentful
                   className="mr-3 h-6 w-auto sm:h-9"
                   title="iksan bangsawan indonesia"
                   url="https://images.ctfassets.net/1612ijcm5jnx/BJSXzbfipb7T7QD4M8Jyb/f9d3b5cc117f3a9cbb131dbcbfd5954c/Logo-Iksan-Bangsawan_2x.png"
                 />
-               
+
               </Navbar.Brand>
-            
+
               <Navbar.Toggle />
 
               <Navbar.Collapse>
@@ -181,13 +182,13 @@ export default function Header() {
                     const contactLink = links as { href: string; text: string; };
                     return (
 
-                     
-                        <Link key={contactLink.text} className='font-mabryBold text-lg self-center ' href={contactLink.href} passHref>
-                          {contactLink.text}
 
-                        </Link>
+                      <Link key={contactLink.text} className='font-mabryBold text-lg self-center ' href={contactLink.href} passHref>
+                        {contactLink.text}
 
-                    
+                      </Link>
+
+
 
                     );
                   } else {
@@ -211,33 +212,26 @@ export default function Header() {
                     );
                   }
                 })}
-               
-              <div className='flex gap-2'>
-                  <SignedIn>
-                    <UserButton />
-                    {/* <Ub /> */}
-                  </SignedIn>
-                <SignedOut>
-                    {/* <SignInButton > */}
-                      <Button asChild variant={"outline"} className='border-stone-700 hover:bg-secondary2 hover:border-secondary2 bg-stone-100 hover:text-stone-50'>
-                        <Link href={"/sign-in"}> Sign In</Link>
-                      </Button>
-                    {/* </SignInButton> */}
-                    {/* <SignUpButton > */}
-                    <Button  asChild className='bg-stone-200 text-stone-950 hover:bg-purple-700 hover:text-stone-50'>
-                       
-                      <Link href={"/sign-up"}>
-                        Sign Up
 
-                        </  Link>
-                      </Button>
-                    {/* </SignUpButton> */}
-                </SignedOut>
-              </div>
+                <div className='flex gap-4'>
+                  <Cart />
+                  <UserButton />
+                  {/* <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                  <SignedOut>
+
+                    <Button asChild variant={"outline"} className='border-stone-700 hover:bg-secondary2 hover:border-secondary2 bg-stone-100 hover:text-stone-50'>
+                      <Link href={"/sign-in"}> Sign In</Link>
+                    </Button>
+
+                  </SignedOut> */}
+                 
+                </div>
               </Navbar.Collapse>
-             
+
             </Navbar>
-           
+
           </Flowbite>
 
         </nav>
@@ -254,9 +248,9 @@ export default function Header() {
             <Navbar.Brand as={Link} href="/">
               <Image
                 src="https://images.ctfassets.net/1612ijcm5jnx/BJSXzbfipb7T7QD4M8Jyb/f9d3b5cc117f3a9cbb131dbcbfd5954c/Logo-Iksan-Bangsawan_2x.png"
-                
+
                 // className="mr-3 h-12 md:h-9 mb-4 md:mb-0"
-                quality={100} 
+                quality={100}
                 width={150}
                 height={100}
                 alt="iksanbangsawan" />
@@ -265,24 +259,23 @@ export default function Header() {
               <SignedIn>
                 <UserButton />
               </SignedIn>
-              <SignedOut>
-                <Button asChild variant={"ghost"} className=' border-none'>
-                  <Link href={"/sign-in"}> <UserCircleIcon className='w-10 h-auto text-stone-950'/> </Link>
-                </Button>               
-                {/* <Button asChild className='bg-stone-200 text-stone-950 hover:bg-purple-700 hover:text-stone-50'>
-                  <Link href={"/sign-up"}>
-                    Sign Up
-                  </Link>
-                </Button> */}
-              </SignedOut>
+                <SignedOut>
+                  <Button asChild variant={"ghost"} className=' border-none'>
+                    <Link href={"/sign-in"}> <UserCircleIcon className='w-10 h-auto text-stone-950' /> </Link>
+                  </Button>
+
+                </SignedOut>
+              <Cart />
             </div>
+
+
           </Navbar>
         </Flowbite>
         <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-16 left-0 w-full z-50 max-w-none' : ''}`}>
           <Carousel>
             {/* make it 3,half on mobile */}
 
-            
+
             <CarouselContent className=''>
               {Object.entries(dropdownLinks).map(([dropdownLabel, links], index) => {
                 const isFirstSlide = index === 0;
@@ -293,7 +286,7 @@ export default function Header() {
                       className={` font-mabryBold basis-1/3 `}
                       key={dropdownLabel}
                     >
-                      <Link key={contactLink.text}  className='text-stone-950 capitalize flex items-center   pl-2' href={contactLink.href} >
+                      <Link key={contactLink.text} className='text-stone-950 capitalize flex items-center   pl-2' href={contactLink.href} >
                         {contactLink.text}
                       </Link>
                     </CarouselItem>
@@ -304,19 +297,19 @@ export default function Header() {
                     <CarouselItem
                       className={isFirstSlide ? `font-mabryBold  basis-1/3 -mr-4 ` : `font-mabryBold  basis-1/3 -mr-2`}
                       key={dropdownLabel}
-                      // style={isFirstSlide ? { width: firstSlideWidth } : {}}
+                    // style={isFirstSlide ? { width: firstSlideWidth } : {}}
                     >
                       <DropdownMenu>
                         <DropdownMenuTrigger className='flex gap-2 items-center'>
-                          {dropdownLabel} 
-                          <ChevronDown size={20} /> 
-                          </DropdownMenuTrigger>
+                          {dropdownLabel}
+                          <ChevronDown size={20} />
+                        </DropdownMenuTrigger>
                         <DropdownMenuContent >
                           <DropdownMenuSeparator />
                           {dropdownLinksArray.map(link => (
                             <Link key={link.text} href={link.href} passHref>
                               <DropdownMenuItem>
-                                {link.text} 
+                                {link.text}
                               </DropdownMenuItem>
                             </Link>
                           ))}
@@ -327,7 +320,7 @@ export default function Header() {
                 }
               })}
             </CarouselContent>
-       
+
           </Carousel>
         </div>
       </nav>

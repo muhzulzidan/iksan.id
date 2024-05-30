@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { redirect, usePathname, useRouter } from 'next/navigation'
+// Import the useStore hook from your store file
+import useStore from '@/store';
 
 import axios from 'axios';
 import { UserButton } from "@clerk/nextjs";
@@ -19,6 +21,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { CartPlusFill, ArrowRightCircleFill } from 'react-bootstrap-icons';
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Accordion,
@@ -39,6 +43,9 @@ const TemplateClients = ({ template }: { template: Template }) => {
     const { isSignedIn, user, isLoaded } = useUser();
     const [invoiceUrl, setInvoiceUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    // Inside your component
+    const addToCart = useStore(state => state.addToCart);
 
     const myRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -73,81 +80,93 @@ const TemplateClients = ({ template }: { template: Template }) => {
     }, []);
 
 
-    console.log(user, "user")
+    // console.log(user, "user")
 
+    // const handleCreateInvoice = async () => {
+    //     console.log("handle Create Invoice")
+
+
+    //     if (!user) {
+    //         console.log("handleCreateInvoice user null")
+    //         toast({
+    //             variant: "default",
+    //             title: "Sign In Required",
+    //             description: "Please sign in to create an invoice.",
+    //         });
+    //         localStorage.setItem('redirectURL', pathname);
+    //         return router.push('/sign-in')
+    //     }
+
+    //     console.log(user, "user")
+    //     try {
+    //         // Try to retrieve the customer from Xendit
+    //         let customer;
+    //         try {
+    //             console.log("make customer")
+    //             const response = await axios.get(`/api/xendit/customer?reference_id=${user?.id}`);
+    //             customer = response.data;
+    //             console.log(customer, "found customer")
+    //         } catch (err) {
+    //             console.log("the customer doesn't exist")
+    //             // If the customer doesn't exist, create the customer
+    //             const response = await axios.post('/api/xendit/customer', {
+    //                 name: user?.fullName,
+    //                 email: user?.primaryEmailAddress?.emailAddress,
+    //                 phoneNumber: '', // Replace with the user's phone number if available
+    //             });
+    //             customer = response.data;
+    //         }
+
+    //         // Create the invoice if the price is greater than 0
+    //         if (template.price > 0) {
+    //             console.log("price is greater than 0")
+    //             const response = await axios.post('/api/xendit/invoice', {
+    //                 price: template.price,
+    //                 title: template.title,
+    //                 slug: template.slug,
+    //                 userEmail: user?.primaryEmailAddress?.emailAddress,
+    //             });
+
+    //             setInvoiceUrl(response.data.invoiceUrl);
+    //             console.log(invoiceUrl, "state of invoiceUrl");
+    //             setError(null);
+    //             // Open the invoice URL in a new window
+    //             window.open(response.data.invoiceUrl, '_blank');
+    //         } else {
+    //             console.log("price is 0")
+    //             handleDownloadInvoice();
+    //         }
+    //     } catch (err) {
+    //         setError('Error creating invoice');
+    //         setInvoiceUrl(null);
+    //     }
+    // };
+
+    // const handleDownloadInvoice = async () => {
+    //     if (!user) {
+    //         return redirect('/sign-in')
+    //     }
+
+    //     try {
+    //         const response = await axios.get(`/api/file-download?userId=${user?.id}&fileName=${template.slug}`);
+    //         const data = response.data;
+    //         window.open(data.fileUrl, '_blank');
+    //     } catch (err) {
+    //         console.error('Error downloading invoice', err);
+    //     }
+    // }
     const handleCreateInvoice = async () => {
-        console.log("handle Create Invoice")
+        addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })
+        router.push('/checkout');
+    }
 
-
-        if (!user) {
-            console.log("handleCreateInvoice user null")
-            toast({
-                variant: "default",
-                title: "Sign In Required",
-                description: "Please sign in to create an invoice.",
-            });
-            localStorage.setItem('redirectURL', pathname);
-            return router.push('/sign-in')
-        }
-
-        console.log(user, "user")
-        try {
-            // Try to retrieve the customer from Xendit
-            let customer;
-            try {
-                console.log("make customer")
-                const response = await axios.get(`/api/xendit/customer?reference_id=${user?.id}`);
-                customer = response.data;
-                console.log(customer, "found customer")
-            } catch (err) {
-                console.log("the customer doesn't exist")
-                // If the customer doesn't exist, create the customer
-                const response = await axios.post('/api/xendit/customer', {
-                    name: user?.fullName,
-                    email: user?.primaryEmailAddress?.emailAddress,
-                    phoneNumber: '', // Replace with the user's phone number if available
-                });
-                customer = response.data;
-            }
-
-            // Create the invoice if the price is greater than 0
-            if (template.price > 0) {
-                console.log("price is greater than 0")
-                const response = await axios.post('/api/xendit/invoice', {
-                    price: template.price,
-                    title: template.title,
-                    slug: template.slug,
-                    userEmail: user?.primaryEmailAddress?.emailAddress,
-                });
-
-                setInvoiceUrl(response.data.invoiceUrl);
-                console.log(invoiceUrl, "state of invoiceUrl");
-                setError(null);
-                // Open the invoice URL in a new window
-                window.open(response.data.invoiceUrl, '_blank');
-            } else {
-                console.log("price is 0")
-                handleDownloadInvoice();
-            }
-        } catch (err) {
-            setError('Error creating invoice');
-            setInvoiceUrl(null);
-        }
+    type CartItem = {
+        id: string;
+        name: string;
+        // other properties...
     };
 
-    const handleDownloadInvoice = async () => {
-        if (!user) {
-            return redirect('/sign-in')
-        }
-
-        try {
-            const response = await axios.get(`/api/file-download?userId=${user?.id}&fileName=${template.slug}`);
-            const data = response.data;
-            window.open(data.fileUrl, '_blank');
-        } catch (err) {
-            console.error('Error downloading invoice', err);
-        }
-    }
+    // console.log(template, "template")
 
     return (
         <Layout>
@@ -161,39 +180,38 @@ const TemplateClients = ({ template }: { template: Template }) => {
                     </div>
                 }
                 
-                <div className='md:grid md:grid-cols-2 gap-0 flex flex-col  w-full justify-center items-center '>
-                    <div className='flex flex-col'>
-                        <p className='text-lg my-2 font-bold underline w-fit'>
-                            {template.price === 0 ? 'Gratis' : `Rp.${template.price}.000`}
+                <div className='md:grid md:grid-cols-2 gap-4 items-center'>
+                    <div>
+                        <p className='text-lg my-2 font-bold underline'>
+                            {template.price === 0 ? 'Gratis' : `Rp.${template.price}${template.price.toString().includes('.') ? '00' : '.000'}`}
                         </p>
-
-                        <h1 className="text-4xl mb-0 w-full md:w-8/12 font-bold ">{template.title}</h1>
-
-                        <div className='flex   gap-2 py-4 justify-start items-center'>
-
-                            <div className='flex  gap-4 pt-0 '>
-                                <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105' >Dapatkan Segera</Button>
-                                {/* <Button variant={"outline"} className="" onClick={() => scrollToRef(myRef)}>Pelajari Lagi</Button> */}
+                        <h1 className="text-4xl mb-4 font-bold w-full md:w-8/12">{template.title}</h1>
+                        <div className='flex gap-4 mb-4'>
+                            <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
+                                <ArrowRightCircleFill className="mr-2" />
+                                Dapatkan Segera
+                            </Button>
+                            <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
+                                <CartPlusFill className="mr-2" />
+                                Add to Cart
+                            </Button>
+                        </div>
+                        <div className='flex flex-col items-start gap-1 text-xs text-stone-800'>
+                            4.96/5 Dari 5,608 customers
+                            <div className='flex gap-1'>
+                                <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                                <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                                <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                                <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                                <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                             </div>
-
-                            <div className='flex flex-col items-start justify-center gap-1 text-xs text-stone-800'>
-                                <div className='flex justify-start items-start gap-1'>
-                                    <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                                    <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                                    <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                                    <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                                    <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                                </div>
-
-                                4.96/5 Dari 5,608 customers
-
-                            </div>
+                           
                         </div>
                     </div>
                     <CoverImageContentful
                         title="template iksan bangsawan indonesia image"
                         url={template?.image.fields.file.url}
-                        className="rounded-xl w-auto lg:h-80 my-8"
+                        className="rounded-xl w-full lg:h-80 my-8"
                     />
                 </div>
 

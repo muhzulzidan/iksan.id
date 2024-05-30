@@ -3,6 +3,9 @@ import Footer from './footer';
 // import Meta from './meta';
 import { CMS_NAME, HOME_OG_IMAGE_URL } from '@/lib/constants'
 import dynamic from 'next/dynamic';
+import { Toaster } from "@/components/ui/toaster"
+
+
 
 
 const DynamicHeader = dynamic(() => import('./header'), {
@@ -25,6 +28,7 @@ export default function Layout({ children, metaDefault }: LayoutProps) {
       <div>
         <DynamicHeader />
         <main className=''>{children}</main>
+        <Toaster />
       </div>
       <Footer metaDefault={metaDefault} />
     </>

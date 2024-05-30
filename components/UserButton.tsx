@@ -14,8 +14,10 @@ import {
     UserIcon,
     CogIcon,
     ShieldCheckIcon,
+    ArrowDownCircleIcon,
 } from '@heroicons/react/24/solid'
 import { Button } from './ui/button'
+import { UserCircleIcon } from 'lucide-react'
 
 
 // Create a new UserButtonandMenu component and move the old return into this
@@ -26,14 +28,13 @@ const UserButtonAndMenu = () => {
     const label = user?.firstName ? user.firstName : 'Profile'
     const fullname = user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : 'Profile'
     const email = user?.emailAddresses ? `${user.emailAddresses}` : 'Email Addresses'
-    const username = user?.username ? `${user.username}` : 'username'
 
     return (
         <DropdownMenu.Root >
             <DropdownMenu.Trigger asChild className="outline-none  ">
                 {/* <Button variant="accent" className="min-w-[192px]"> */}
 
-                <div className='flex items-center justify-center rounded-full w-8 h-auto cursor-pointer hover:opacity-80 '>
+                <div className='flex items-center justify-center rounded-full w-12 h-auto cursor-pointer hover:opacity-80 '>
                     {user?.hasImage ? (
                         <Image
                             alt={label ? label : 'Profile image'}
@@ -76,27 +77,40 @@ const UserButtonAndMenu = () => {
                                     <p>
                                         {email}
                                     </p>
-                                    <p>
-                                        {username}
-                                    </p>
                                 </div>
                             </div>
                         </DropdownMenu.Item>
                         <DropdownMenu.Separator className="my-4 " />
-                        <DropdownMenu.Item asChild className="outline-none px-8 ">
+                        {/* <DropdownMenu.Item asChild className="outline-none px-8 ">
                             <Button onClick={() => openUserProfile()} className='w-full justify-start outline-none ring-0' variant={"ghost"} >
                                 <UserIcon className="mr-2 h-6 w-auto" />
                                 Profile
                             </Button>
+                        </DropdownMenu.Item> */}
+                        <DropdownMenu.Item asChild className="outline-none">
+                            <Link href="/my-account" passHref>
+                                <Button className='w-full justify-start  px-8' variant={"ghost"}>
+                                    <UserCircleIcon className="mr-2 h-6 w-auto" />
+                                    Profile
+                                </Button>
+                            </Link>
                         </DropdownMenu.Item>
                         <DropdownMenu.Item asChild className="outline-none">
+                            <Link href="/my-account/download" passHref>
+                                <Button className='w-full justify-start  px-8' variant={"ghost"}>
+                                    <ArrowDownCircleIcon className="mr-2 h-6 w-auto" />
+                                    Download
+                                </Button>
+                            </Link>
+                        </DropdownMenu.Item>
+                        {/* <DropdownMenu.Item asChild className="outline-none">
                             <Link href="/admin" passHref>
                                 <Button className='w-full justify-start  px-8' variant={"ghost"}>
                                     <ShieldCheckIcon className="mr-2 h-6 w-auto" />
                                     Admin
                                 </Button>
                             </Link>
-                        </DropdownMenu.Item>
+                        </DropdownMenu.Item> */}
                     </DropdownMenu.Group>
                     <DropdownMenu.Separator className="my-4" />
                     <DropdownMenu.Item asChild className="outline-none px-8">
@@ -110,24 +124,36 @@ const UserButtonAndMenu = () => {
     )
 }
 
-export const UserButton = () => {
-    const { isLoaded, user } = useUser()
-    const { openSignIn } = useClerk()
+
+interface UserButtonProps {
+    path?: string;
+}
+export const UserButton: React.FC<UserButtonProps> = ({ path }) => {
+    const { isLoaded, user } = useUser();
+    const { openSignIn } = useClerk();
 
     if (!isLoaded)
         return (
             <Button onClick={() => openSignIn()} className="w-48">
                 <ArrowPathIcon className="ml-2 h-6 w-auto animate-spin" />
             </Button>
-        )
+        );
 
     if (!user?.id)
         return (
-            <Button onClick={() => openSignIn()} className="w-48">
+            <Button
+                type="button"
+                onClick={() =>
+                    openSignIn({
+                        afterSignInUrl: path,
+                    })
+                }
+                variant={"outline"}
+                className="border-stone-700 hover:bg-secondary2 hover:border-secondary2 bg-stone-100 hover:text-stone-50"
+            >
                 Sign In
-                <ArrowRightCircleIcon className="ml-2 h-6 w-auto" />
             </Button>
-        )
+        );
 
-    return <UserButtonAndMenu />
-}
+    return <UserButtonAndMenu />;
+};

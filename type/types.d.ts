@@ -120,6 +120,7 @@ interface File {
     };
 }
 
+
 interface Template {
     isFeatured?: boolean;
     image: any;
@@ -127,7 +128,7 @@ interface Template {
     price: ReactNode;
     url: string; // Assuming each template has a URL
     slug: string; // Assuming each template has a URL
-    title?: string;
+    title: string;
     file?: File[]; 
     fields?: {
         title: string;

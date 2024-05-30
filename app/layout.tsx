@@ -9,6 +9,7 @@ import {
   SignedOut,
   RedirectToSignIn,
 } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/toaster"
 
 const kanakira = localFont({
   src: './images/fonts/Kanakira/Kanakira-BoldInktrap.woff2',
@@ -146,6 +147,7 @@ export default function RootLayout({
         ${mabryLightItalic.variable}
         `} >
           {children}
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

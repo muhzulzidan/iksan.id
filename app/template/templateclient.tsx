@@ -4,15 +4,13 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { PersonVideo, Laptop, Globe } from "react-bootstrap-icons"
+import { PersonVideo, Laptop, Globe, CartPlusFill } from "react-bootstrap-icons"
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-
 import CoverImageContentful from "../../components/cover-image-contentful";
 import Layout from '../../components/layout';
-
-
+import useStore from '@/store';
+import { Button } from '@/components/ui/button';
 
 function TemplatesClient({
     templates,
@@ -23,11 +21,9 @@ function TemplatesClient({
 
 }: TemplatesClientProps) {
 
-
+    const { addToCart } = useStore();
     const pathname = usePathname()
     const currentSlug = pathname
-
-
 
     const filteredPageTitles = pageTitles.filter((page) => `/${page.slug}` === currentSlug);
 
@@ -49,7 +45,6 @@ function TemplatesClient({
         }
     }
 
-
     // Adjust to get filtered templates based on the selected category
     const getFilteredTemplates = (): Template[] => {
         if (typeof selectedCategory !== "string" && selectedCategory) {
@@ -58,10 +53,9 @@ function TemplatesClient({
         return templates;
     };
 
-
     // Correctly handle templatePopular assuming it's an array
     const templatePop = templatePopular.length > 0 ? templatePopular[0].template : null;
-console.log(templates, "templatePop");
+    // console.log(templates, "templatePop");
     return (
         <Layout metaDefault={metaDefault}>
             <div className="flex flex-col items-center justify-center w-full max-w-screen-lg mx-auto py-10 bg-stone-100 text-stone-950 ">
@@ -99,14 +93,8 @@ console.log(templates, "templatePop");
                                 {category.slug}
                             </button>
                         ))}
-
-
-
-
-
                     </section>
                     <section>
-                     
                         <div className='flex flex-col pt-12 gap-6' >
                             {templates.filter(template => template.isFeatured).map((templatePop, index) => (
                                 <Link href={`/template/${templatePop.slug}`} key={index} className={`flex flex-col md:flex-row  rounded-md space-y-4 w-full max-sm: gap-4 group/edit group/item  hover:bg-stone-50    cursor-pointer px-12 md:py-8 py-12  items-center`}>
@@ -132,11 +120,7 @@ console.log(templates, "templatePop");
                                             url={templatePop.image.fields.file.url}
                                             slug={templatePop.image.slug}
                                             className={`transform transition-transform duration-300 
-                                            
-                                           
                                             group-hover/edit:-translate-y-2 
-
-                                            
                                             rounded-lg `}
                                         />
                                     </div>
@@ -144,7 +128,7 @@ console.log(templates, "templatePop");
                             ))}
                         </div>
 
-                           
+
                     </section>
                     <div className='flex flex-col mt-12 gap-4 px-10'>
                         <h2 className='text-3xl'>Featured Templates</h2>
@@ -152,10 +136,8 @@ console.log(templates, "templatePop");
                             {getFilteredTemplates().map((template) => {
                                 const templateUrl = template.slug || "#"; // Provide a fallback URL or handle this case accordingly
                                 return (
-                                    <Link href={`/template/${templateUrl}`} key={template.title} className="flex flex-col rounded-md space-y-4 w-full max-sm: gap-0 group cursor-pointer ">
-
-
-                                        <div className="relative group rounded-2xl">
+                                    <div key={template.title} className="flex flex-col rounded-md space-y-4 w-full max-sm: gap-0 group cursor-pointer ">
+                                        <Link href={`/template/${templateUrl}`}  className="relative group rounded-2xl">
                                             <CoverImageContentful
                                                 title={template.fields ? template.fields.image.fields.title : template.image.fields.title}
                                                 url={template.fields ? template.fields.image.fields.file.url : template.image.fields.file.url}
@@ -163,9 +145,8 @@ console.log(templates, "templatePop");
                                                 className="transform transition-transform duration-300 group-hover:-translate-y-2 rounded-lg "
                                             />
                                             <div className="absolute inset-0 -z-10 bg-stone-200 bg-opacity-0 group-hover:bg-opacity-70 transition duration-300 rounded-xl"></div>
-                                        </div>
+                                        </Link>
                                         <div className="flex flex-col gap-4 w-full relative">
-
                                             <div className="flex flex-col w-full">
                                                 <h2 className="text-lg font-semibold ">
                                                     {template.fields ? template.fields.title : template.title}
@@ -174,13 +155,18 @@ console.log(templates, "templatePop");
                                                     {template.fields ? template.fields.description : template.description}
                                                 </p>
                                             </div>
+                                           
                                             <div className="flex gap-4">
-                                                <p className="bg-secondary2 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit">
-                                                    Rp{template.fields ? template.fields.price : template.price},000
+                                                <p  className="bg-secondary2 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit hover:text-stone-50 hover:bg-purple-800">
+                                                    {(template.fields ? template.fields.price : template.price) === 0 ? 'Gratis' : `Rp ${(template.fields ? template.fields.price : template.price)}${(template.fields ? template.fields.price : template.price).toString().includes('.') ? '00' : '.000'}`}
                                                 </p>
+                                                
+                                                <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })}>
+                                                    <CartPlusFill className="mr-2" />
+                                                    Add to Cart</Button>
                                             </div>
                                         </div>
-                                    </Link>
+                                    </div>
                                 );
                             })}
                         </div>

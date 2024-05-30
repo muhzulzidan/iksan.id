@@ -14,7 +14,7 @@ function useLocalStorage(key: any, defaultValue: any) {
 }
 
 export default function Page() {
-    const [redirectURL] = useLocalStorage('redirectURL', '/default-page');
+    const [redirectURL] = useLocalStorage('redirectURL', '/');
     console.log(redirectURL, "redirectURL")
     return (
         <Layout >

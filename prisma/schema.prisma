@@ -9,10 +9,32 @@ generator client {
 }
 
 model CustomerIksanId {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  phoneNumber String
+  id          Int             @id @default(autoincrement())
+  name        String
+  email       String          @unique
+  phoneNumber String?
+  orders      CustomerOrder[]
+}
+
+model CustomerDownloadLink {
+  id              Int             @id @default(autoincrement())
+  customerIksanId Int
+  DownloadLink    DownloadLink[]
+}
+model DownloadLink {
+  id                    Int                 @id @default(autoincrement())
+  link                  String
+  customerDownloadLinkId Int
+  CustomerDownloadLink  CustomerDownloadLink @relation(fields: [customerDownloadLinkId], references: [id])
+}
+
+model CustomerOrder {
+  id         Int             @id @default(autoincrement())
+  total      Float
+  status     String
+  customer   CustomerIksanId @relation(fields: [customerId], references: [id])
+  customerId Int
+  xenditId   String?          @unique
 }
 
 model DownloadIksanId {
