@@ -61,32 +61,9 @@ const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
 console.log(data, "data table")
 
     const columns: ColumnDef<CustomerDownloadData>[] = [
-        // {
-        //     accessorKey: 'userId',
-        //     header: () => 'User ID',
-        //     cell: info => info.getValue(),
-        // },
         {
             accessorKey: 'link',
             header: () => 'Link',
-            cell: info => info.getValue(),
-        },
-        {
-            accessorKey: 'download',
-            header: () => 'download',
-            cell: info => {
-                const download = info.getValue() ;
-              
-                return (
-                    <a href={`${download}`} className="flex flex-col">
-                        <Button variant={"link"}>Download</Button>
-                    </a>
-                );
-            },
-        },
-        {
-            accessorKey: 'fullname',
-            header: () => 'Full Name',
             cell: info => info.getValue(),
         },
         {
