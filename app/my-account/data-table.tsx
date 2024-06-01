@@ -93,26 +93,18 @@ console.log(data, "data table")
             cell: info => info.getValue(),
         },
         {
-            accessorKey: 'email',
-            header: () => 'Email',
-            cell: info => info.getValue(),
-        },
-        {
-            accessorKey: 'downloadDate',
-            header: () => 'Download Date',
+            accessorKey: 'download',
+            header: () => 'download',
             cell: info => {
-                const date = new Date(info.getValue() as string);
-                const dateString = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                const timeString = date.toLocaleTimeString('en-US', { hour12: false });
+                const date = info.getValue();
                 return (
-                    <div className="flex flex-col">
-                        <b>{dateString}</b>
-                        {/* <br /> */}
-                       <p className="text-sm"> {timeString}</p>
-                    </div>
+                    <a href={`${date}`} className="flex flex-col">
+                        <Button variant={"link"}>download</Button>
+                    </a>
                 );
             },
         },
+       
     ];
 
 
