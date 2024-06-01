@@ -75,15 +75,12 @@ console.log(data, "data table")
             accessorKey: 'download',
             header: () => 'download',
             cell: info => {
-                const date = new Date(info.getValue() as string);
-                const dateString = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                const timeString = date.toLocaleTimeString('en-US', { hour12: false });
+                const download = info.getValue() ;
+              
                 return (
-                    <div className="flex flex-col">
-                        <b>{dateString}</b>
-                        {/* <br /> */}
-                        <p className="text-sm"> {timeString}</p>
-                    </div>
+                    <a href={`${download}`} className="flex flex-col">
+                        <Button variant={"link"}>Download</Button>
+                    </a>
                 );
             },
         },
