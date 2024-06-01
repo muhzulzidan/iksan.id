@@ -532,16 +532,17 @@ interface PostHeaderProps {
     category: string
 }
 
+// interface CustomerDownloadData {
+//     [x: string]: any;
+//     id: number;
+//     userId: string;
+//     fileName: string;
+//     downloadDate: string;
+//     fullname: string;
+//     email: string;
+// }
 interface CustomerDownloadData {
     [x: string]: any;
-    id: number;
-    userId: string;
-    fileName: string;
-    downloadDate: string;
-    fullname: string;
-    email: string;
-}
-interface CustomerDownloadData {
-    link: string;
-    download: string;
+    link: any;
+    download: any;
 }
