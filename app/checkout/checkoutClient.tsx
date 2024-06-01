@@ -125,6 +125,8 @@ const Checkout = ({ userData }: { userData: UserData }) => {
 
                     // Loop over each item in the cart
                     for (const item of cart) {
+                        console.log(item, "item from cart");
+                        
                         const response = await axios.get(`/api/file-download?fileName=${item.id}`);
                         const data = response.data;
 
@@ -156,7 +158,7 @@ const Checkout = ({ userData }: { userData: UserData }) => {
         }, 10000); // Check every 5 seconds
     }
 
-    console.log(user, "user")
+    // console.log(user, "user")
 
     return (
         <Layout>

@@ -19,26 +19,26 @@ export async function POST(req: NextRequest, res: NextResponse) {
         // Calculate total price
         const totalPrice = cart.reduce((total: any, item: any) => total + item.price * item.quantity, 0);
 
-        // // Create customer in your database
-        // let dbCustomer = await prisma.customerIksanId.findUnique({
-        //     where: {
-        //         email: customerData.email,
-        //     },
-        // });
+        // Create customer in your database
+        let dbCustomer = await prisma.customerIksanId.findUnique({
+            where: {
+                email: customerData.email,
+            },
+        });
 
-        // // If customer does not exist, create a new one
-        // if (!dbCustomer) {
-        //     dbCustomer = await prisma.customerIksanId.create({
-        //         data: customerData,
-        //     });
-        // }
-        // else if (!dbCustomer.phoneNumber) {
-        //     dbCustomer = await prisma.customerIksanId.update({
-        //         where: { email: dbCustomer.email },
-        //         data: { phoneNumber: customerData.phoneNumber },
-        //     });
-        // }
-        // // Create order
+        // If customer does not exist, create a new one
+        if (!dbCustomer) {
+            dbCustomer = await prisma.customerIksanId.create({
+                data: customerData,
+            });
+        }
+        else if (!dbCustomer.phoneNumber) {
+            dbCustomer = await prisma.customerIksanId.update({
+                where: { email: dbCustomer.email },
+                data: { phoneNumber: customerData.phoneNumber },
+            });
+        }
+        // Create order
 
         // console.log('Order: ', order);
 

@@ -15,6 +15,8 @@ export async function GET(req: NextRequest,) {
     // const userId = searchParams.get('userId')
     const fileName = searchParams.get('fileName')
 
+    console.log(fileName, "fileName");
+
     // const formData = await req.formData()
     // const name = formData.get('name')
     // const email = formData.get('email')
@@ -74,6 +76,7 @@ export async function GET(req: NextRequest,) {
         return NextResponse.json({ error: 'File not found' }, { status: 404 });
     }
 
+    console.log(fileUrl, "fileUrl");
 
     // // Ensure userId is defined and is not null
     // if (userId === undefined || userId === null) {

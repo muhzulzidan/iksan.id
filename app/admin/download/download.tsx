@@ -7,7 +7,7 @@ import DataTable from "../data-table";
 
 const DownloadListPage = () => {
   const { user, isLoaded } = useUser();
-  const [downloadsData, setDownloadsData] = useState<DownloadData[]>([]);
+  const [downloadsData, setDownloadsData] = useState<CustomerDownloadData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

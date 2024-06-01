@@ -46,9 +46,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 interface DataTableProps {
-    data: DownloadData[];
+    data: CustomerDownloadData[];
     onRefresh: () => void;
 }
+
+
 
 const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -56,19 +58,35 @@ const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
+console.log(data, "data table")
 
-    const columns: ColumnDef<DownloadData>[] = [
+    const columns: ColumnDef<CustomerDownloadData>[] = [
         // {
         //     accessorKey: 'userId',
         //     header: () => 'User ID',
         //     cell: info => info.getValue(),
         // },
         {
-            accessorKey: 'fileName',
-            header: () => 'File Name',
+            accessorKey: 'link',
+            header: () => 'Link',
             cell: info => info.getValue(),
         },
-        
+        {
+            accessorKey: 'download',
+            header: () => 'download',
+            cell: info => {
+                const date = new Date(info.getValue() as string);
+                const dateString = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const timeString = date.toLocaleTimeString('en-US', { hour12: false });
+                return (
+                    <div className="flex flex-col">
+                        <b>{dateString}</b>
+                        {/* <br /> */}
+                        <p className="text-sm"> {timeString}</p>
+                    </div>
+                );
+            },
+        },
         {
             accessorKey: 'fullname',
             header: () => 'Full Name',

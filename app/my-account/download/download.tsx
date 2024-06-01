@@ -4,34 +4,83 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Skeleton } from "@/components/ui/skeleton";
 import DataTable from "../data-table";
-
+// import { useUser } from "@clerk/clerk-react";
 const DownloadListPage = () => {
-  const { user, isLoaded } = useUser();
-  const [downloadsData, setDownloadsData] = useState<DownloadData[]>([]);
+  const { user, isLoaded, isSignedIn } = useUser();
+  const [customerId, setCustomerId] = useState(null);
+  const [downloadsData, setDownloadsData] = useState<CustomerDownloadData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // console.log(user?.primaryEmailAddress?.emailAddress, "email")
+  // console.log(user, "user")
+  // console.log(isSignedIn, "isSignedIn")
   useEffect(() => {
-    if (isLoaded) {
-      fetchDownloads();
+    fetchCustomerId();
+  }, [!isLoaded, isSignedIn]);
+
+  const fetchCustomerId = async () => {
+    if (!isLoaded || !isSignedIn) {
+      return;
     }
-  }, [user, isLoaded]);
+    // console.log(user?.primaryEmailAddress?.emailAddress, "email fetchCustomerId")
+    // console.log(user, "user fetchCustomerId")
+    // console.log(isSignedIn, "isSignedIn fetchCustomerId")
+    try {
+      const response = await fetch(`/api/customer-iksan-id?email=${user?.primaryEmailAddress?.emailAddress}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch customer ID');
+      }
+
+      const data = await response.json();
+      setCustomerId(data.customer.id);
+      console.log(data, "data fetchCustomerId")
+      console.log(data.customer.id, "data.id fetchCustomerId")
+      console.log(customerId, "customerId fetchCustomerId")
+    } catch (error) {
+      console.error('Error fetching customer ID:', error);
+    }
+  };
 
   const fetchDownloads = async () => {
+    if (!customerId) {
+      return;
+    }
+    console.log(customerId, "customerId fetchDownloads")
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/record-download`);
+      const response = await fetch(`/api/customer-download-links?customerId=${customerId}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
-
+      
       const data = await response.json();
-      setDownloadsData(data.data);
+      setDownloadsData(data.downloadLinks);
+      console.log(data, "data fetchDownloads")
     } catch (error) {
       console.error('Error fetching data:', error);
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (customerId) {
+      fetchDownloads();
+    }
+   
+  }, [customerId]);
+
+  const transformedData = downloadsData.map((download, index) => {
+    const urlParts = download.split('/');
+    const fileName = urlParts[urlParts.length - 1];
+    const linkName = fileName.replace(/_/g, ' ').split('.')[0];
+
+    return {
+      download: download,
+      link: linkName,
+    };
+  });
 
   return (
     <div className="">
@@ -51,12 +100,12 @@ const DownloadListPage = () => {
             </li>
             {/* You can add more or fewer Skeletons based on your preference */}
           </ul>
-        ) : downloadsData.length > 0 ? (
+        ) : downloadsData && downloadsData.length > 0 ? (
           <div className="">
             {/* Replace this with your own component to display the downloads data */}
             {/* <DataTable data={downloadsData} onRefresh={fetchDownloads} /> */}
-            
-            <DataTable data={downloadsData} onRefresh={fetchDownloads} />
+
+              <DataTable data={transformedData} onRefresh={fetchDownloads} />
             {/* {downloadsData.map(download => (
               <div key={download.id}>
                 <h2>{download.fullname}</h2>

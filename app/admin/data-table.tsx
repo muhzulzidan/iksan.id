@@ -46,7 +46,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 interface DataTableProps {
-    data: DownloadData[];
+    data: CustomerDownloadData[];
     onRefresh: () => void;
 }
 
@@ -57,7 +57,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
 
-    const columns: ColumnDef<DownloadData>[] = [
+    const columns: ColumnDef<CustomerDownloadData>[] = [
         // {
         //     accessorKey: 'userId',
         //     header: () => 'User ID',
