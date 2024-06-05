@@ -35,6 +35,7 @@ const Checkout = ({ userData }: { userData: UserData }) => {
     const [isLoading, setIsLoading] = useState(false); // Add this line
     const [isPaid, setIsPaid] = useState(false); // Add a new state variable
     const { cart, removeFromCart, decrementQuantity, incrementQuantity } = useStore();
+
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
     const { user, isSignedIn } = useUser()
