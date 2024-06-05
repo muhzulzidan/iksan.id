@@ -37,7 +37,7 @@ const Checkout = ({ userData }: { userData: UserData }) => {
     const { cart, removeFromCart, decrementQuantity, incrementQuantity } = useStore();
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-    const { user } = useUser()
+    const { user, isSignedIn } = useUser()
     const path = usePathname()
     const router = useRouter()
 
@@ -305,7 +305,7 @@ const Checkout = ({ userData }: { userData: UserData }) => {
                                         }
                                     </h4>
 
-                                    <Button type="submit">Checkout</Button>
+                                        <Button type="submit" disabled={!isSignedIn ? true : false}>Checkout</Button>
                                 </div>
 
                             </>
