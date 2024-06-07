@@ -23,7 +23,8 @@ async function getUser() {
             customer = await prisma.customerIksanId.create({
                 data: {
                     email: user.emailAddresses[0].emailAddress,
-                   name: `${user.firstName} ${user.lastName}`,
+                    name: `${user.firstName} ${user.lastName}`,
+                    phoneNumber: '', // default value
                 },
             });
         }
