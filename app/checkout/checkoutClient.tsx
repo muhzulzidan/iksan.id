@@ -136,7 +136,7 @@ const Checkout = ({ userData }: { userData: UserData }) => {
                     }
 
                     // Add the links and the user id to the customer-download-link
-                    const customerDownloadLinkResponse = await axios.post('/api/customer-download-link', {
+                    const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
                         customerIksanId: userData.id, // Assuming userData.id is the user id
                         downloadLinks: downloadLinks,
                     });
