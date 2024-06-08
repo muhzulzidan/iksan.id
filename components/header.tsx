@@ -255,7 +255,7 @@ export default function Header() {
                 height={100}
                 alt="iksanbangsawan" />
             </Navbar.Brand>
-            <div className='flex flex-col gap-2'>
+            <div className='flex md:flex-col gap-2'>
               <SignedIn>
                 <UserButton />
               </SignedIn>
@@ -271,7 +271,7 @@ export default function Header() {
 
           </Navbar>
         </Flowbite>
-        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-16 left-0 w-full z-50 max-w-none' : ''}`}>
+        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-[4.5rem] left-0 w-full z-50 max-w-none' : ''}`}>
           <Carousel>
             {/* make it 3,half on mobile */}
 
