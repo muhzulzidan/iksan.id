@@ -43,6 +43,15 @@ export async function getTemplates() {
 
     return [];
 }
+export async function getKelas() {
+    const entries = await client.getEntries({
+        content_type: 'kelas',
+    });
+
+    if (entries.items) return entries.items.map((item) => item.fields);
+
+    return [];
+}
 
 
 export async function getEbooks() {
@@ -103,15 +112,15 @@ export async function getTtemplateCategory() {
 
     return [];
 }
-export async function getTtemplatePopular() {
-  const entries = await client.getEntries({
-        content_type: 'mostPopTemplate', // Ensure this matches the content type ID in Contentful
-    });
+// export async function getTtemplatePopular() {
+//   const entries = await client.getEntries({
+//         content_type: 'mostPopTemplate', // Ensure this matches the content type ID in Contentful
+//     });
 
-    if (entries.items) return entries.items.map((item) => item.fields);
+//     if (entries.items) return entries.items.map((item) => item.fields);
 
-    return [];
-}
+//     return [];
+// }
 export async function getPhotos() {
   const entries = await client.getEntries({
         content_type: 'photos', // Ensure this matches the content type ID in Contentful

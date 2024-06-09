@@ -2,9 +2,9 @@
 
 
 import { Metadata, ResolvingMetadata } from 'next';
-import { getTemplates, getTtemplateCategory,  getPageTitles, getMetaDefault } from '../../lib/contentful';
+import { getKelas, getTtemplateCategory, getPageTitles, getMetaDefault } from '../../lib/contentful';
 import notion from '../../lib/notion';
-import TemplatesClient from './templateclient';
+import KelasClient from './kelasClient';
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 
-  const title = `Template ${metaDefault?.title} ` || 'Template';
+  const title = `Kelas ${metaDefault?.title} ` || 'Kelas';
   const description = metaDefault?.description || 'Default Description';
   // Ensure imageUrl is always an absolute URL
   const imageUrl = metaDefault?.image?.fields?.file?.url ? new URL(metaDefault.image.fields.file.url, process.env.NEXT_PUBLIC_SITE_BASE_URL || 'http://iksan.id').toString() : '/default-image.jpg';
@@ -58,25 +58,27 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 
-async function Templates () {
-    const templates = await getTemplates() as unknown as Template[]; 
+async function Kelas () {
+    const kelas = await getKelas() as unknown as Kelas[]; 
 
     const PageTitles = await getPageTitles() as unknown as PageTitle[];
     const templateCategory = await getTtemplateCategory() as unknown as TemplateCategory[];
+    // const templatePopular = await getTtemplatePopular() as unknown as TemplatePopular[];
     const metaDefault = await getMetaDefault();
 
 
+    console.log(kelas, "kelas");
+
     return (
-      <TemplatesClient 
+      <KelasClient 
             metaDefault={metaDefault}
-            templates={templates}
+            kelas={kelas}
             pageTitles={PageTitles}
             templateCategory={templateCategory}
-
 
       />
     );
 }
 
 
-export default Templates
+export default Kelas

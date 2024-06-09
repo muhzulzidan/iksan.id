@@ -16,7 +16,6 @@ function TemplatesClient({
     templates,
     pageTitles,
     templateCategory,
-    templatePopular, // Correctly typed as an array of TemplatePopular
     metaDefault,
 
 }: TemplatesClientProps) {
@@ -53,9 +52,7 @@ function TemplatesClient({
         return templates;
     };
 
-    // Correctly handle templatePopular assuming it's an array
-    const templatePop = templatePopular.length > 0 ? templatePopular[0].template : null;
-    // console.log(templates, "templatePop");
+
     return (
         <Layout metaDefault={metaDefault}>
             <div className="flex flex-col items-center justify-center w-full max-w-screen-lg mx-auto py-10 bg-stone-100 text-stone-950 ">

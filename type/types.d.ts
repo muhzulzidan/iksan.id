@@ -215,7 +215,28 @@ interface TemplatesClientProps {
     templates: Template[];
     pageTitles: PageTitle[];
     templateCategory: TemplateCategory[];
-    templatePopular: TemplatePopular[]; // Now correctly an array of TemplatePopular
+    metaDefault: any; // Assuming you have a specific type for this elsewhere
+}
+
+interface Kelas {
+    category: string[];
+    description: Description;
+    endDate: string;
+    image: Image;
+    monthPackagePrice: number;
+    monthlyPrice: number;
+    slug: string;
+    startDate: string;
+    title: string;
+}
+
+interface KelasProps {
+    templates: Kelas[];
+}
+interface KelasClientProps {
+    kelas: Kelas[];
+    pageTitles: PageTitle[];
+    templateCategory: TemplateCategory[];
     metaDefault: any; // Assuming you have a specific type for this elsewhere
 }
 
