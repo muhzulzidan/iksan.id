@@ -2,7 +2,7 @@
 
 
 import { Metadata, ResolvingMetadata } from 'next';
-import { getTemplates, getTtemplateCategory, getTtemplatePopular, getPageTitles, getMetaDefault } from '../../lib/contentful';
+import { getTemplates, getTtemplateCategory, getPageTitles, getMetaDefault } from '../../lib/contentful';
 import notion from '../../lib/notion';
 import TestInvoice from './testInvoice';
 
@@ -70,18 +70,14 @@ async function TestInvoicePage() {
 
     const PageTitles = await getPageTitles() as unknown as PageTitle[];
     const templateCategory = await getTtemplateCategory() as unknown as TemplateCategory[];
-    const templatePopular = await getTtemplatePopular() as unknown as TemplatePopular[];
-    const metaDefault = await getMetaDefault();
-    // const session = await getSession();
 
-    // console.log(session, "session")
 
     return (
         <TestInvoice
             templates={templates}
             pageTitles={PageTitles}
             templateCategory={templateCategory}
-            templatePopular={templatePopular}
+       
 
         />
     );

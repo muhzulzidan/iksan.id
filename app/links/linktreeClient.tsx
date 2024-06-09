@@ -30,7 +30,7 @@ import folder from "@/app/images/folder.png"
 
 import { ArrowRightCircleFill, Calendar, Facebook, Folder, Instagram, Linkedin, Telegram, Tiktok, Twitter, Whatsapp, Youtube } from 'react-bootstrap-icons';
 
-const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, templates, ebooks, templateCategory, templatePopular }) => {
+const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, templates, ebooks, templateCategory,  }) => {
 
     const videoCourse = [
         { title: 'Build Your Personal Branding on Socmed & Boost Your Career', url: "https://iksanbangsawan.mayar.link/course/build-your-personal-branding-on-socmed-boost-your-career", img: videoCourse1 },

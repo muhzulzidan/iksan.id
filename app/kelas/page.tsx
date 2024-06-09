@@ -63,7 +63,7 @@ async function Kelas () {
 
     const PageTitles = await getPageTitles() as unknown as PageTitle[];
     const templateCategory = await getTtemplateCategory() as unknown as TemplateCategory[];
-    // const templatePopular = await getTtemplatePopular() as unknown as TemplatePopular[];
+
     const metaDefault = await getMetaDefault();
 
 

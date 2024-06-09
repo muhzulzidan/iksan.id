@@ -12,14 +12,14 @@ interface TestInvoiceProps {
     templates: Template[]; // replace 'any' with the actual type
     pageTitles: PageTitle[]; // replace 'any' with the actual type
     templateCategory: TemplateCategory[]; // replace 'any' with the actual type
-    templatePopular: TemplatePopular[]; // replace 'any' with the actual type
+   
 }
 
 export default function TestInvoice({
     templates,
     pageTitles,
     templateCategory,
-    templatePopular,
+
 }: TestInvoiceProps) {
 
     const { isSignedIn, user, isLoaded } = useUser();

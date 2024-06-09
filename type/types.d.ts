@@ -396,7 +396,7 @@ interface LinktreeClientProps {
     templates: Template[];
     ebooks: Ebook[];
     templateCategory: Category[];
-    templatePopular: Popular[];
+  
 }
 
 
