@@ -4,7 +4,17 @@ import { useState, useRef, useEffect, SetStateAction } from 'react';
 import { redirect, usePathname, useRouter } from 'next/navigation'
 // Import the useStore hook from your store file
 import useStore from '@/store';
-
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import axios from 'axios';
 import { UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
@@ -33,7 +43,11 @@ import Image from 'next/image';
 import { ChevronUp, ChevronLeft, Star } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { SignIn,  } from "@clerk/nextjs";
+import Spinner from '@/components/Spinner';
 const ContentImages = [1, 2, 3].map((num) => require(`@/public/content/${num}.jpeg`));
+
+
+
 const MentoringClient = () => {
 
     const router = useRouter()
@@ -102,10 +116,13 @@ const MentoringClient = () => {
     const normalPriceStartDate = new Date(today.getFullYear(), 5, 13); // June 13
 
     const price = today <= earlyBirdEndDate ? 379 : today >= normalPriceStartDate ? 600 : 0;
+    const [loading, setLoading] = useState(false);
+
 
     const handleCreateInvoice = async () => {
+        setLoading(true);
         const isEarlyBird = today <= earlyBirdEndDate;
-        addToCart({
+        await addToCart({
             id: isEarlyBird ? 'early-bird-content-creator-mentoring' : 'content-creator-mentoring',
             name: isEarlyBird ? 'Early Bird Content Creator Mentoring' : 'Content Creator Mentoring',
             price: price,
@@ -113,7 +130,9 @@ const MentoringClient = () => {
             quantity: 1
         })
         router.push('/checkout');
+        // setLoading(false);
     }
+
 
 
     return (
@@ -142,10 +161,6 @@ const MentoringClient = () => {
                                 <ArrowRightCircleFill className="mr-2" />
                                 DAFTAR
                             </Button>
-                            {/* <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
-                                <CartPlusFill className="mr-2" />
-                                Add to Cart
-                            </Button> */}
                         </div>
                         <div className='flex flex-col items-start gap-1 text-xs text-stone-800'>
                             4.96/5 Dari 5,608 customers
@@ -232,6 +247,16 @@ const MentoringClient = () => {
                     </div>
                
                 </div>
+                <AlertDialog open={loading} onOpenChange={setLoading} >
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle className='text-center'>Loading Halaman Checkout</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                <Spinner />
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                    </AlertDialogContent>
+                </AlertDialog>
 
                 {selectedImage && (
                     <Dialog open={open} onClose={handleClose} className="fixed z-10 inset-0 overflow-y-auto ">
