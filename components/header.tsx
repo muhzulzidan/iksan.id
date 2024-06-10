@@ -131,7 +131,7 @@ export default function Header() {
       { href: "/kontak/", text: "Contact" }
     ],
     "Product": [
-      { href: "/kelas", text: "Kelas" },
+      { href: "/mentoring", text: "Mentoring" },
       { href: "/template", text: "Template" },
       { href: "/video-course", text: "Ecourse" },
       { href: "/ebook", text: "Ebook" },

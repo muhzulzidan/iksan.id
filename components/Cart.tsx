@@ -24,10 +24,11 @@ const Cart = () => {
 
             <Sheet>
                 <SheetTrigger className='' asChild>
-                    <Button variant={"outline"} className='flex gap-1 bg-border border-tertiary1 text-stone-950 bg-transparent hover:bg-tertiary1 hover:text-stone-50' >
-                        <FaShoppingCart className="mb-1 stroke-[inherit] " />
-                        Cart : {totalQuantity} {/* Display the total quantity instead of the number of items */}
-                    </Button>
+                    {totalQuantity > 0 && (
+                        <Button variant={"outline"} className='flex gap-1 bg-border border-tertiary1 text-stone-950 bg-transparent hover:bg-tertiary1 hover:text-stone-50' >
+                            <FaShoppingCart className="mb-1 stroke-[inherit] " /> : {totalQuantity}
+                        </Button>
+                    )}
                 </SheetTrigger>
                 <SheetContent className='pt-10 overflow-y-auto'  >
                 

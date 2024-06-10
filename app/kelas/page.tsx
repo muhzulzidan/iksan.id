@@ -67,7 +67,7 @@ async function Kelas () {
     const metaDefault = await getMetaDefault();
 
 
-    console.log(kelas, "kelas");
+    // console.log(kelas, "kelas");
 
     return (
       <KelasClient 

@@ -14,6 +14,7 @@ import CoverImageContentful from "../../components/cover-image-contentful";
 import Layout from '../../components/layout';
 import useStore from '@/store';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 
 function KelasClient({
@@ -27,6 +28,7 @@ function KelasClient({
     const { addToCart } = useStore();
     const pathname = usePathname()
     const currentSlug = pathname
+    const router = useRouter();
 
     const filteredPageTitles = pageTitles.filter((page) => `/${page.slug}` === currentSlug);
     console.log(kelas, "kelas")
@@ -78,8 +80,8 @@ function KelasClient({
                                     <p><strong>Categories:</strong> {template.category.join(', ')}</p>
     
                                     <div className="mt-4 flex gap-4 justify-between w-auto">
-                                        <Button className="break-words w-auto text-sm whitespace-normal py-8 bg-secondary2 font-extrabold text-start flex gap-2" onClick={() => addToCart({ id: `${template.slug}-monthly`, name: `${template.title} (Monthly)`, price: template.monthlyPrice, image: template.image, quantity: 1 })}>
-                                            <CartPlusFill className='w-8 h-auto' />   Add to Cart (Monthly)
+                                        <Button className="break-words w-auto text-sm whitespace-normal py-8 bg-secondary2 font-extrabold text-start flex gap-2" onClick={() => router.push(`/checkout-kelas?kelas=${template.slug}`)}>
+                                            <CartPlusFill className='w-8 h-auto' />   Choose Package
                                         </Button>
                                         <Button className="break-words w-auto text-sm whitespace-normal py-8 bg-secondary3 text-stone-950 font-extrabold text-start flex gap-2" onClick={() => addToCart({ id: `${template.slug}-3-month-package`, name: `${template.title} (3-Month Package)`, price: template.monthPackagePrice, image: template.image, quantity: 1 })}>
                                             <CartPlusFill className='w-8 h-auto' /> Add to Cart (3-Month Package)
