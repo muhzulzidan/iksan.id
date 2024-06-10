@@ -157,10 +157,12 @@ const MentoringClient = () => {
                         <h1 className="text-4xl mb-4 font-bold w-full md:w-8/12">
                         Content Creator Mentoring</h1>
                         <div className='flex gap-4 mb-4'>
-                            <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
-                                <ArrowRightCircleFill className="mr-2" />
-                                DAFTAR
-                            </Button>
+                            <a href='https://iksanbangsawan.myr.id/pl/ccm3'>
+                                <Button className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'  >
+                                    <ArrowRightCircleFill className="mr-2" />
+                                    DAFTAR
+                                </Button>
+                            </a>
                         </div>
                         <div className='flex flex-col items-start gap-1 text-xs text-stone-800'>
                             4.96/5 Dari 5,608 customers
@@ -279,12 +281,12 @@ const MentoringClient = () => {
                         </div>
                     </Dialog>
                 )}
-
-                <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
+                <a href='https://iksanbangsawan.myr.id/pl/ccm3'>
+                <Button  className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'  >
                     <ArrowRightCircleFill className="mr-2" />
                     DAFTAR
                 </Button>
-                
+                </a>
             </div>
         </Layout>
     )
