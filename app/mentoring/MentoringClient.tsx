@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, SetStateAction } from 'react';
 import { redirect, usePathname, useRouter } from 'next/navigation'
 // Import the useStore hook from your store file
 import useStore from '@/store';
@@ -10,9 +10,7 @@ import { UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/clerk-react";
 import Layout from '@/components/layout';
 import { Button } from '@/components/ui/button';
-import CoverImageContentful from '@/components/cover-image-contentful';
-import ReactMarkdown from 'react-markdown';
-import Link from 'next/link';
+import { Dialog } from '@headlessui/react';
 import {
     Card,
     CardContent,
@@ -80,8 +78,17 @@ const MentoringClient = () => {
         return () => window.removeEventListener("scroll", toggleVisibility);
     }, []);
 
+    const [open, setOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
 
+    const handleClickOpen = (image: SetStateAction<null>) => {
+        setSelectedImage(image);
+        setOpen(true);
+    };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     type CartItem = {
         id: string;
@@ -107,6 +114,8 @@ const MentoringClient = () => {
         })
         router.push('/checkout');
     }
+
+
     return (
         <Layout>
             <div className="flex flex-col prose  items-center justify-center w-full max-w-screen-lg mx-auto py-10 bg-stone-100 text-stone-950 px-4 ">
@@ -131,7 +140,7 @@ const MentoringClient = () => {
                         <div className='flex gap-4 mb-4'>
                             <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
                                 <ArrowRightCircleFill className="mr-2" />
-                                Dapatkan Segera
+                                DAFTAR
                             </Button>
                             {/* <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
                                 <CartPlusFill className="mr-2" />
@@ -214,51 +223,43 @@ const MentoringClient = () => {
                     <h3>  Pertemuan Grup </h3>
                     <p className='my-0'> 15 Juni 2024 - 19:00 WIB</p>
                     <p className='my-0'> 21 Juni 2024 - 19:00 WIB</p>
-                   <div className='flex flex-col gap-4 md:grid md:grid-cols-3'>
+                    <div className='flex flex-col gap-4 md:grid md:grid-cols-3'>
                         {ContentImages.map((image, index) => (
-                            <Image key={index} src={image} alt={`Content ${index + 1}`} />
+                            <div key={index} onClick={() => handleClickOpen(image)} className='cursor-pointer'>
+                                <Image src={image} alt={`Content ${index + 1}`} />
+                            </div>
                         ))}
-                   </div>
-                    {/* <div className='flex flex-col w-full'>
-                        <h3>Frequently Asked Questions</h3>
-
-                        <div className='not-prose pt-2 pb-12'>
-                            <Accordion type="single" collapsible className="w-full">
-                                <AccordionItem value="item-1">
-                                    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                                    <AccordionContent>
-                                        Yes. It adheres to the WAI-ARIA design pattern.
-                                    </AccordionContent>
-                                </AccordionItem>
-                                <AccordionItem value="item-2">
-                                    <AccordionTrigger>Is it styled?</AccordionTrigger>
-                                    <AccordionContent>
-                                        Yes. It comes with default styles that matches the other
-                                        components&apos; aesthetic.
-                                    </AccordionContent>
-                                </AccordionItem>
-                                <AccordionItem value="item-3">
-                                    <AccordionTrigger>Is it animated?</AccordionTrigger>
-                                    <AccordionContent>
-                                        Yes. It&apos;s animated by default, but you can disable it if you
-                                        prefer.
-                                    </AccordionContent>
-                                </AccordionItem>
-                            </Accordion>
-                        </div>
-                    </div> */}
+                    </div>
+               
                 </div>
 
+                {selectedImage && (
+                    <Dialog open={open} onClose={handleClose} className="fixed z-10 inset-0 overflow-y-auto ">
+                        <div className="flex items-center justify-center min-h-screen">
+                            <Dialog.Overlay className="fixed inset-0 bg-stone-950 opacity-75" />
+                            <div className="mx-auto z-50 p-12 md:w-6/12 flex justify-center items-center flex-col">
+                                <div className='flex gap-4 justify-between py-4 items-center w-full'>
+                                   
+                                    <div className="modal-buttons bg-stone-50 rounded-lg p-4 py-2 w-fit">
+                                        <button className="text-stone-950" onClick={handleClose}>
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="modal-content ">
+                                    <Image alt='image' src={selectedImage} />
+                                </div>
 
+                            </div>
+                        </div>
+                    </Dialog>
+                )}
 
-
-                {/* <div className='flex gap-4'>
-                    <Button variant={"outline"} className="" asChild>
-                        <Link href="/template/" className='no-underline hover:bg-secondary2 hover:text-stone-50'>
-                            <ChevronLeft /> Kembali ke Daftar Template
-                        </Link>
-                    </Button>
-                </div> */}
+                <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
+                    <ArrowRightCircleFill className="mr-2" />
+                    DAFTAR
+                </Button>
+                
             </div>
         </Layout>
     )
