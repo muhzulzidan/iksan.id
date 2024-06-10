@@ -165,10 +165,11 @@ const MentoringClient = () => {
 
                             <CardContent className='m-0 flex-col flex justify-center items-center'>
                             <CardTitle>
-                                Pertemuan Grup
+                                Program mentoring secara intensive dengan modul terkini.
+
+                           
                             </CardTitle>
-                                <p className='my-0'> 15 Juni 2024 - 19:00 WIB</p>
-                            <p className='my-0'> 21 Juni 2024 - 19:00 WIB</p>
+                             
                             </CardContent>
                            
                         </Card>
@@ -176,9 +177,11 @@ const MentoringClient = () => {
 
                             <CardContent className='m-0 flex-col flex justify-center items-center'>
                             <CardTitle>
-                                Pertemuan Privat 
+                                Dilengkapi dengan banyak latihan dan praktek.
+
+                              
                             </CardTitle>
-                            <p className='my-0'>  23-27 Juni 2024 </p>
+                           
                            
                             </CardContent>
                            
@@ -187,7 +190,7 @@ const MentoringClient = () => {
 
                         <CardContent className='m-0 flex-col flex justify-center items-center h-full'>
                             <CardTitle className=''>
-                                Dipilih Salah Satunya
+                                Pendampingan & analisa akun secara individu.
                             </CardTitle>
 
 
@@ -206,6 +209,11 @@ const MentoringClient = () => {
                     <p className="" >
                         Format kelas intensif selama 1 bulan Pendampingan ide, produksi & distribusi Dilengkapi dengan banyak latihan Disediakan peralatan untuk latihan
                     </p>
+                    <h3>  Pertemuan Privat </h3>
+                    <p className='my-0'>  23-27 Juni 2024 </p>
+                    <h3>  Pertemuan Grup </h3>
+                    <p className='my-0'> 15 Juni 2024 - 19:00 WIB</p>
+                    <p className='my-0'> 21 Juni 2024 - 19:00 WIB</p>
                    <div className='flex flex-col gap-4 md:grid md:grid-cols-3'>
                         {ContentImages.map((image, index) => (
                             <Image key={index} src={image} alt={`Content ${index + 1}`} />
