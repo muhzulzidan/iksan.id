@@ -2,10 +2,10 @@
 import { Metadata } from 'next';
 
 import Container from '@/components/container';
-import MoreStories from '@/components/more-stories';
+import MoreStories from '@/components/contentful/more-stories';
 import Layout from '@/components/layout';
 import { getAllPostsForHome,  } from '@/lib/api';
-import { getMetaDefault } from '@/lib/contentful';``
+import { getMetaDefault, getBlogs } from '@/lib/contentful';``
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -55,11 +55,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 async function Blogs() {
-    const allPosts = await getAllPostsForHome(false);
+    // const allPosts = await getAllPostsForHome(false);
     const metaDefault = await getMetaDefault();
-   
+    
+    const allPosts = await getBlogs();
     // const heroPost = allPosts.edges[0]?.node;
-    const initialPosts = allPosts.edges // Display initial 3 posts
+    // const initialPosts = allPosts.edges // Display initial 3 posts
+    const initialPosts = allPosts // Display initial 3 posts
     // const [morePosts, setMorePosts] = useState(initialPosts);
     // console.log(allPosts)
     // console.log(initialPosts)
@@ -77,7 +79,7 @@ async function Blogs() {
 //                 changeFrequency: "daily",
 //             };
 //         });
-// console.log(allBlogs, "slug");
+    console.log(allPosts, "slug");
 
     return (
         <Layout metaDefault={metaDefault}>

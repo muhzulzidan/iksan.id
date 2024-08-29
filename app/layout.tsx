@@ -11,6 +11,65 @@ import {
 } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster"
 
+
+
+const CircularBold = localFont({
+  src: './images/fonts/Circular/Circular Std Bold.ttf',
+  variable: '--font-KomuA',
+  display: 'swap'
+});
+const Circular = localFont({
+  src: './images/fonts/Circular/Circular Std Medium.ttf',
+  variable: '--font-KomuA',
+  display: 'swap'
+});
+const KomuA = localFont({
+  src: './images/fonts/Komu_A.otf',
+  variable: '--font-KomuA',
+  display: 'swap'
+});
+const PolySans = localFont({
+  src: './images/fonts/PolySans/PolySans Neutral.otf',
+  variable: '--font-PolySans',
+  display: 'swap'
+});
+const PolySansItalic = localFont({
+  src: './images/fonts/PolySans/PolySans Neutral Italic.otf',
+  variable: '--font-PolySans-italic',
+  display: 'swap'
+});
+const PolySansMedian = localFont({
+  src: './images/fonts/PolySans/PolySans Median.otf',
+  variable: '--font-PolySans-median',
+  display: 'swap'
+});
+const PolySansMedianItalic = localFont({
+  src: './images/fonts/PolySans/PolySans Median Italic.otf',
+  variable: '--font-PolySans-medianItalic',
+  display: 'swap'
+});
+const PolySansBulky = localFont({
+  src: './images/fonts/PolySans/PolySans Bulky.otf',
+  variable: '--font-PolySans-Bulky',
+  display: 'swap'
+});
+const PolySansBulkyItalic = localFont({
+  src: './images/fonts/PolySans/PolySans Bulky Italic.otf',
+  variable: '--font-PolySans-BulkyItalic',
+  display: 'swap'
+});
+const PolySansSlims = localFont({
+  src: './images/fonts/PolySans/PolySans Slim.otf',
+  variable: '--font-PolySans-slims',
+  display: 'swap'
+});
+const PolySansSlimsItalic = localFont({
+  src: './images/fonts/PolySans/PolySans Slim Italic.otf',
+  variable: '--font-PolySans-slimsItalic',
+  display: 'swap'
+});
+
+
 const kanakira = localFont({
   src: './images/fonts/Kanakira/Kanakira-BoldInktrap.woff2',
   variable: '--font-Kanakira-BoldInktrap',
@@ -144,7 +203,17 @@ export default function RootLayout({
         ${mabryItalic.variable}
         ${mabryLight.variable}
         ${mabryLightItalic.variable}
-        ${mabryLightItalic.variable}
+        ${Circular.variable}
+        ${CircularBold.variable}
+        ${KomuA.variable}
+        ${PolySans.variable}
+        ${PolySansItalic.variable}
+        ${PolySansMedian.variable}
+        ${PolySansMedianItalic.variable}
+        ${PolySansBulky.variable}
+        ${PolySansBulkyItalic.variable}
+        ${PolySansSlims.variable}
+        ${PolySansSlimsItalic.variable}
         `} >
           {children}
           <Toaster />

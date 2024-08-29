@@ -8,6 +8,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useRouter } from 'next/navigation'
 
 import { LatestContentSection } from "./LatestContentSection"
+import CoverImageContentful from "./cover-image-contentful";
+import { cn } from "@/lib/utils";
 
 const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights }) => {
     const router = useRouter()
@@ -30,6 +32,8 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
 
         return `${day} ${month} ${year}`;
     };
+
+    console.log(blogs, "blogs, TwoColumnLayout")
     return (
         <div className="flex flex-col md:flex-row  pt-24 bg-stone-100 text-stone-950 py-12">
             <div className="lg:w-1/2   p-4">
@@ -48,10 +52,10 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
                         <li key={index} className="mb-6">
                             <div className="flex">
 
-                                <Link href={`/blogs/${blog.node.slug}`} className='hover:text-secondary2 flex gap-4 w-full h-[4.2rem]' >
+                                <Link href={`/blogs/${blog.slug}`} className='hover:text-secondary2 flex gap-4 w-full h-[4.2rem]' >
 
                                     {/* Updated the Image code here */}
-                                    <div className="relative w-[180px] h-full aspect-video  rounded-lg overflow-hidden flex">
+                                    {/* <div className="relative w-[180px] h-full aspect-video  rounded-lg overflow-hidden flex">
                                         <Image
                                             fill
                                             sizes="100vw"
@@ -62,14 +66,22 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
                                             src={blog.node.featuredImage.node.sourceUrl}
                                             alt={blog.node.title}
                                         />
+                                    </div> */}
+                                    <div className="relative w-[180px] h-full aspect-video  rounded-lg overflow-hidden flex">
+                                        <CoverImageContentful
+                                        url={blog.featuredImage.fields.file.url ?? ''}
+                                        title={blog.featuredImage.fields?.title ?? 'Default Title'}
+                                        className="flex aspect-[16/9]"
+                                    />
                                     </div>
+                                   
 
                                     <div className='flex flex-col text-sm w-full'>
 
-                                        <h3 className=" ">{blog.node.title}</h3>
+                                        <h3 className=" ">{blog.postTitle}</h3>
                                         <div className="flex gap-2 pt-2 text-stone-600">
-                                            <p className='flex gap-2 items-center'> <Calendar /> {formatDate(blog.node.date)}</p>
-                                            <p className='flex gap-2 items-center'> <Folder /> {blog.node.categories.edges[0].node.name}</p>
+                                            <p className='flex gap-2 items-center'> <Calendar /> {formatDate(blog.publishDate)}</p>
+                                            {/* <p className='flex gap-2 items-center'> <Folder /> {blog.node.categories.edges[0].node.name}</p> */}
                                         </div>
                                     </div>
                                 </Link>

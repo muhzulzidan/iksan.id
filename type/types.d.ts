@@ -108,8 +108,8 @@ interface HomepageData {
 
 interface TwoColumnLayoutProps {
     data?: any; // Define more specifically if possible
-    blogs: Blog[];
-    insights?: Insight[]; // Assuming insights has a similar structure or adjust as necessary
+    blogs: any[];
+    insights?: any[]; // Assuming insights has a similar structure or adjust as necessary
 }
 
 interface File {
@@ -218,15 +218,25 @@ interface TemplatesClientProps {
     metaDefault: any; // Assuming you have a specific type for this elsewhere
 }
 
+
+
 interface Kelas {
     category: string[];
-    description: Description;
+    startDate: string;
     endDate: string;
+    description: Description;
+    excerpt: {
+        data: any;
+        content: any[];
+        nodeType: string;
+    };
     image: Image;
-    monthPackagePrice: number;
-    monthlyPrice: number;
+    price1: number;
+    price2: number;
+    priceDesc: string[];
     slug: string;
     startDate: string;
+    subscription: boolean;
     title: string;
 }
 
@@ -496,8 +506,7 @@ interface Ebook  {
 
 
 interface PostClientProps {
-    post: Post;
-    posts: Post[];
+    post: any;
 }
 
 interface BusinessInfo {
@@ -553,15 +562,6 @@ interface PostHeaderProps {
     category: string
 }
 
-// interface CustomerDownloadData {
-//     [x: string]: any;
-//     id: number;
-//     userId: string;
-//     fileName: string;
-//     downloadDate: string;
-//     fullname: string;
-//     email: string;
-// }
 interface CustomerDownloadData {
     [x: string]: any;
     link: any;

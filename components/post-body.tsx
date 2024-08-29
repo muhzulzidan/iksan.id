@@ -97,36 +97,6 @@ const PostContent: React.FC<PostContentProps> = ({ content }) => {
     setModalImageUrl(null);
   };
 
-  // const options = {
-  //   replace: (node: { name: string; attribs: { class: string | string[]; }; children: any[]; }) => {
-  //     if (
-  //       node.name === 'figure' &&
-  //       node.attribs.class === 'wp-block-image size-large'
-  //     ) {
-  //       const imgNode = node.children.find((child: { name: string; }) => child.name === 'a');
-  //       if (imgNode && imgNode.attribs.href) {
-  //         const imageUrl = imgNode.children[0].attribs.src;
-  //         return (
-  //           <figure key={imageUrl} onClick={() => openModal(imageUrl)} className=' '>
-  //             <img src={imageUrl} alt="Gallery" />
-  //           </figure>
-  //         );
-  //       }
-  //     }
-  //     if (
-  //       node.name === 'figure' &&
-  //       node.attribs.class.includes('wp-block-gallery')
-  //     ) {
-  //       // Change the class of the wp-block-gallery figure here
-  //       node.attribs.class = 'grid grid-cols-2 md:grid-cols-3  gap-4 pb-4'; // Replace 'your-custom-class' with your desired class name
-
-  //       // Return the modified figure element
-  //       return node;
-  //     }
-  //     return null;
-  //   },
-  // };
-
   const options = {
     replace: (domNode: DOMNode, index: number) => {
       const node = domNode as unknown as { name: string; attribs: { class: string | string[]; }; children: any[]; };

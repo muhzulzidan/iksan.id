@@ -2,9 +2,13 @@ import { CalendarDateFill, PersonFill } from "react-bootstrap-icons"
 import Avatar from './avatar'
 import Date from './date'
 import CoverImage from './cover-image'
-import CoverImageBlogs from './cover-image-blogs'
+import CoverImageBlogs from './contentful/cover-image-blogs'
 import Link from 'next/link'
-type CoverImageType = string | { node: { sourceUrl: string } };
+// type CoverImageType = string | { node: { sourceUrl: string } };
+import CoverImageContentful from "@/components/cover-image-contentful";
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, MARKS } from '@contentful/rich-text-types';
+import { useState, useRef, useEffect, JSXElementConstructor, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal } from 'react';
 
 export default function PostPreview({
   title,
@@ -16,25 +20,46 @@ export default function PostPreview({
   category
 }: {
   title: string,
-  coverImage: CoverImageType,
+  coverImage: any,
   date: string,
-  excerpt: string,
+  excerpt: any,
   author: string,
   slug: string,
   category: string
 }) {
 //  const category = coverImage?.node.categories.edges[0]?.node.name;
   // console.log(category, "post preview")
+
+  const trimContent = (content: { content: string | any[] }, maxNodes: number) => {
+    const trimmedContent = { ...content, content: content.content.slice(0, maxNodes) };
+    return trimmedContent;
+  };
+
+
+  const maxNodes = 1; // Adjust this value as needed
+  const trimmedExcerpt = trimContent(excerpt, maxNodes);
+
+  const options = {
+    renderMark: {
+      [MARKS.BOLD]: (text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <strong>{text}</strong>,
+    },
+    renderNode: {
+      [BLOCKS.PARAGRAPH]: (node: any, children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <p>{children}</p>,
+      [BLOCKS.HEADING_1]: (node: any, children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <h1>{children}</h1>,
+      // Add more custom renderers as needed
+    },
+  };
+
+
   return (
     <div >
       <div className="mb-5">
         {
           coverImage ? (
-            category ? (
-              <CoverImageBlogs title={title} coverImage={coverImage as { node: { sourceUrl: string } }} slug={slug} category={category} />
-            ) : (
-              <CoverImage title={title} coverImage={coverImage as { node: { sourceUrl: string } }} slug={slug} />
-            )
+            <>
+               <CoverImageBlogs title={title} coverImage={coverImage as { node: { sourceUrl: string } }} slug={slug} category={category} />
+             
+            </>
           ) : (
               
               <div className="placeholder-svg rounded-lg">
@@ -72,10 +97,13 @@ export default function PostPreview({
           <Date dateString={date} />
         </div>
         <div className="flex gap-1 ">
-          {/* <PersonFill className="text-stone-600" /> */}
+          <PersonFill className="text-stone-600" />
+          {author}
           {/* <Avatar author={author} /> */}
         </div>
       </div>
+      {/* {documentToReactComponents(trimmedExcerpt, options)} */}
+
       {/* <div
         className="text-sm leading-relaxed mb-4 line-clamp-3 text-stone-700"
         dangerouslySetInnerHTML={{ __html: excerpt }}

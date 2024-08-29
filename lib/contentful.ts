@@ -32,8 +32,6 @@ export async function getCourses() {
 
     return [];
 }
-
-
 export async function getTemplates() {
     const entries = await client.getEntries({
         content_type: 'template',
@@ -52,8 +50,6 @@ export async function getKelas() {
 
     return [];
 }
-
-
 export async function getEbooks() {
     const entries = await client.getEntries({
         content_type: 'ebook',
@@ -72,8 +68,6 @@ export async function getbooks() {
 
     return [];
 }
-
-
 export async function getPressKits() {
     const entries = await client.getEntries({
         content_type: 'pressKit', // Make sure 'pressKit' matches the content type ID in Contentful
@@ -174,8 +168,6 @@ export async function getBusinessInfo(slug: string) {
 
   return [];
 }
-
-
 export async function getAllBusinessSlugs() {
   const entries = await client.getEntries({
     content_type: 'businessInfo', 
@@ -187,8 +179,6 @@ export async function getAllBusinessSlugs() {
 
   return [];
 }
-
-
 export async function getgadget() {
   const entries = await client.getEntries({
         content_type: 'toolbox', // Ensure this matches the content type ID in Contentful
@@ -234,6 +224,28 @@ export async function getSubscribe() {
 
     return [];
 }
+export async function getBlogs() {
+  const entries = await client.getEntries({
+    content_type: 'blog', // Ensure this matches the content type ID in Contentful
+    });
+
+    if (entries.items) return entries.items.map((item) => item.fields);
+
+    return [];
+}
+export async function getBlogBySlug(slug: string) {
+  const entries = await client.getEntries({
+    content_type: 'blog', // Ensure this matches the content type ID in Contentful
+    'fields.slug': slug,
+    limit: 1,
+  });
+
+  if (entries.items && entries.items.length > 0) {
+    return entries.items[0].fields;
+  }
+
+  return null;
+}
 export async function getEvent(slug = null) {
   // Define a filter object to include in the Contentful API request
   const filter = slug ? { 'fields.slug': slug } : {};
@@ -246,4 +258,21 @@ export async function getEvent(slug = null) {
   if (entries.items) return entries.items.map((item) => item.fields);
 
   return [];
+}
+
+
+export async function getProducts() {
+  const [templates, courses, kelas, ebooks] = await Promise.all([
+    getTemplates(),
+    getCourses(),
+    getKelas(),
+    getEbooks(),
+  ]);
+
+  return {
+    templates,
+    courses,
+    kelas,
+    ebooks,
+  };
 }

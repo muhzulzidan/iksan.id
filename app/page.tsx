@@ -1,6 +1,6 @@
 import React from "react"; // Ensure React is imported for JSX to work
 import { Metadata } from 'next'
-import { getHomepage, getMetaDefault } from "@/lib/contentful";
+import { getHomepage, getMetaDefault, getTemplates, getTtemplateCategory, getProducts, getBlogs } from "@/lib/contentful";
 import Markdown from 'react-markdown'
 import { UserButton, SignInButton } from "@clerk/nextjs";
 
@@ -13,9 +13,10 @@ import Layout from "@/components/layout";
 import { Swiper, SwiperSlide } from "@/components/swiperElement";
 // Assuming environment variables are correctly set for the API URL and any auth tokens
 const API_URL = process.env.WORDPRESS_API_URL || "https://default.api.url";
-
-
-
+import Image from "next/image";
+import Capcut from "@/app/images/Expert-capcut-square-50.jpg";
+import TemplatesClient from '@/app/template/templateclient';
+import ProductsClients from "@/components/products"
 // Ensure the environment variable is set, otherwise use a fallback URL
 if (!API_URL) {
   throw new Error("WORDPRESS_API_URL environment variable is not set.");
@@ -106,9 +107,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_BASE_URL || 'http://iksan.id';
   const metadataBase = new URL(baseUrl);
 
-  ``
-
-
   return {
     metadataBase, // Set the metadataBase
     title,
@@ -141,15 +139,18 @@ export async function generateMetadata(): Promise<Metadata> {
 // Example Page component assuming other necessary imports and definitions
 const Page = async () => {
 
-
-  const allPostsData = await getAllPostsForHome();
+  const templates = await getTemplates() as unknown as Template[];
+  const products = await getProducts() as unknown as any[];
+  const templateCategory = await getTtemplateCategory() as unknown as TemplateCategory[];
+  const allPosts = await getBlogs();
+  // const allPostsData = await getAllPostsForHome();
   const homepageDataResult = await getHomepage();
 
   const homepageData: HomepageData = homepageDataResult[0] as unknown as HomepageData;
 
   // Use optional chaining and nullish coalescing to safely access properties and provide fallback values
-  const blogs = allPostsData?.edges?.slice(0, 3) ?? [];
-  const insights = allPostsData?.edges?.slice(3, 7) ?? [];
+  const blogs = allPosts?.slice(0, 3) ?? [];
+  const insights = allPosts?.slice(3, 7) ?? [];
 
   const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
 
@@ -167,13 +168,16 @@ const Page = async () => {
     description: `${description}`,
   }
 
+  // { console.log(products, "products") }
+
   return (
     <Layout metaDefault={metaDefault}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+        />
       <main className="flex flex-col flex-wrap ">
+
 
         <section className="bg-stone-100 w-full max-w-screen-lg mx-auto text-stone-950">
           <div className="grid  px-4 py-8 mx-auto lg:gap-2 xl:gap-0 lg:py-16 lg:grid-cols-12 max-w-screen-lg">
@@ -209,16 +213,49 @@ const Page = async () => {
 
           </div>
         </section>
+        <section className='bg-[#fdf9eb] w-full p-4 py-20'>
+          <div className="max-w-screen-lg mx-auto flex gap-4 ">
+
+            <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border rounded-lg w-5/12" />
+
+            <div className="flex flex-col w-full justify-center">
+              <h3 className="text-2xl ">🔥 COMING SOON 🔥</h3>
+              <hr className="border-b border-stone-700 my-4" />
+              <div className="prose text-base ">
+
+                <p>
+                  Ingin bisnis Anda semakin dikenal dan mendukung proses adanya calon konsumen?
+
+                </p>
+                <p>   Saatnya manfaatkan kekuatan konten video dengan cepat dan efektif!</p>
+
+                <p>Ikuti workshop KELAS EXPERT: SKILL EDITING VIDEO PROMOSI. Belajar Capcut secara intensif dan kuasai teknik mengedit video yang menarik dan profesional.</p>
+
+                <p> Dengan video yang berkualitas, Anda bisa meningkatkan engagement di media sosial, memperkenalkan produk atau jasa secara lebih efektif, dan tentu saja, meningkatkan penjualan. </p>
+
+                <p>     Jadikan bisnis Anda lebih menonjol dengan konten video yang kreatif dan menarik! Silakan lihat informasi lengkapnya dengan klik tombol berikut:</p>
+
+              </div>
+              <a className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-yellow-800 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4 ">
+                Lihat Info Detail
+              </a>
+            </div>
+          </div>
+        </section>
         <section className='bg-stone-100 w-full max-w-screen-lg mx-auto'>
           <Clients logos={homepageData.logos ?? []} />
         </section>
 
-        <section className='bg-stone-100 px-4 w-full max-w-screen-lg mx-auto py-12 text-stone-950  '>
+        <section className="bg-stone-100 w-full max-w-screen-lg mx-auto">
+          <h2 className='text-center text-3xl font-bold py-1 w-[80%] mx-auto'>{homepageData.headingSection3}</h2>
+          <p className='text-center text-lg mb-0'>{homepageData?.descriptionSection3}</p>
+          <ProductsClients templates={templates} templateCategory={templateCategory} products={products} />
+        </section>
 
+        {/* <section className='bg-stone-100 px-4 w-full max-w-screen-lg mx-auto py-12 text-stone-950  '>
           <h2 className='text-center text-3xl font-bold py-1 w-[80%] mx-auto'>{homepageData.headingSection3}</h2>
           <p className='text-center text-lg mb-16'>{homepageData?.descriptionSection3}</p>
           <div className='hidden md:grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-
             {homepageData?.greatUpgrade?.map((item, index) => (
               <div
                 key={index}
@@ -230,7 +267,6 @@ const Page = async () => {
                       url={item.fields.icons.fields.file.url}
                       title={item.fields.icons.fields.title}
                     />
-                    {/* {console.log(item)} */}
                   </a>
                   <div className="px-5 pt-3">
                     <h2 className='font-mabryBold text-center'>{item.fields.title}</h2>
@@ -238,10 +274,6 @@ const Page = async () => {
                 </div>
               </div>
             ))}
-
-
-
-
           </div>
           <div className='md:hidden block'>
             <Swiper
@@ -269,14 +301,12 @@ const Page = async () => {
               ))}
             </Swiper>
           </div>
-
-          {/* </LazyLoad> */}
-        </section>
+        </section> */}
 
 
         <section className='w-full  max-w-screen-lg mx-auto' >
 
-          <TwoColumnLayout blogs={blogs} insights={insights} data={allPostsData} />
+          <TwoColumnLayout blogs={blogs} insights={insights} data={allPosts} />
 
         </section>
 

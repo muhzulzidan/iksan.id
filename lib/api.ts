@@ -89,7 +89,7 @@ export async function getAllPostsForHome(preview: boolean) {
       },
     }
   );
-
+  console.log(data, "data getAllPostsForHome")
   return data?.posts
 }
 

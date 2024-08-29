@@ -109,11 +109,15 @@ a{
 }
 
 body{
-  @apply font-mabryRegular bg-stone-100;
+  @apply font-Circular bg-stone-100;
+}
+
+h1,h2{
+  @apply font-KomuA;
 }
 
 h1, h2, h3, h4, h5 {
-  @apply font-mabryBold;
+  @apply font-PolySansMedian;
 }
 
 

@@ -1,125 +1,121 @@
+import { MetadataRoute } from "next";
+import { getBlogs } from '@/lib/contentful';
+import { parseISO, format, isValid } from 'date-fns';
+
 interface Blog {
-    node: {
-        slug: string;
-        date: string;
-    };
+    slug: string;
+    date: string;
 }
 
 type UrlObject = {
-  url: string;
-  lastModified: Date;
-  priority: number;
-  changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+    url: string;
+    lastModified: any;
+    priority: number;
+    changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
 };
-// app/sitemap.ts  (App Router)
-import { getAllPostsForHome, } from '@/lib/api';
-
-import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const allPosts = await getAllPostsForHome(false);
+    const allPosts = await getBlogs();
 
-    const blogs = allPosts;
     const URL = "https://iksan.id";
 
-const restUrls: UrlObject[] = [
-
+    const restUrls: UrlObject[] = [
         {
-            url: `${URL}/`, // Home Page
+            url: `${URL}/`,
             lastModified: new Date(),
             priority: 1.0,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/blogs`, // Blogs Page
+            url: `${URL}/blogs`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "daily",
         },
         {
-            url: `${URL}/wallpaper`, // Projects Page
+            url: `${URL}/wallpaper`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/video-course`, // Skills Page
+            url: `${URL}/video-course`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/template`, // Skills Page
+            url: `${URL}/template`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/profil`, // Skills Page
+            url: `${URL}/profil`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/press-kit`, // Skills Page
+            url: `${URL}/press-kit`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/photos`, // Skills Page
+            url: `${URL}/photos`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/links`, // Skills Page
+            url: `${URL}/links`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/kontak`, // Skills Page
+            url: `${URL}/kontak`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/gadget`, // Skills Page
+            url: `${URL}/gadget`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/event`, // Skills Page
+            url: `${URL}/event`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/ebook`, // Skills Page
+            url: `${URL}/ebook`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
         {
-            url: `${URL}/book`, // Skills Page
+            url: `${URL}/book`,
             lastModified: new Date(),
             priority: 0.8,
             changeFrequency: "weekly",
         },
     ];
 
-    const allBlogs = (blogs.edges).map(({ node }: Blog) => {
-    
-                return {
-                    url: `${URL}/blogs/${node.slug}`,
-                    lastModified: new Date(node.date),
-                    priority: 0.64,
-                    changeFrequency: "daily",
-                };
-            });
+    const blogUrls: UrlObject[] = allPosts.map((post: any) => {
+        const date = post.date ? parseISO(post.date) : null;
+        const validDate = date && isValid(date) ? format(date, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
+        return {
+            url: `${URL}/blogs/${post.slug}`,
+            lastModified: validDate,
+            priority: 0.64,
+            changeFrequency: "daily",
+        };
+    });
 
-
-    return [...restUrls, ...allBlogs ];
+    return [...restUrls, ...blogUrls];
 }
