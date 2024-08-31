@@ -167,7 +167,7 @@ function ProductsClients({
                                                     </Link>
                                                     <div className="flex flex-col gap-4 w-full relative">
                                                         <div className="flex flex-col w-full">
-                                                            <h2 className="text-lg font-semibold ">
+                                                            <h2 className="text-lg  ">
                                                                 {item.fields ? item.fields.title : item.title}
                                                             </h2>
                                                             <p className="line-clamp-2 text-sm text-stone-500">
@@ -206,7 +206,7 @@ function ProductsClients({
                                                     </div>
                                                     <div className="flex flex-col gap-4 w-full relative">
                                                         <div className="flex flex-col w-full">
-                                                            <h2 className="text-lg font-semibold">{item.title}</h2>
+                                                            <h2 className="text-lg">{item.title}</h2>
                                                             <p className="line-clamp-2 text-sm text-stone-500">{item.description}</p>
                                                         </div>
                                                         <div className="flex gap-4">
@@ -235,7 +235,7 @@ function ProductsClients({
                                                     </div>
                                                     <div className="flex flex-col gap-4 w-full relative">
                                                         <div className="flex flex-col w-full">
-                                                            <h2 className="text-lg font-semibold">{item.title}</h2>
+                                                            <h2 className="text-lg">{item.title}</h2>
                                                             <p className="line-clamp-2 text-sm text-stone-500">{item.description}</p>
                                                         </div>
                                                         <div className="flex gap-4">
@@ -268,7 +268,7 @@ function ProductsClients({
                                                     </Link>
                                                     <div className="flex flex-col gap-4 w-full relative">
                                                         <div className="flex flex-col w-full">
-                                                            <h2 className="text-lg font-semibold ">
+                                                            <h2 className="text-lg ">
                                                                 {item.title}
                                                             </h2>
                                                             <p className="line-clamp-2 text-sm text-stone-500">
@@ -312,7 +312,7 @@ function ProductsClients({
                                             </Link>
                                             <div className="flex flex-col gap-4 w-full relative">
                                                 <div className="flex flex-col w-full">
-                                                    <h2 className="text-lg font-semibold ">
+                                                    <h2 className="text-lg ">
                                                         {template.fields ? template.fields.title : template.title}
                                                     </h2>
                                                     <p className="line-clamp-2 text-sm text-stone-500">
@@ -336,35 +336,32 @@ function ProductsClients({
                             </div>
                         )}
                         {selectedCategory === 'courses' && (
-                            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
+                            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 ">
                                 {courses.map((course: any) => (
                                     <div key={course.title} className="flex flex-col rounded-md space-y-4 w-full max-sm:gap-0 group cursor-pointer">
-                                        <div className="relative group rounded-2xl aspect-video">
-                                            <Swiper
-                                                loop={true}
-                                                spaceBetween={0}
-                                                slidesPerView={1}
-                                                className="aspect-video w-full transform transition-transform duration-300 group-hover:-translate-y-2 rounded-lg ">
-                                                {course.images.map((imageUrl: { title: string; fields: { file: { url: string; }; }; slug: string | undefined; }, index: Key | null | undefined) => (
-                                                    <SwiperSlide key={index}>
-                                                        <CoverImageContentful title={imageUrl.title} url={imageUrl.fields.file.url} slug={imageUrl.slug} />
-                                                    </SwiperSlide>
-                                                ))}
-                                            </Swiper>
+                                        <Link href={`/template/${course.images[0].slug}`} className="relative group rounded-2xl">
+                                            <CoverImageContentful
+                                                title={course.images[0].title}
+                                                url={course.images[0].fields.file.url}
+                                                slug={course.images[0].slug}
+                                                className="transform transition-transform duration-300 group-hover:-translate-y-2 rounded-lg h-[10rem] w-full object-cover"
+                                            />
                                             <div className="absolute inset-0 -z-10 bg-stone-200 bg-opacity-0 group-hover:bg-opacity-70 transition duration-300 rounded-xl"></div>
-                                        </div>
+                                        </Link>
+                                       
                                         <div className="flex flex-col gap-4 w-full relative">
                                             <div className="flex flex-col w-full">
-                                                <h2 className="text-lg font-semibold">{course.title}</h2>
+                                                <h2 className="text-lg">{course.title}</h2>
                                                 <p className="line-clamp-2 text-sm text-stone-500">{course.description}</p>
                                             </div>
                                             <div className="flex gap-4">
                                                 <p className="bg-secondary2 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit hover:text-stone-50 hover:bg-purple-800">
                                                     Rp{course.price},000
                                                 </p>
-                                                <button className="bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit">
-                                                    Learn More
-                                                </button>
+
+                                                <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: course.slug, name: course.title, price: course.price, image: course.image, quantity: 1 })}>
+                                                    <CartPlusFill className="mr-2" />
+                                                    Add to Cart</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -372,7 +369,7 @@ function ProductsClients({
                             </div>
                         )}
                         {selectedCategory === 'ebooks' && (
-                            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-24 mt-12">
+                            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-24 ">
                                 {ebooks.map((ebook: any) => (
                                     <div key={ebook.slug} className="flex flex-col rounded-md space-y-4 w-full max-sm:gap-0 group cursor-pointer">
                                         <div className="relative group rounded-2xl">
@@ -386,16 +383,16 @@ function ProductsClients({
                                         </div>
                                         <div className="flex flex-col gap-4 w-full relative">
                                             <div className="flex flex-col w-full">
-                                                <h2 className="text-lg font-semibold">{ebook.title}</h2>
+                                                <h2 className="text-lg">{ebook.title}</h2>
                                                 <p className="line-clamp-2 text-sm text-stone-500">{ebook.description}</p>
                                             </div>
                                             <div className="flex gap-4">
                                                 <p className="bg-secondary2 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit hover:text-stone-50 hover:bg-purple-800">
                                                     Rp{ebook.price},000
                                                 </p>
-                                                <a href={ebook.url} className="bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit">
-                                                    Beli sekarang
-                                                </a>
+                                                <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: ebook.slug, name: ebook.title, price: ebook.price, image: ebook.image, quantity: 1 })}>
+                                                    <CartPlusFill className="mr-2" />
+                                                    Add to Cart</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -404,7 +401,7 @@ function ProductsClients({
                         )}
                       
                         {selectedCategory === 'kelas' && (
-                            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
+                            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10 ">
                                 {kelas.map((template: any) => {
                                     const startDate = template.startDate ? parseISO(template.startDate) : null;
                                     const endDate = template.endDate ? parseISO(template.endDate) : null;
@@ -424,7 +421,7 @@ function ProductsClients({
                                             </Link>
                                             <div className="flex flex-col gap-4 w-full relative">
                                                 <div className="flex flex-col w-full">
-                                                    <h2 className="text-lg font-semibold ">
+                                                    <h2 className="text-lg ">
                                                         {template.title}
                                                     </h2>
                                                     <p className="line-clamp-2 text-sm text-stone-500">
