@@ -31,7 +31,7 @@ function KelasClient({
     const router = useRouter();
 
     const filteredPageTitles = pageTitles.filter((page) => `/${page.slug}` === currentSlug);
-    console.log(kelas, "kelas")
+    // console.log(kelas, "kelas")
 
     function formatPrice(price: number) {
         const priceInRupiah = new Intl.NumberFormat('id-ID').format(price);

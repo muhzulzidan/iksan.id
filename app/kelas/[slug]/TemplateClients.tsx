@@ -34,11 +34,11 @@ import { setCookie } from 'nookies';
 
 import { ChevronUp, ChevronLeft, Star } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
-import { SignIn,  } from "@clerk/nextjs";
+import { SignIn, } from "@clerk/nextjs";
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 
-const TemplateClients = ({ template }: { template: Template }) => {
+const TemplateClients = ({ template }: { template: any }) => {
     const options = {
         renderMark: {
             [MARKS.BOLD]: (text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <strong>{text}</strong>,
@@ -49,7 +49,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
             // Add more custom renderers as needed
         },
     };
-    
+
     const router = useRouter()
     const pathname = usePathname()
 
@@ -93,7 +93,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
     }, []);
 
     const handleCreateInvoice = async () => {
-        addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })
+        addToCart({ id: template.slug, name: template.title, price: template.price1, image: template.image, quantity: 1 })
         router.push('/checkout');
     }
 
@@ -116,22 +116,37 @@ const TemplateClients = ({ template }: { template: Template }) => {
                         </Button>
                     </div>
                 }
-                
+
                 <div className='md:grid md:grid-cols-2 gap-4 items-center'>
                     <div>
                         <p className='text-lg my-2 font-bold underline'>
-                            {/* {template.price === 0 ? 'Gratis' : `Rp.${template.price}${template.price.toString().includes('.') ? '00' : '.000'}`} */}
+                            {template.price1 === 0 ? 'Gratis' : `Rp.${template.price1}${template.price1.toString().includes('.') ? '00' : '.000'}`}
+                            {template.priceDesc && template.priceDesc[0] ? ` (${template.priceDesc[0]})` : ''}
+                        </p>
+                        <p className='text-lg my-2 font-bold underline'>
+                            {template.price2 === 0 ? 'Gratis' : `Rp.${template.price2}${template.price2.toString().includes('.') ? '00' : '.000'}`}
+                            {template.priceDesc && template.priceDesc[1] ? ` (${template.priceDesc[1]})` : ''}
                         </p>
                         <h1 className="text-4xl mb-4 font-bold w-full md:w-8/12">{template.title}</h1>
-                        <div className='flex gap-4 mb-4'>
-                            <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
-                                <ArrowRightCircleFill className="mr-2" />
-                                Dapatkan Segera
-                            </Button>
-                            <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
-                                <CartPlusFill className="mr-2" />
-                                Add to Cart
-                            </Button>
+                        <div className='flex flex-col md:pr-12'>
+                            <div className='grid grid-cols-1 gap-4 mb-4'>
+                                <Button onClick={handleCreateInvoice} className='bg-tertiary1 hover:bg-green-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
+                                    <ArrowRightCircleFill className="mr-2" />
+                                    Dapatkan Segera
+                                </Button>
+                            </div>
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
+
+
+                                <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price1, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
+                                    <CartPlusFill className="mr-2" />
+                                    Add to Cart ({template.priceDesc[0]})
+                                </Button>
+                                <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price2, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
+                                    <CartPlusFill className="mr-2" />
+                                    Add to Cart ({template.priceDesc[1]})
+                                </Button>
+                            </div>
                         </div>
                         <div className='flex flex-col items-start gap-1 text-xs text-stone-800'>
                             4.96/5 Dari 5,608 customers
@@ -142,7 +157,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
                                 <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                                 <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                             </div>
-                           
+
                         </div>
                     </div>
                     <CoverImageContentful

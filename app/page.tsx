@@ -168,7 +168,7 @@ const Page = async () => {
     description: `${description}`,
   }
 
-  // { console.log(products, "products") }
+
 
   return (
     <Layout metaDefault={metaDefault}>

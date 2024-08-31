@@ -4,7 +4,7 @@ import { serialize } from 'cookie';
 // import { parseCookies } from 'nookies';
 
 export default authMiddleware({
-    publicRoutes: ["((?!^/api|^/admin|^/profile).*)"],
+    publicRoutes: ["((?!^/api|^/admin|^/profile|^/my-account).*)"],
     async afterAuth(auth, req: NextRequest) {
         // const cookies = parseCookies();
 
