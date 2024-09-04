@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import useStore from '@/store';
+import { CustomerIksanId as UserData } from "@prisma/client";
+import Link from 'next/link';
 
 const PaymentStatus = () => {
     const [isPaid, setIsPaid] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
     const PaymentId = searchParams.get('paymentId');
@@ -44,6 +46,7 @@ const PaymentStatus = () => {
         if (!PaymentId || !userData) return;
 
         const checkPaymentStatus = async () => {
+
             try {
                 const response = await fetch(`/api/payment-status?id=${PaymentId}`, {
                     method: 'GET',
@@ -100,7 +103,10 @@ const PaymentStatus = () => {
             {isLoading ? (
                 <p>Loading...</p>
             ) : isPaid ? (
-                <p>Payment successful! Redirecting...</p>
+                <div>
+                    <p>Payment successful! Redirecting...</p>
+                    <Link href={"/my-account"}>Click Here if not Redirecting</Link>
+                </div>
             ) : (
                 <p>Waiting for payment...</p>
             )}

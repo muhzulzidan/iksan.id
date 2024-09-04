@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import useStore from '@/store';
+import { CustomerIksanId as UserData } from "@prisma/client";
 
 const PaymentStatus = () => {
     const [isPaid, setIsPaid] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
     const PaymentId = searchParams.get('paymentId');
