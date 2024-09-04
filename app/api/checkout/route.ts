@@ -9,10 +9,20 @@ export async function POST(req: NextRequest, res: NextResponse) {
     if (!customerData || !cart) {
         return new Response('Missing customer data or cart items', {
             status: 500,
-        })
+        });
     }
 
     console.log(customerData, "customerData checkout api");
+    console.log(cart, "cart checkout api");
+
+    // Validate cart items
+    for (const item of cart) {
+        if (!item.id) {
+            return new Response('Missing id in cart item', {
+                status: 500,
+            });
+        }
+    }
 
     // Process the checkout
     try {
@@ -31,18 +41,41 @@ export async function POST(req: NextRequest, res: NextResponse) {
             dbCustomer = await prisma.customerIksanId.create({
                 data: customerData,
             });
-        }
-        else if (!dbCustomer.phoneNumber) {
+        } else if (!dbCustomer.phoneNumber) {
             dbCustomer = await prisma.customerIksanId.update({
                 where: { email: dbCustomer.email },
                 data: { phoneNumber: customerData.phoneNumber },
             });
         }
+
         // Create order
+        const order = await prisma.customerOrder.create({
+            data: {
+                customer: {
+                    connect: {
+                        id: dbCustomer.id,
+                    },
+                },
+                total: totalPrice,
+                status: 'pending',
+            },
+        });
 
-        // console.log('Order: ', order);
+        // Create order items
+        const orderItems = cart.map((item: any) => ({
+            quantity: item.quantity,
+            price: item.price,
+            productSlug: item.id, // Use id as productSlug
+            orderId: order.id,
+        }));
 
+        await prisma.orderItem.createMany({
+            data: orderItems,
+        });
 
+        const itemNames = cart.map((item: any) => item.name).join(', ');
+
+        // Proceed with the checkout process
         const response = await axios({
             method: 'post',
             url: 'https://api.xendit.co/v2/invoices',
@@ -51,66 +84,46 @@ export async function POST(req: NextRequest, res: NextResponse) {
                 'Authorization': `Basic ${Buffer.from(process.env.XENDIT_SECRET_KEY + ':').toString('base64')}`,
             },
             data: {
-                external_id: `order_${customerData.id}`,
+                external_id: `order_${order.id}`,
                 payer_email: customerData.email,
-                description: 'Order payment',
-                amount: Math.round(totalPrice * 1000), // Convert total to cents
-            },
+                description: `Order payment for ${customerData.name} (${customerData.email}), Items: ${itemNames}`,
+                amount: Math.round(totalPrice * 1000),
+                items: cart.map((item: { name: any; quantity: any; price: any; category: any; url: any; slug: any; id:any }) => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    category: item.category,
+                    url: item.url,
+                    slug: item.id
+                })),
+                invoice_duration: 86400, // 24 hours in seconds
+                success_redirect_url: `http://localhost:3000/my-account/payment-status?paymentId=${order.id}`,
+                created: new Date().toISOString(), // Add the current date
+                customer: {
+                    given_names: customerData.name,
+                    email: customerData.email,
+                    mobile_number: customerData.phoneNumber,
+                }
+            }
         });
 
-        // console.log('Response checkout: ', response);
         console.log('Response checkout: ', response.data);
 
-        // let order;
-        // try {
-        //     order = await prisma.customerOrder.create({ // Changed from prisma.order.create
-        //         data: {
-        //             customer: {
-        //                 connect: {
-        //                     id: response.data.id, // Assuming dbCustomer has an id field
-        //                 },
-        //             },
-        //             total: totalPrice,
-        //             status: 'pending',
-        //         },
-        //     });
-        // } catch (error) {
-        //     console.error('Error creating order:', error);
-        //     return NextResponse.json({ error: `An error occurred while creating the order: ${error}` }, { status: 500 });
-        // }
-
-
-
-        // let customer;
-        // const customerResponse = await fetch(`https://api.xendit.co/v2/customers/${customerData.id}`, {
-        //     headers: {
-        //         'Authorization': `Basic ${Buffer.from(process.env.XENDIT_SECRET_KEY + ':').toString('base64')}`,
-        //     },
-        // });
-
-       
-
-      
-        // let data;
-        // if (dbCustomer) {
-        //     data = dbCustomer;
-        //     console.log(data, "data checkout json")
-        // } else {
-        //     console.log("dbCustomer is undefined");
-        // }
-        // return NextResponse.json({ data });
-
         let data = response.data;
-        // if (dbCustomer.headers.get('content-type')?.includes('application/json')) {
-        //     data = await dbCustomer.json();
-        //     console.log(data, "data checkout json")
-        // } else {
-        //     data = await dbCustomer.text();
-        //     console.log(data, "data checkout text")
-        // }
+
+        // Update order with xenditId
+        await prisma.customerOrder.update({
+            where: { id: order.id },
+            data: { xenditId: data.id },
+        });
+
         return NextResponse.json({ data });
     } catch (error) {
         console.log('An error occurred while checkout', error);
-        return NextResponse.json({ error: `An error occurred while checkout ${error}` }, { status: 500 });
+        if (error instanceof Error) {
+            return NextResponse.json({ error: `An error occurred while checkout: ${error.message}` }, { status: 500 });
+        } else {
+            return NextResponse.json({ error: 'An unknown error occurred while checkout' }, { status: 500 });
+        }
     }
 }

@@ -21,20 +21,34 @@ model CustomerDownloadLink {
   customerIksanId Int
   DownloadLink    DownloadLink[]
 }
+
 model DownloadLink {
   id                    Int                 @id @default(autoincrement())
-  link                  String
+  link                  String              @unique
   customerDownloadLinkId Int
   CustomerDownloadLink  CustomerDownloadLink @relation(fields: [customerDownloadLinkId], references: [id])
 }
 
 model CustomerOrder {
-  id         Int             @id @default(autoincrement())
-  total      Float
-  status     String
-  customer   CustomerIksanId @relation(fields: [customerId], references: [id])
-  customerId Int
-  xenditId   String?          @unique
+  id            Int             @id @default(autoincrement())
+  total         Float
+  status        String
+  createdAt     DateTime        @default(now())
+  paidAt        DateTime?
+  customerId    Int
+  customer      CustomerIksanId @relation(fields: [customerId], references: [id])
+  xenditId      String?         @unique
+  payments      Payment[]
+  orderItems    OrderItem[]
+}
+
+model Payment {
+  id          Int             @id @default(autoincrement())
+  amount      Float
+  status      String
+  createdAt   DateTime        @default(now())
+  orderId     Int             @unique
+  order       CustomerOrder   @relation(fields: [orderId], references: [id])
 }
 
 model DownloadIksanId {
@@ -44,6 +58,17 @@ model DownloadIksanId {
   downloadDate DateTime @default(now())
   fullname     String
   email        String
+}
+
+model OrderItem {
+  id          Int             @id @default(autoincrement())
+  quantity    Int
+  price       Float
+  productSlug String
+  orderId     Int
+  order       CustomerOrder   @relation(fields: [orderId], references: [id])
+
+  @@unique([orderId, productSlug])
 }
 
 model User {

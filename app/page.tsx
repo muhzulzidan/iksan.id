@@ -191,19 +191,18 @@ const Page = async () => {
             </div>
 
             <div className="mr-auto lg:pr-12 lg:pl-8  place-self-center lg:col-span-6">
-              <h3 className="text-2xl  font-semibold mb-2">{homepageData.h2}</h3>
+              <h3 className="text-2xl  font-semibold mb-2">
+                {homepageData.h2}</h3>
               <h2 className='font-kanakiraHeavy font-extrabold relative max-w-2xl mb-4 text-2xl  tracking-tight leading-none md:text-4xl text-stone-950 flex flex-col gap-1 '>
                 <Markdown>
                   {homepageData.ttile}
                 </Markdown>
-
               </h2>
               <div className='flex flex-col gap-1 py-2 mb-4 text-lg'>
                 <p className="">{homepageData.description}</p>
               </div>
               <a href={homepageData?.linksPrimary?.fields.links} className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary2 hover:bg-purple-800 focus:ring-4 focus:ring-stone-300 hover:text-stone-50">
                 {homepageData?.linksPrimary?.fields.title}
-
                 <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
               </a>
               <a href={homepageData?.linksSecondary?.fields.links} className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-stone-900 border border-secondary2 rounded-lg hover:bg-purple-600 focus:ring-4 focus:ring-stone-100 hover:text-stone-50  ">
@@ -216,12 +215,14 @@ const Page = async () => {
         <section className='bg-[#fdf9eb] w-full p-4 py-20'>
           <div className="max-w-screen-lg mx-auto flex gap-4 ">
 
-            <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border rounded-lg w-5/12 aspect-square" />
+            <div className="w-8/12 flex justify-center items-center"> 
+            <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border  rounded-lg aspect-square " />
+            </div>
 
             <div className="flex flex-col w-full justify-center">
               <h3 className="text-2xl ">🔥 COMING SOON 🔥</h3>
               <hr className="border-b border-stone-700 my-4" />
-              <div className="prose text-base ">
+              <div className="prose text-sm ">
 
                 <p>
                   Ingin bisnis Anda semakin dikenal dan mendukung proses adanya calon konsumen?
@@ -236,7 +237,7 @@ const Page = async () => {
                 <p>     Jadikan bisnis Anda lebih menonjol dengan konten video yang kreatif dan menarik! Silakan lihat informasi lengkapnya dengan klik tombol berikut:</p>
 
               </div>
-              <a className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-yellow-800 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4 ">
+              <a className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-tertiary1 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4 ">
                 Lihat Info Detail
               </a>
             </div>

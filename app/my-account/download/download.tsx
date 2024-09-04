@@ -10,7 +10,7 @@ const DownloadListPage = () => {
   const [customerId, setCustomerId] = useState(null);
   const [downloadsData, setDownloadsData] = useState<CustomerDownloadData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log(downloadsData, "downloadsData")
   // console.log(user?.primaryEmailAddress?.emailAddress, "email")
   // console.log(user, "user")
   // console.log(isSignedIn, "isSignedIn")

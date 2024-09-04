@@ -29,78 +29,70 @@ import prisma from '@/prisma/client';
 import { CustomerIksanId as UserData } from "@prisma/client";
 
 const Checkout = ({ userData }: { userData: UserData }) => {
-
-    const [customerData, setCustomerData] = useState({ name: '', email: '', phoneNumber: '' });
-    const [phoneNumberState, setPhoneNumber] = useState('');
-    const [isLoading, setIsLoading] = useState(false); // Add this line
-    const [isPaid, setIsPaid] = useState(false); // Add a new state variable
+    const [customerData, setCustomerData] = useState(userData || { name: '', email: '', phoneNumber: '' });
+    const [isLoading, setIsLoading] = useState(false);
+    const [isPaid, setIsPaid] = useState(false);
     const { cart, removeFromCart, decrementQuantity, incrementQuantity } = useStore();
 
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-    const { user, isSignedIn } = useUser()
-    const path = usePathname()
-    const router = useRouter()
+    const { user, isSignedIn } = useUser();
+    const path = usePathname();
+    const router = useRouter();
 
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomerData({ ...customerData, [e.target.name]: e.target.value });
     };
-
+    const savePhoneNumber = async (id: string, phoneNumber: string) => {
+        try {
+            // Replace with your API endpoint and request payload
+            await axios.post('/api/savePhoneNumber', { id, phoneNumber });
+            console.log('Phone number saved successfully');
+        } catch (error) {
+            console.error('Error saving phone number:', error);
+        }
+    };
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true); // Start loading when the form is submitted
-        // Set the state of customerData
-        // Create a new object with the updated customer data
-        const updatedCustomerData = {
-            ...customerData,
-            name: userData.name,
-            email: userData.email,
-            phoneNumber: phoneNumberState,
-        };
+        setIsLoading(true);
 
-        console.log(updatedCustomerData, "customerData handle submit")
+        console.log(customerData, "customerData handle submit");
 
-        const response = await fetch('/api/checkout', {
-            method: 'POST',
+        const response = await axios.post('/api/checkout', {
+            customerData,
+            cart
+        }, {
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ customerData: updatedCustomerData, cart }), // Use updatedCustomerData here
+            }
         });
 
-      
-        if (!response.ok) {
+        if (!response) {
             console.error('Checkout failed');
             toast({
                 variant: "destructive",
                 title: `Checkout failed`,
             });
-            // return;
+            return;
         }
 
-        const data = await response.json();
-        // Handle successful checkout
-        console.log('Checkout successful', data);
+        const data = await response.data;
+        console.log('Checkout successful', data.data);
         toast({
             variant: "default",
             title: `Checkout successful`,
         });
-        console.log(data, "data")
-        // Open the invoice URL in a new window or tab
-        // window.open(data.data.invoice_url, '_top');
+        console.log(data, "data");
+
         setTimeout(() => {
             window.open(data.data.invoice_url, '_top');
-        })
-        // Start polling for payment status
-        // const paymentId = await response.json(); // Assume the response contains the payment ID
-        // Start polling for payment status
+        });
+
         const intervalId = setInterval(async () => {
-            // Assume you have the paymentId available
-            // const paymentId = "664cb095e9d4c97372ccaa64";
             const paymentId = data.data.id;
 
-            console.log(paymentId, "paymentId")
-            // Fetch the payment status from the database using Prisma
+            console.log(paymentId, "paymentId");
+
             const response = await fetch(`/api/customers?id=${paymentId}`, {
                 method: 'GET',
                 headers: {
@@ -115,51 +107,45 @@ const Checkout = ({ userData }: { userData: UserData }) => {
 
             const payment = await response.json();
 
-            console.log(response, "response")
-            console.log(payment, "payment status")
+            console.log(response, "response");
+            console.log(payment, "payment status");
 
             if (payment && payment.order && payment.order.status === 'PAID') {
                 setIsPaid(true);
                 clearInterval(intervalId);
                 console.log('Payment successful', cart);
                 try {
-                    // Collect all download links
                     const downloadLinks = [];
 
-                    // Loop over each item in the cart
                     for (const item of cart) {
                         console.log(item, "item from cart");
-                        
+
                         const response = await axios.get(`/api/file-download?fileName=${item.id}`);
                         const data = response.data;
 
-                        // Add the link to the downloadLinks array
                         downloadLinks.push(data.fileUrl);
                     }
 
-                    // Add the links and the user id to the customer-download-link
                     const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
-                        customerIksanId: userData.id, // Assuming userData.id is the user id
+                        customerIksanId: userData.id,
                         downloadLinks: downloadLinks,
                     });
 
                     if (customerDownloadLinkResponse.status === 200) {
-                        // Redirect to a specific link if the request is successful
                         router.push("/my-account/download");
                     } else {
                         console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
                     }
 
-                    setIsLoading(false); // Stop loading when the request is done
+                    setIsLoading(false);
                 } catch (err) {
                     console.error('Error downloading invoice', err);
-                    setIsLoading(false); // Stop loading when there's an error
+                    setIsLoading(false);
                 }
-                // Delay closing the dialog to allow the check icon to be displayed
-                setTimeout(() => setIsLoading(false), 1000); // Adjust delay as needed
+                setTimeout(() => setIsLoading(false), 1000);
             }
-        }, 10000); // Check every 5 seconds
-    }
+        }, 10000);
+    };
 
     // console.log(user, "user")
 
@@ -209,11 +195,19 @@ const Checkout = ({ userData }: { userData: UserData }) => {
                                     :
                                     <Input type="text" name="name" value={customerData.name} onChange={handleCustomerChange} placeholder="Name" required />
                                 }
-                                {userData && userData.phoneNumber ?
-                                    <Input type="text" name="name" value={userData.phoneNumber} placeholder="Name" disabled />
-                                    :
-                                    <Input type="tel" name="phoneNumber" value={phoneNumberState} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="Phone Number" required />
-                                }
+                                {userData && userData.phoneNumber ? (
+                                    <Input type="text" name="phoneNumber" value={userData.phoneNumber} placeholder="Phone Number" disabled />
+                                ) : (
+                                    <Input
+                                        type="tel"
+                                        name="phoneNumber"
+                                        value={customerData.phoneNumber ?? ''} // Provide a default value if null
+                                        onChange={(e) => setCustomerData({ ...customerData, phoneNumber: e.target.value })}
+                                        onBlur={(e) => savePhoneNumber(String(userData.id), e.target.value)} //
+                                        placeholder="Phone Number"
+                                        required
+                                    />
+                                )}
 
                             </div>
 

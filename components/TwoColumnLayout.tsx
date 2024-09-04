@@ -33,7 +33,7 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
         return `${day} ${month} ${year}`;
     };
 
-    console.log(blogs, "blogs, TwoColumnLayout")
+    // console.log(blogs, "blogs, TwoColumnLayout")
     return (
         <div className="flex flex-col md:flex-row  pt-24 bg-stone-100 text-stone-950 py-12">
             <div className="lg:w-1/2   p-4">
