@@ -46,13 +46,12 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 interface DataTableProps {
-    data: CustomerDownloadData[];
-  
+    data: any[];
 }
 
 
 
-const DataTable: React.FC<DataTableProps> = ({ data }) => {
+const DataTable: React.FC<any> = ({ data}) => {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -60,25 +59,59 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 
 console.log(data, "data table")
 
-    const columns: ColumnDef<CustomerDownloadData>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'link',
-            header: () => 'Link',
+            accessorKey: 'id',
+            header: () => 'ID',
             cell: info => info.getValue(),
         },
         {
-            accessorKey: 'download',
-            header: () => 'download',
+            accessorKey: 'amount',
+            header: () => 'Amount',
             cell: info => {
-                const date = info.getValue();
+                const value = info.getValue() as number; // Cast to number
+                const formattedValue = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                }).format(value);
+                return formattedValue;
+            },
+        },
+        {
+            accessorKey: 'status',
+            header: () => 'Status',
+            cell: info => info.getValue(),
+        },
+        {
+            accessorKey: 'createdAt',
+            header: () => 'Created At',
+            cell: info => {
+                const value = info.getValue() as Date;
+                const formattedDate = new Intl.DateTimeFormat('id-ID', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }).format(new Date(value));
+                return formattedDate;
+            },
+        },
+        {
+            accessorKey: 'orderItems',
+            header: () => 'Order Items',
+            cell: info => {
+                const items = info.getValue() as any;
                 return (
-                    <a href={`${date}`} className="flex flex-col">
-                        <Button variant={"link"}>download</Button>
-                    </a>
+                    <ul>
+                        {items.map((item: any) => (
+                            <li key={item.id}>
+                                {item.quantity} x {item.productSlug} @ {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)}
+                            </li>
+                        ))}
+                    </ul>
                 );
             },
         },
-       
+        // Add other columns as needed
     ];
 
 
@@ -120,13 +153,13 @@ console.log(data, "data table")
             <div className="flex items-center py-4">
                 <div className="flex gap-2 w-1/2">
                     <Input
-                        placeholder="Filter link Name..."
+                        placeholder="Filter Order Items Name..."
                         onChange={(event) => {
                             const value = event.target.value;
                             setColumnFilters((old) =>
                                 old
-                                    .filter((filter) => filter.id !== "link") // Remove the existing email filter
-                                    .concat(value ? [{ id: "link", value }] : []) // Add the new email filter if value is not empty
+                                    .filter((filter) => filter.id !== "orderItems") // Remove the existing email filter
+                                    .concat(value ? [{ id: "orderItems", value }] : []) // Add the new email filter if value is not empty
                             );
                         }}
                         className="max-w-sm"

@@ -18,6 +18,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { Button } from './ui/button'
 import { UserCircleIcon } from 'lucide-react'
+import { ClockHistory } from 'react-bootstrap-icons'
 
 
 // Create a new UserButtonandMenu component and move the old return into this
@@ -100,6 +101,14 @@ const UserButtonAndMenu = () => {
                                 <Button className='w-full justify-start  px-8' variant={"ghost"}>
                                     <ArrowDownCircleIcon className="mr-2 h-6 w-auto" />
                                     Download
+                                </Button>
+                            </Link>
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item asChild className="outline-none">
+                            <Link href="/my-account/history" passHref>
+                                <Button className='w-full justify-start  px-8' variant={"ghost"}>
+                                    <ClockHistory className="mr-2 h-6 w-auto" />
+                                    History
                                 </Button>
                             </Link>
                         </DropdownMenu.Item>

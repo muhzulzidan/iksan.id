@@ -20,10 +20,10 @@ const sidebarNavItems = [
         title: "Download",
         href: "/my-account/download",
     },
-    // {
-    //     title: "Payment",
-    //     href: "/admin/payment",
-    // },
+    {
+        title: "History",
+        href: "/my-account/history",
+    },
 
 ]
 export default async function AdminPage({
