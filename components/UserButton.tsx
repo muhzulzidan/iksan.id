@@ -82,12 +82,7 @@ const UserButtonAndMenu = () => {
                             </div>
                         </DropdownMenu.Item>
                         <DropdownMenu.Separator className="my-4 " />
-                        {/* <DropdownMenu.Item asChild className="outline-none px-8 ">
-                            <Button onClick={() => openUserProfile()} className='w-full justify-start outline-none ring-0' variant={"ghost"} >
-                                <UserIcon className="mr-2 h-6 w-auto" />
-                                Profile
-                            </Button>
-                        </DropdownMenu.Item> */}
+                     
                         <DropdownMenu.Item asChild className="outline-none">
                             <Link href="/my-account" passHref>
                                 <Button className='w-full justify-start  px-8' variant={"ghost"}>
@@ -112,14 +107,7 @@ const UserButtonAndMenu = () => {
                                 </Button>
                             </Link>
                         </DropdownMenu.Item>
-                        {/* <DropdownMenu.Item asChild className="outline-none">
-                            <Link href="/admin" passHref>
-                                <Button className='w-full justify-start  px-8' variant={"ghost"}>
-                                    <ShieldCheckIcon className="mr-2 h-6 w-auto" />
-                                    Admin
-                                </Button>
-                            </Link>
-                        </DropdownMenu.Item> */}
+                       
                     </DropdownMenu.Group>
                     <DropdownMenu.Separator className="my-4" />
                     <DropdownMenu.Item asChild className="outline-none px-8">

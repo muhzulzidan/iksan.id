@@ -97,7 +97,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     slug: item.id
                 })),
                 invoice_duration: 86400, // 24 hours in seconds
-                success_redirect_url: `http://localhost:3000/my-account/payment-status?paymentId=${order.id}`,
+                success_redirect_url: `http://iksan.id/my-account/payment-status?paymentId=${order.id}`,
                 created: new Date().toISOString(), // Add the current date
                 customer: {
                     given_names: customerData.name,
