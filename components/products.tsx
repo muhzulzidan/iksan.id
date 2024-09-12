@@ -130,11 +130,30 @@ function ProductsClients({
         ? filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
         : [];
 
+    const getPaginationRange = () => {
+        const totalNumbers = 5;
+        const half = Math.floor(totalNumbers / 2);
+
+        let start = Math.max(1, currentPage - half);
+        let end = Math.min(totalPages, currentPage + half);
+
+        if (currentPage <= half) {
+            end = Math.min(totalNumbers, totalPages);
+        } else if (currentPage + half >= totalPages) {
+            start = Math.max(1, totalPages - totalNumbers + 1);
+        }
+
+        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    };
+
+    const paginationRange = getPaginationRange();
+
+
     return (
         <>
-            <div className="flex flex-col items-center justify-center w-full max-w-screen-lg mx-auto py-10 pt-0 bg-stone-100 text-stone-950 ">
-                <section className='flex flex-col'>
-                    <section className='flex gap-4 justify-center pt-12'>
+            <div className="flex flex-col items-center justify-center max-w-screen-lg mx-auto px-4 py-10 pt-0 bg-stone-100 text-stone-950 ">
+                <section className='flex flex-col w-full'>
+                    <section className='grid grid-cols-3 md:px-12 md:flex gap-4 justify-center pt-12'>
                         {productsCategories.map((category) => (
                             <button
                                 key={category.slug}
@@ -147,7 +166,7 @@ function ProductsClients({
                         ))}
                     </section>
 
-                    <div className='flex flex-col mt-12 gap-4 px-10'>
+                    <div className='flex flex-col mt-12 gap-4 md:px-10'>
                         {selectedCategory === 'all' && (
                             <>
                                 <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -446,7 +465,7 @@ function ProductsClients({
                             </div>
                         )}
                       
-                      <div className='py-12'>
+                        <div className='py-12 w-full'>
                             <Pagination>
                                 <PaginationContent>
                                     <PaginationItem>
@@ -455,13 +474,13 @@ function ProductsClients({
                                             className={currentPage === 1 ? 'disabled-class' : ''}
                                         />
                                     </PaginationItem>
-                                    {[...Array(totalPages)].map((_, index) => (
-                                        <PaginationItem key={index}>
+                                    {paginationRange.map((page) => (
+                                        <PaginationItem key={page}>
                                             <PaginationLink
-                                                isActive={currentPage === index + 1}
-                                                onClick={() => handlePageClick(index + 1)}
+                                                isActive={currentPage === page}
+                                                onClick={() => handlePageClick(page)}
                                             >
-                                                {index + 1}
+                                                {page}
                                             </PaginationLink>
                                         </PaginationItem>
                                     ))}
@@ -473,7 +492,7 @@ function ProductsClients({
                                     </PaginationItem>
                                 </PaginationContent>
                             </Pagination>
-                      </div>
+                        </div>
                     </div>
                 </section>
             </div>

@@ -152,6 +152,20 @@ export async function getWallpaper() {
 
     return [];
 }
+
+export async function getWallpaperBySlug(slug: string) {
+  const entries = await client.getEntries({
+    content_type: 'wallpaper',
+    'fields.slug': slug,
+  });
+
+  if (entries.items && entries.items.length > 0) {
+    return entries.items[0].fields;
+  }
+
+  return null;
+}
+
 export async function getBusinessInfo(slug: string) {
   const entries = await client.getEntries({
     content_type: 'businessInfo', // Ensure this matches the content type ID in Contentful

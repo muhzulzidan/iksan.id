@@ -9,6 +9,11 @@ import Layout from '@/components/layout';
 import CoverImageContentful from '@/components/cover-image-contentful';
 import wallpaperIcon from '@/app/images/wallpaperIcon.png';
 import { usePathname } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import slugify from 'slugify';
+import Link from 'next/link';
 
 const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTitles, metaDefault }) => {
     const router = usePathname();
@@ -18,6 +23,18 @@ const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTit
 
     const [isOpen, setIsOpen] = useState(false);
     const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
+
+    const [searchQuery, setSearchQuery] = useState('');
+    // const [selectedWallpaper, setSelectedWallpaper] = useState(null);
+    // const [isOpen, setIsOpen] = useState(false);
+
+    const handleSearchChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredWallpapers = wallpapers.filter((wallpaper) =>
+        wallpaper.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     const openModal = (wallpaper: Wallpaper) => {
         setSelectedWallpaper(wallpaper);
@@ -42,20 +59,47 @@ const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTit
                         </Markdown>
                     </p>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {wallpapers.map((wallpaper, index) => (
-                        <div key={index} className="relative group cursor-pointer">
-                            <div
-                                className={`rounded-lg transform transition-transform duration-300 group-hover:scale-105`}
-                                onClick={() => openModal(wallpaper)}
-                            >
-                                <CoverImageContentful
-                                    title={wallpaper.title}
-                                    url={wallpaper.image.fields.file.url}
 
-                                />
+                <div className="mb-8 flex justify-center">
+                    <div className="relative w-full max-w-md">
+                        <Input
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            placeholder="Search wallpapers..."
+                            className="px-4 py-2 border rounded-lg w-full"
+                        />
+                        <Button
+                            className="absolute right-2 top-0 bg-transparent border-none cursor-pointer"
+                            onClick={() => console.log('Search clicked')}
+                        >
+                            <Search className="h-5 w-5 text-gray-500" />
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {filteredWallpapers.map((wallpaper, index) => (
+                        <Link key={index} href={`/wallpaper/${slugify(wallpaper.title, { lower: true })}`} passHref>
+                            <div className="relative group cursor-pointer p-2">
+                                <div
+                                    className={`rounded-lg transform transition-transform duration-300 group-hover:scale-105 shadow-lg bg-white`}
+                                >
+                                    <div className="overflow-hidden rounded-t-lg">
+                                        <CoverImageContentful
+                                            title={wallpaper.title}
+                                            url={wallpaper.image.fields.file.url}
+                                            className="w-full h-48 object-cover"
+                                        />
+                                    </div>
+                                    <div className="p-4 text-center">
+                                        <h4 className="text-lg font-semibold text-gray-800">
+                                            {wallpaper.title}
+                                        </h4>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 {selectedWallpaper && (

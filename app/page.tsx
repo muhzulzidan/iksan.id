@@ -213,9 +213,9 @@ const Page = async () => {
           </div>
         </section>
         <section className='bg-[#fdf9eb] w-full p-4 py-20'>
-          <div className="max-w-screen-lg mx-auto flex gap-4 ">
+          <div className="max-w-screen-lg mx-auto flex flex-col md:flex-row gap-4 ">
 
-            <div className="w-8/12 flex justify-center items-center"> 
+            <div className="w-full md:w-8/12  flex justify-center items-center"> 
             <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border  rounded-lg aspect-square " />
             </div>
 
@@ -248,7 +248,9 @@ const Page = async () => {
         <section className="bg-stone-100 w-full max-w-screen-lg mx-auto pt-32">
           <h2 className='text-center text-3xl font-bold py-1 w-[80%] mx-auto'>{homepageData.headingSection3}</h2>
           <p className='text-center text-lg mb-0'>{homepageData?.descriptionSection3}</p>
+         <div className="container px-4"> 
           <ProductsClients templates={templates} templateCategory={templateCategory} products={products} />
+          </div>
         </section>
 
         {/* <section className='bg-stone-100 px-4 w-full max-w-screen-lg mx-auto py-12 text-stone-950  '>
