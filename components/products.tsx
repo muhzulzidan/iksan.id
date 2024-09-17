@@ -153,7 +153,7 @@ function ProductsClients({
         <>
             <div className="flex flex-col items-center justify-center max-w-screen-lg mx-auto px-4 py-10 pt-0 bg-stone-100 text-stone-950 ">
                 <section className='flex flex-col w-full'>
-                    <section className='grid grid-cols-3 md:px-12 md:flex gap-4 justify-center pt-12'>
+                    <section className='grid grid-cols-5 md:px-12 md:flex gap-4 justify-center pt-12'>
                         {productsCategories.map((category) => (
                             <button
                                 key={category.slug}
@@ -161,7 +161,7 @@ function ProductsClients({
                                 onClick={() => handleCategorySelect(category.slug)}
                             >
                                 {category.icon}
-                                {category.slug}
+                                <span className="hidden md:block">{category.slug}</span>
                             </button>
                         ))}
                     </section>

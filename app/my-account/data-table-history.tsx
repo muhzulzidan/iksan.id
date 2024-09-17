@@ -1,6 +1,8 @@
+// data-table-history.tsx
+
 "use client"
 
-import { SetStateAction, useState, useRef } from "react";
+import { SetStateAction, useState, useRef, Suspense } from "react";
 import {
     ColumnDef,
     flexRender,
@@ -44,20 +46,31 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { Skeleton } from '@/components/ui/skeleton';
 
+const SkeletonDataTable: React.FC = () => {
+    return (
+        <div className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-6 w-1/4" />
+        </div>
+    );
+};
 interface DataTableProps {
     data: any[];
 }
 
-
-
-const DataTable: React.FC<any> = ({ data}) => {
+const DataTable: React.FC<any> = ({ data }) => {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-
-console.log(data, "data table")
 
     const columns: ColumnDef<any>[] = [
         {
@@ -114,7 +127,6 @@ console.log(data, "data table")
         // Add other columns as needed
     ];
 
-
     const table = useReactTable({
         data,
         columns,
@@ -147,83 +159,82 @@ console.log(data, "data table")
     }
 
     return (
+
         <div className="w-full">
-
-
             <div className="flex items-center py-4">
-                <div className="flex gap-2 w-1/2">
-                    <Input
-                        placeholder="Filter Order Items Name..."
-                        onChange={(event) => {
-                            const value = event.target.value;
-                            setColumnFilters((old) =>
-                                old
-                                    .filter((filter) => filter.id !== "orderItems") // Remove the existing email filter
-                                    .concat(value ? [{ id: "orderItems", value }] : []) // Add the new email filter if value is not empty
-                            );
-                        }}
-                        className="max-w-sm"
-                    />
-                </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Filter Column
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter(
-                                (column) => column.getCanHide()
-                            )
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            toggleColumnVisibility(column, !!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
+               <Suspense fallback={<SkeletonDataTable />}>
+                    <div className="flex gap-2 w-1/2">
+                        <Input
+                            placeholder="Filter Order Items Name..."
+                            onChange={(event) => {
+                                const value = event.target.value;
+                                setColumnFilters((old) =>
+                                    old
+                                        .filter((filter) => filter.id !== "orderItems") // Remove the existing email filter
+                                        .concat(value ? [{ id: "orderItems", value }] : []) // Add the new email filter if value is not empty
+                                );
+                            }}
+                            className="max-w-sm"
+                        />
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="ml-auto">
+                                Filter Column
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter(
+                                    (column) => column.getCanHide()
                                 )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            className="capitalize"
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) =>
+                                                toggleColumnVisibility(column, !!value)
+                                            }
+                                        >
+                                            {column.id}
+                                        </DropdownMenuCheckboxItem>
+                                    )
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+               </Suspense>
             </div>
-
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows.map((row) => (
-                            <TableRow key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
-
-
-           
+            <Suspense fallback={<SkeletonDataTable />}>
+                <div className="rounded-md border">
+                    <Table>
+                        <TableHeader>
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id} className="bg-secondary1 text-stone-50 hover:bg-blue-600">
+                                    {headerGroup.headers.map((header) => (
+                                        <TableHead key={header.id}>
+                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                        </TableHead>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </TableHeader>
+                        <TableBody>
+                            {table.getRowModel().rows.map((row) => (
+                                <TableRow key={row.id}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </Suspense>
             <div className="flex items-center justify-between space-x-2 py-4">
                 <Button
                     variant="outline"
@@ -249,9 +260,8 @@ console.log(data, "data table")
                 </Button>
             </div>
         </div>
-    )
-}
 
+    );
+};
 
-
-export default DataTable
+export default DataTable;

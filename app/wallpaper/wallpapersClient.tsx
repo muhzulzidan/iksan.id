@@ -48,7 +48,7 @@ const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTit
     };
     return (
         <Layout metaDefault={metaDefault}>
-            <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
                 <div className='gap-4 mb-8 flex justify-center items-center flex-col'>
                     <Image width={150} height={150} className="rounded-xl" src={wallpaperIcon} alt="wallpaper pages iksan bangsawan" />
@@ -78,7 +78,7 @@ const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTit
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
                     {filteredWallpapers.map((wallpaper, index) => (
                         <Link key={index} href={`/wallpaper/${slugify(wallpaper.title, { lower: true })}`} passHref>
                             <div className="relative group cursor-pointer p-2">
@@ -93,7 +93,7 @@ const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTit
                                         />
                                     </div>
                                     <div className="p-4 text-center">
-                                        <h4 className="text-lg font-semibold text-gray-800">
+                                        <h4 className="text-sm font-semibold text-gray-800">
                                             {wallpaper.title}
                                         </h4>
                                     </div>

@@ -76,7 +76,7 @@ const ProfilePage = ({ userData }: { userData: UserData }) => {
         }
     };
 
-    console.log(userData, "userData");
+    // console.log(userData, "userData");
     return (
         <div className="">
             <Dialog open={showPhoneDialog} onOpenChange={setShowPhoneDialog}>

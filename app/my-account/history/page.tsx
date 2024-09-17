@@ -1,8 +1,22 @@
+// pages/member/history/page.tsx
+
 import { getCustomerByEmail } from "@/lib/prisma/getCustomerByEmail";
 import { getCustomerTransactions } from "@/lib/prisma/getCustomerTransactions";
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { currentUser } from '@clerk/nextjs/server';
 import DataTable from "../data-table-history";
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
+const SkeletonDataTable: React.FC = () => {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-6 w-3/4" />
+      <Skeleton className="h-6 w-1/2" />
+      <Skeleton className="h-6 w-1/4" />
+    </div>
+  );
+};
 export default async function HistoryPage() {
   // Get the Backend API User object when you need access to the user's information
   const user = await currentUser();
@@ -19,7 +33,7 @@ export default async function HistoryPage() {
     return <div>Error: Customer not found</div>;
   }
 
-const downloadLinks = await getCustomerTransactions(customer.id);
+  const downloadLinks = await getCustomerTransactions(customer.id);
   console.log(downloadLinks, "downloadLinks");
 
   const transformedData = downloadLinks.map((link: { id: any; total: any; status: any; createdAt: any; paidAt: any; orderItems: any[]; }) => ({
@@ -37,12 +51,14 @@ const downloadLinks = await getCustomerTransactions(customer.id);
   }));
 
   return (
-    <div className="flex flex-col gap-6">
-      {transformedData.length > 0 ? (
-        <DataTable data={transformedData} />
-      ) : (
-        <div>No Transactions yet</div>
-      )}
-    </div>
+    <Suspense fallback={<SkeletonDataTable />}>
+      <div className="flex flex-col gap-6">
+        {transformedData.length > 0 ? (
+          <DataTable data={transformedData} />
+        ) : (
+          <div>No Transactions yet</div>
+        )}
+      </div>
+    </Suspense>
   );
 }

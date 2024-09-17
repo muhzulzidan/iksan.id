@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowRightCircleFill, Folder, Calendar } from 'react-bootstrap-icons';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useRouter } from 'next/navigation'
-
+import ClampLines from "react-clamp-lines";
 import { LatestContentSection } from "./LatestContentSection"
 import CoverImageContentful from "./cover-image-contentful";
 import { cn } from "@/lib/utils";
@@ -76,9 +76,17 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
                                     </div>
                                    
 
-                                    <div className='flex flex-col text-sm w-full'>
-
-                                        <h3 className=" ">{blog.postTitle}</h3>
+                                    <div className='flex flex-col text-sm w-full '>
+                                        <ClampLines
+                                            text={blog.postTitle}
+                                            id="post-title"
+                                            lines={2}
+                                            ellipsis="..."
+                                            moreText="Expand"
+                                            lessText="Collapse"
+                                            className="line-clamp-3"
+                                            innerElement="h3"
+                                        />
                                         <div className="flex gap-2 pt-2 text-stone-600">
                                             <p className='flex gap-2 items-center'> <Calendar /> {formatDate(blog.publishDate)}</p>
                                             {/* <p className='flex gap-2 items-center'> <Folder /> {blog.node.categories.edges[0].node.name}</p> */}

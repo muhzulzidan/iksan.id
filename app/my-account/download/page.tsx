@@ -2,6 +2,19 @@ import DownloadListPage from "./download";
 import { getCustomerByEmail } from "@/lib/prisma/getCustomerByEmail";
 import { getCustomerDownloadLinks } from "@/lib/prisma/customerDownloadLinks";
 import { auth, currentUser } from '@clerk/nextjs/server';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Suspense } from "react";
+
+const SkeletonDownloadList: React.FC = () => {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-6 w-3/4" />
+      <Skeleton className="h-6 w-1/2" />
+      <Skeleton className="h-6 w-1/4" />
+    </div>
+  );
+};
 
 export default async function SettingsAccountPage() {
   // Get the Backend API User object when you need access to the user's information
@@ -23,8 +36,10 @@ export default async function SettingsAccountPage() {
   console.log(downloadLinks, "downloadLinks");
 
   return (
-    <div className="flex flex-col gap-6">
-      <DownloadListPage downloadsData={downloadLinks} />
-    </div>
+    <Suspense fallback={<SkeletonDownloadList />}>
+      <div className="flex flex-col gap-6">
+        <DownloadListPage downloadsData={downloadLinks} />
+      </div>
+    </Suspense>
   );
 }

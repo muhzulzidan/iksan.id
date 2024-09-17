@@ -1,47 +1,47 @@
-// app/wallpaper/[slug]/wallpaperClient.tsx
-"use client";
+// wallpaperClient.tsx
+"use client"
 
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import slugify from 'slugify';
 import CoverImageContentful from '@/components/cover-image-contentful';
-import Layout from '@/components/layout';
+import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import Layout from '@/components/layout';
+import Link from 'next/link';
+import slugify from 'slugify';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 
 interface Wallpaper {
     title: string;
-    description: string;
+    description?: any;
     image: {
         fields: {
             file: {
                 url: string;
+                details: {
+                    image: {
+                        height: number;
+                        width: number;
+                    };
+                };
+                fileName: string;
+                contentType: string;
+                size: number;
             };
         };
     };
+    copyright?: string;
+    designer?: string;
 }
 
-interface MetaDefault {
-    title: string;
-    description: string;
-    image: {
-        fields: {
-            file: {
-                url: string;
-            };
-        };
-    };
-}
-
-interface WallpaperPageClientProps {
-    wallpaper: Wallpaper;
-    wallpapers: Wallpaper[];
+interface WallpaperClientProps {
+    wallpaper: any;
+    wallpapers: any[];
     metaDefault: MetaDefault;
 }
 
-const WallpaperPageClient: React.FC<WallpaperPageClientProps> = ({ wallpaper, wallpapers, metaDefault }) => {
+const WallpaperClient: React.FC<WallpaperClientProps> = ({ wallpaper, wallpapers, metaDefault }) => {
     const getCommonWords = (str1: string, str2: string) => {
         const words1 = str1.toLowerCase().split(' ');
         const words2 = str2.toLowerCase().split(' ');
@@ -55,9 +55,26 @@ const WallpaperPageClient: React.FC<WallpaperPageClientProps> = ({ wallpaper, wa
 
     const router = useRouter();
 
+    console.log(wallpaper, "wallpaper");
+    const options = {
+        renderMark: {
+            [MARKS.BOLD]: (text: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined) => <strong>{text}</strong>,
+        },
+        renderNode: {
+            [BLOCKS.PARAGRAPH]: (node: any, children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined) => <p className="text-xs text-gray-700 mb-4">{children}</p>,
+            [BLOCKS.HEADING_1]: (node: any, children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined) => <h1 className="text-3xl font-bold mb-4">{children}</h1>,
+            [BLOCKS.HEADING_2]: (node: any, children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | null | undefined) => <h2 className="text-2xl font-bold mb-4">{children}</h2>,
+            // Add more renderers as needed
+        },
+    };
+
+    const resolution = wallpaper.image.fields.file.details.image
+        ? `${wallpaper.image.fields.file.details.image.width} x ${wallpaper.image.fields.file.details.image.height}`
+        : '';
+
     return (
-      <Layout>
-            <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Layout>
+            <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <Button
                     variant={"ghost"}
                     className="flex items-center mb-4 text-gray-700 hover:text-gray-900"
@@ -68,7 +85,7 @@ const WallpaperPageClient: React.FC<WallpaperPageClientProps> = ({ wallpaper, wa
                 </Button>
 
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden mb-8 grid grid-cols-1 md:grid-cols-2">
-                    <div className="relative ">
+                    <div className="relative">
                         <CoverImageContentful
                             url={wallpaper.image.fields.file.url}
                             title={wallpaper.title}
@@ -77,10 +94,33 @@ const WallpaperPageClient: React.FC<WallpaperPageClientProps> = ({ wallpaper, wa
                     </div>
                     <div className="p-6">
                         <h1 className="text-3xl font-bold mb-4">{wallpaper.title}</h1>
-                        <p className="text-lg text-gray-700 mb-4">{wallpaper.description}</p>
+                        {wallpaper.description && (
+                            <div className="text-xs text-gray-700 mb-4">
+                                {documentToReactComponents(wallpaper.description, options)}
+                            </div>
+                        )}
+                       <div className='flex flex-col gap-0'>
+                            {resolution && (
+                                <p className="text-xs text-gray-700 ">Resolution: {resolution}</p>
+                            )}
+                            {wallpaper.copyright && (
+                                <p className="text-xs text-gray-700 ">Copyright: {wallpaper.copyright}</p>
+                            )}
+                            {wallpaper.designer && (
+                                <p className="text-xs text-gray-700 ">Designer: {wallpaper.designer}</p>
+                            )}
+                       </div>
+                        {wallpaper.image.fields.file.url && (
+                            <Button
+                                className="mt-4 bg-secondary3 hover:scale-110 transform transition-transform duration-300 hover:bg-yellow-800"
+                                onClick={() => window.open(wallpaper.image.fields.file.url, '_blank')}
+                            >
+                                Download
+                            </Button>
+                        )}
                     </div>
                 </div>
-    
+
                 {relatedWallpapers.length > 0 && (
                     <div>
                         <h2 className="text-2xl font-bold mb-4">Related Wallpapers</h2>
@@ -111,8 +151,8 @@ const WallpaperPageClient: React.FC<WallpaperPageClientProps> = ({ wallpaper, wa
                     </div>
                 )}
             </div>
-      </Layout>
+        </Layout>
     );
 };
 
-export default WallpaperPageClient;
+export default WallpaperClient;
