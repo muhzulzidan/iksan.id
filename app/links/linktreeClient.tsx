@@ -2,13 +2,9 @@
 "use client"
 
 import React from 'react';
-
-
 import Image from 'next/image';
 import Link from 'next/link';
 import CoverImageContentful from "@/components/cover-image-contentful";
-
-
 import {
     Carousel,
     CarouselContent,
@@ -30,7 +26,7 @@ import folder from "@/app/images/folder.png"
 
 import { ArrowRightCircleFill, Calendar, Facebook, Folder, Instagram, Linkedin, Telegram, Tiktok, Twitter, Whatsapp, Youtube } from 'react-bootstrap-icons';
 
-const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, templates, ebooks, templateCategory,  }) => {
+const LinktreeClient: React.FC<LinktreeClientProps> = ({  templates, ebooks, templateCategory,  }) => {
 
     const videoCourse = [
         { title: 'Build Your Personal Branding on Socmed & Boost Your Career', url: "https://iksanbangsawan.mayar.link/course/build-your-personal-branding-on-socmed-boost-your-career", img: videoCourse1 },
@@ -46,7 +42,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
         },
     };
 
-    const blogs = edges.slice(0, 3); // Extract the first 5 items from the 'edges' array
+    // const blogs = edges.slice(0, 3); // Extract the first 5 items from the 'edges' array
     const formatDate = (inputDate: string | number | Date) => {
         const months = [
             'jan', 'feb', 'mar', 'apr', 'may', 'jun',
@@ -120,21 +116,21 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                     </a>
 
                 </div>
-                <div className='flex flex-col gap-8'>
 
-                    <Link href={"https://wasap.at/bBl7Jg"} className='shadow-costum border border-stone-200 rounded-lg flex  items-center gap-4 '>
-                        <div className=" relative p-[15%] flex w-1/12 rounded-md">
-                            <Image
-                                className='rounded-l-lg'
-                                src={fotoiksanpembicara}
-                                alt="iksanbangsawan"
-                                placeholder='blur'
-                                priority={true}
-                                // width={400} height={400} 
-                                sizes="w-full h-auto top-0 left-0 "
-                                style={{ objectFit: "contain" }}
-                                fill />
-                        </div>
+                <div className='flex flex-col gap-8 p-2'>
+
+                    <Link href={"https://wasap.at/bBl7Jg"} className='shadow-costum border border-stone-200 rounded-2xl grid grid-cols-2  items-center gap-4 p-4'>
+                       
+                        <Image
+                            className='rounded-l-lg'
+                            src={fotoiksanpembicara}
+                            alt="iksanbangsawan"
+                            placeholder='blur'
+                            priority={true}
+                            // width={400} height={400} 
+                            sizes="w-full h-auto top-0 left-0 rounded-xl"
+                            />
+                    
                         <h3 className="font-bold text-lg">Endorsement  / Invitation</h3>
                     </Link>
                     <div className='flex flex-col shadow-costum border border-stone-200 rounded-lg '>
@@ -333,7 +329,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                             <h3 className="font-bold text-lg">Sapiperjaka</h3>
                         </div>
                     </Link>
-                    <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col py-6 p-4 items-center gap-6 '>
+                    {/* <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col py-6 p-4 items-center gap-6 '>
                         <h4 className='text-start font-mabry-bold'>
                             Featured Blog
                         </h4>
@@ -356,7 +352,7 @@ const LinktreeClient: React.FC<LinktreeClientProps> = ({ allPosts: { edges }, te
                                 </Link>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
                     <div className='shadow-costum border border-stone-200 rounded-lg flex flex-col   gap-4 py-4'>
                         <h4 className=' font-mabry-bold text-xl text-center px-8'>
                             Join Community

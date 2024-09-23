@@ -91,42 +91,7 @@ function KelasClient({
                         })}
                     </div>
                 </div>
-                {/* <section className='flex flex-wrap justify-center px-4 container'>
-                    {kelas.map((template) => {
-                        const startDate = template.startDate ? parseISO(template.startDate) : null;
-                        const endDate = template.endDate ? parseISO(template.endDate) : null;
-                        const numberOfDays = startDate && endDate ? differenceInDays(endDate, startDate) : null;
-                        const displayDays = numberOfDays !== null ? numberOfDays : "Coming Soon";
-
-                        return (
-                            <div key={template.slug} className="bg-white shadow-md rounded-lg p-6 m-4 w-full flex flex-col md:flex-row gap-4 md:justify-center md:items-center">
-                                <div className='w-full '>
-                                    <CoverImageContentful
-                                        title={template.image.fields.title}
-                                        url={`https:${template.image.fields.file.url}`}
-                                        className="rounded-xl w-full h-40 md:h-full object-cover"
-                                    />
-                                </div>
-                                <div className='md:w-8/12 '>
-                                    <h1 className="text-2xl font-bold mt-4">{template.title}</h1>
-                                    <p className=" text-md mt-2 line-clamp-2">{template.description.content[0].content[0].value}</p>
-                                    <p className="mt-2"><strong>Duration:</strong> {displayDays} days (from {template.startDate} to {template.endDate})</p>
-                                    <p className=''><strong>Monthly Price:</strong> <span className="">{formatPrice(template.monthlyPrice)}</span></p>
-                                    <p className='text-secondary2'><strong>Package Price:</strong> <span >{formatPrice(template.monthPackagePrice)}</span></p>
-                                    <p><strong>Categories:</strong> {template.category.join(', ')}</p>
-                                    <div className="mt-4 flex gap-4 justify-between w-auto">
-                                        <Button className="break-words w-auto text-sm whitespace-normal py-8 bg-secondary2 font-extrabold text-start flex gap-2" onClick={() => router.push(`/checkout-kelas?kelas=${template.slug}`)}>
-                                            <CartPlusFill className='w-8 h-auto' /> Choose Package
-                                        </Button>
-                                        <Button className="break-words w-auto text-sm whitespace-normal py-8 bg-secondary3 text-stone-950 font-extrabold text-start flex gap-2" onClick={() => addToCart({ id: `${template.slug}-3-month-package`, name: `${template.title} (3-Month Package)`, price: template.monthPackagePrice, image: template.image, quantity: 1 })}>
-                                            <CartPlusFill className='w-8 h-auto' /> Add to Cart (3-Month Package)
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </section> */}
+               
             </div>
         </Layout>
     );

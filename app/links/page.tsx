@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function LinktreePage() {
 
-    const allPosts = await getAllPostsForHome(false);
+    // const allPosts = await getAllPostsForHome(false);
     const ebooks = await getEbooks() as unknown as Ebook[];
     const templates = await getTemplates() as unknown as Template[]; 
     const templateCategory = await getTtemplateCategory();
@@ -66,7 +66,7 @@ export default async function LinktreePage() {
 
     return (
         <LinktreeClient
-            allPosts={allPosts}
+            // allPosts={allPosts}
             templates={templates}
             ebooks={ebooks}
             templateCategory={templateCategory}

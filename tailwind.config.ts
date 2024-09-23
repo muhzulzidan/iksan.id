@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss"
 
 
-import colors from 'tailwindcss/colors'
+import colors, { emerald } from 'tailwindcss/colors'
 
 const config = {
   darkMode: ["class"],
@@ -25,6 +25,7 @@ const config = {
       orange: colors.orange,
       yellow: colors.yellow,
       pink: colors.pink,
+      emerald: colors.emerald,
     },
     container: {
       center: true,

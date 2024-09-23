@@ -1,6 +1,6 @@
-import React from "react"; // Ensure React is imported for JSX to work
+import React, { Suspense } from "react"; // Ensure React is imported for JSX to work
 import { Metadata } from 'next'
-import { getHomepage, getMetaDefault, getTemplates, getTtemplateCategory, getProducts, getBlogs } from "@/lib/contentful";
+import { getHomepage, getMetaDefault, getTemplates, getTtemplateCategory, getProducts, getBlogs, getKelas } from "@/lib/contentful";
 import Markdown from 'react-markdown'
 import { UserButton, SignInButton } from "@clerk/nextjs";
 
@@ -17,6 +17,8 @@ import Image from "next/image";
 import Capcut from "@/app/images/Expert-capcut-square-50.jpg";
 import TemplatesClient from '@/app/template/templateclient';
 import ProductsClients from "@/components/products"
+import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 // Ensure the environment variable is set, otherwise use a fallback URL
 if (!API_URL) {
   throw new Error("WORDPRESS_API_URL environment variable is not set.");
@@ -145,6 +147,8 @@ const Page = async () => {
   const allPosts = await getBlogs();
   // const allPostsData = await getAllPostsForHome();
   const homepageDataResult = await getHomepage();
+  const kelas: any[] = await getKelas();
+  const comingSoonKelas = kelas.filter((k: Kelas) => k.comingSoon);
 
   const homepageData: HomepageData = homepageDataResult[0] as unknown as HomepageData;
 
@@ -168,14 +172,14 @@ const Page = async () => {
     description: `${description}`,
   }
 
-
+  console.log('kelas', kelas)
 
   return (
     <Layout metaDefault={metaDefault}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+      />
       <main className="flex flex-col flex-wrap ">
 
 
@@ -212,44 +216,46 @@ const Page = async () => {
 
           </div>
         </section>
-        <section className='bg-[#fdf9eb] w-full p-4 py-20'>
-          <div className="max-w-screen-lg mx-auto flex flex-col md:flex-row gap-4 ">
+        <Suspense fallback={<Skeleton className="h-[20rem] w-full" />}>
+          <section className='bg-[#fdf9eb] w-full p-4 py-20'>
+            {comingSoonKelas.length > 0 ? (
+              comingSoonKelas.map((k, index) => (
 
-            <div className="w-full md:w-8/12  flex justify-center items-center"> 
-            <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border  rounded-lg aspect-square " />
-            </div>
+                <div key={index} className="max-w-screen-lg mx-auto flex flex-col md:flex-row gap-4 ">
 
-            <div className="flex flex-col w-full justify-center">
-              <h3 className="text-2xl ">🔥 COMING SOON 🔥</h3>
-              <hr className="border-b border-stone-700 my-4" />
-              <div className="prose text-sm ">
+                  <div className="w-full md:w-8/12  flex justify-center items-center">
+                    <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border  rounded-lg aspect-square " />
+                    <CoverImageContentful
+                      title={k.title}
+                      url={k?.image.fields.file.url}
+                      className="rounded-xl w-full lg:h-80 my-8"
+                    />
+                  </div>
 
-                <p>
-                  Ingin bisnis Anda semakin dikenal dan mendukung proses adanya calon konsumen?
+                  <div className="flex flex-col w-full justify-center">
+                    <h3 className="text-2xl ">🔥 COMING SOON 🔥</h3>
+                    <hr className="border-b border-stone-700 my-4" />
+                    <div className="prose text-sm ">
+                      <Markdown>{k.comingSoonText}</Markdown>
+                    </div>
+                    <Link href={`/kelas/${k.slug}`} className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-tertiary1 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4 ">
+                      Lihat Info Detail
+                    </Link>
+                  </div>
+                </div>
 
-                </p>
-                <p>   Saatnya manfaatkan kekuatan konten video dengan cepat dan efektif!</p>
-
-                <p>Ikuti workshop KELAS EXPERT: SKILL EDITING VIDEO PROMOSI. Belajar Capcut secara intensif dan kuasai teknik mengedit video yang menarik dan profesional.</p>
-
-                <p> Dengan video yang berkualitas, Anda bisa meningkatkan engagement di media sosial, memperkenalkan produk atau jasa secara lebih efektif, dan tentu saja, meningkatkan penjualan. </p>
-
-                <p>     Jadikan bisnis Anda lebih menonjol dengan konten video yang kreatif dan menarik! Silakan lihat informasi lengkapnya dengan klik tombol berikut:</p>
-
-              </div>
-              <a className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-tertiary1 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4 ">
-                Lihat Info Detail
-              </a>
-            </div>
-          </div>
-        </section>
-      
+              ))
+            ) : (
+              <div>No upcoming classes</div>
+            )}
+          </section>
+        </Suspense>
 
         <section className="bg-stone-100 w-full max-w-screen-lg mx-auto pt-32">
           <h2 className='text-center text-3xl font-bold py-1 w-[80%] mx-auto'>{homepageData.headingSection3}</h2>
           <p className='text-center text-lg mb-0'>{homepageData?.descriptionSection3}</p>
-         <div className="container px-4"> 
-          <ProductsClients templates={templates} templateCategory={templateCategory} products={products} />
+          <div className="container px-4">
+            <ProductsClients templates={templates} templateCategory={templateCategory} products={products} />
           </div>
         </section>
 

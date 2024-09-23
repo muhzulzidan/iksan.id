@@ -223,7 +223,7 @@ interface TemplatesClientProps {
 interface Kelas {
     category: string[];
     startDate: string;
-    endDate: string;
+    endDate?: string;
     description: Description;
     excerpt: {
         data: any;
@@ -235,9 +235,10 @@ interface Kelas {
     price2: number;
     priceDesc: string[];
     slug: string;
-    startDate: string;
     subscription: boolean;
     title: string;
+    comingSoon?: boolean;
+    comingSoonText?: string;
 }
 
 interface KelasProps {
@@ -411,6 +412,7 @@ interface LinktreeClientProps {
 
 
 interface GadgetItem {
+    shopeeLink: string;
     title: string;
     link: string;
     categories: string;

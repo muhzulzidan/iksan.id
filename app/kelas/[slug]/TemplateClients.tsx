@@ -44,7 +44,7 @@ const TemplateClients = ({ template }: { template: any }) => {
             [MARKS.BOLD]: (text: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <strong>{text}</strong>,
         },
         renderNode: {
-            [BLOCKS.PARAGRAPH]: (node: any, children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <p>{children}</p>,
+            [BLOCKS.PARAGRAPH]: (node: any, children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <p className='my-2'>{children}</p>,
             [BLOCKS.HEADING_1]: (node: any, children: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | null | undefined) => <h1>{children}</h1>,
             // Add more custom renderers as needed
         },
@@ -135,7 +135,7 @@ const TemplateClients = ({ template }: { template: any }) => {
                                     Dapatkan Segera
                                 </Button>
                             </div>
-                            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
+                            <div className='grid grid-cols-1  gap-4 mb-4'>
 
 
                                 <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price1, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
@@ -161,14 +161,14 @@ const TemplateClients = ({ template }: { template: any }) => {
                         </div>
                     </div>
                     <CoverImageContentful
-                        title="template iksan bangsawan indonesia image"
+                        title={template.title}
                         url={template?.image.fields.file.url}
                         className="rounded-xl w-full lg:h-80 my-8"
                     />
                 </div>
 
                 {/* testimony */}
-                <section className='grid grid-cols-1 gap-4 md:grid-cols-3 py-12'>
+                {/* <section className='grid grid-cols-1 gap-4 md:grid-cols-3 py-12'>
                     {Array.from({ length: 3 }).map((_, index) => (
                         <Card key={index} className='text-center'>
 
@@ -199,12 +199,12 @@ const TemplateClients = ({ template }: { template: any }) => {
 
 
                     ))}
-                </section>
+                </section> */}
 
 
-                <div ref={myRef} className='flex flex-col prose max-w-none px-4 w-full'>
+                <div ref={myRef} className='flex flex-col prose max-w-none px-4 pt-12 w-full'>
                     {documentToReactComponents(template.description, options)}
-                    <div className='flex flex-col w-full'>
+                    {/* <div className='flex flex-col w-full'>
                         <h3>Frequently Asked Questions</h3>
 
                         <div className='not-prose pt-2 pb-12'>
@@ -231,7 +231,7 @@ const TemplateClients = ({ template }: { template: any }) => {
                                 </AccordionItem>
                             </Accordion>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className='flex gap-4'>

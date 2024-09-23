@@ -11,8 +11,6 @@ import { ArrowLeft } from 'react-bootstrap-icons';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
-
-
 interface MetaDefault {
     title: string;
     description: string;
@@ -68,14 +66,26 @@ const GadgetPageClient: React.FC<GadgetPageClientProps> = ({ gadget, gadgets, me
                     <div className="p-6">
                         <h1 className="text-3xl font-bold mb-4">{gadget.title}</h1>
                         <p className="text-lg text-gray-700 mb-4">{gadget.description}</p>
-                        <Button >
-                            <a 
-                            href={gadget.link} 
-                            target="_blank" 
-                            rel="noopener noreferrer">
-                                Beli 
+                       <div className='w-full grid grid-cols-1 gap-4'>
+                            <a
+                                className=''
+                                href={gadget.link}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Button className='bg-secondary2 hover:bg-purple-600 hover:text-stone-50 '>
+                                    Beli
+                                </Button>
                             </a>
-                        </Button>
+                            <a
+                                className=''
+                                href={gadget.shopeeLink}
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                <Button className='bg-tertiary1 hover:bg-emerald-600 hover:text-stone-50 '>
+                                    Beli Di Shopee
+                                </Button>
+                            </a>
+                       </div>
                     </div>
                 </div>
 
@@ -93,7 +103,7 @@ const GadgetPageClient: React.FC<GadgetPageClientProps> = ({ gadget, gadgets, me
                                                 <CoverImageContentful
                                                     title={relatedGadget.title}
                                                     url={relatedGadget.image.fields.file.url}
-                                                    className="w-full h-48 object-cover"
+                                                    className="w-full h-48 object-contain"
                                                 />
                                             </div>
                                             <div className="p-4 text-center">
