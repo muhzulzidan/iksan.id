@@ -401,13 +401,14 @@ interface PhotosClientProps {
 
 
 interface LinktreeClientProps {
-    allPosts: {
+    allPosts?: {
         edges: PostEdge[];
     };
     templates: Template[];
     ebooks: Ebook[];
     templateCategory: Category[];
-  
+    kelas: Kelas[];
+    products: any[];
 }
 
 

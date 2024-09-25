@@ -1,6 +1,6 @@
 // app/links/page.tsx
 
-import { getMetaDefault, getEbooks, getTemplates, getTtemplateCategory,  } from '@/lib/contentful';
+import { getMetaDefault, getEbooks, getTemplates, getTtemplateCategory, getKelas, getProducts,  } from '@/lib/contentful';
 import { getAllPostsForHome } from '@/lib/api'
 import LinktreeClient from './linktreeClient';
 import { Metadata } from 'next';
@@ -62,10 +62,13 @@ export default async function LinktreePage() {
     const ebooks = await getEbooks() as unknown as Ebook[];
     const templates = await getTemplates() as unknown as Template[]; 
     const templateCategory = await getTtemplateCategory();
-
+    const kelas: any[] = await getKelas();
+    const products = await getProducts() as unknown as any[];
 
     return (
         <LinktreeClient
+            kelas={kelas}
+            products={products}
             // allPosts={allPosts}
             templates={templates}
             ebooks={ebooks}
