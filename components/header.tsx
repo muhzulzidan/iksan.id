@@ -28,11 +28,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 import { Button } from './ui/button';
 // import { UserCircleIcon } from '@heroicons/react/24/outline'
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 import Cart from './Cart';
+import ModalSearch from './ModalSearch';
 
 
 export default function Header() {
@@ -227,7 +228,7 @@ export default function Header() {
                     </Button>
 
                   </SignedOut> */}
-                 
+
                 </div>
               </Navbar.Collapse>
 
@@ -240,7 +241,6 @@ export default function Header() {
 
       <nav className='block md:hidden'>
         <Flowbite theme={{ theme: customTheme }}>
-
           <Navbar
             className={`bg-stone-100 sticky top-0 max-w-screen-lg mx-auto border-0 px-4 pt-4  ${isScrolled ? 'fixed top-0 left-0 w-full z-50 max-w-none px-4' : ''}`}
             fluid={true}
@@ -257,26 +257,25 @@ export default function Header() {
                 alt="iksanbangsawan" />
             </Navbar.Brand>
             <div className='flex md:flex-col gap-2'>
+              <div className="flex justify-center items-center">
+                <ModalSearch />
+              </div>
               <SignedIn>
                 <UserButton />
               </SignedIn>
-                <SignedOut>
-                  <Button asChild variant={"ghost"} className=' border-none'>
-                    <Link href={"/sign-in"}> <UserCircleIcon className='w-10 h-auto text-stone-950' /> </Link>
-                  </Button>
+              <SignedOut>
+                <Button asChild variant={"ghost"} className=' border-none'>
+                  <Link href={"/sign-in"}> <UserCircleIcon className='w-10 h-auto text-stone-950' /> </Link>
+                </Button>
 
-                </SignedOut>
+              </SignedOut>
               <Cart />
+             
             </div>
-
-
           </Navbar>
         </Flowbite>
         <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-[4.5rem] left-0 w-full z-50 max-w-none' : ''}`}>
           <Carousel>
-            {/* make it 3,half on mobile */}
-
-
             <CarouselContent className=''>
               {Object.entries(dropdownLinks).map(([dropdownLabel, links], index) => {
                 const isFirstSlide = index === 0;
@@ -321,7 +320,6 @@ export default function Header() {
                 }
               })}
             </CarouselContent>
-
           </Carousel>
         </div>
       </nav>

@@ -283,7 +283,6 @@ export async function getEvent(slug = null) {
   return [];
 }
 
-
 export async function getProducts() {
   const [templates, courses, kelas, ebooks] = await Promise.all([
     getTemplates(),

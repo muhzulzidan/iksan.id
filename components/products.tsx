@@ -14,6 +14,9 @@ import { Button } from '@/components/ui/button';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { differenceInDays, parseISO } from 'date-fns';
+import { Search } from 'react-bootstrap-icons';
+import { Input } from '@/components/ui/input';
+import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator } from '@/components/ui/command';
 
 interface Product {
     templates: any[];
@@ -32,10 +35,13 @@ function ProductsClients({
     templateCategory
 }: ProductsClientsProps) {
 
+
     const [currentCategory, setCurrentCategory] = useState('all'); // Default category
     const { addToCart } = useStore();
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [selectedProducts, setSelectedProducts] = useState<any[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>(''); // Add search query state
+
     // Destructure the products prop to get the categories
     const { courses, ebooks, kelas, templates } = products;
     const productsCategories = [
@@ -102,7 +108,13 @@ function ProductsClients({
     };
 
     const getFilteredProducts = (): any[] => {
-        return getItemsByCategory(selectedCategory);
+        const itemsByCategory = getItemsByCategory(selectedCategory);
+        if (searchQuery) {
+            return itemsByCategory.filter(item =>
+                item.title.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+        return itemsByCategory;
     };
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -166,7 +178,21 @@ function ProductsClients({
                         ))}
                     </section>
 
-                    <div className='flex flex-col mt-12 gap-4 md:px-10'>
+                   
+
+                    <div className='flex flex-col mt-6 gap-4 md:px-10'>
+                        
+                        <div className="relative max-w-xl mx-auto w-full flex justify-center items-center mb-4">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                            <Input
+                                type="text"
+                                placeholder="Cari Produk..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="  p-2  bg-stone-50 border rounded-md w-full pl-9"
+                            />
+                        </div>
+
                         {selectedCategory === 'all' && (
                             <>
                                 <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-10">

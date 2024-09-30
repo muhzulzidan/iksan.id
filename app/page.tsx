@@ -172,7 +172,6 @@ const Page = async () => {
     description: `${description}`,
   }
 
-  console.log('kelas', kelas)
 
   return (
     <Layout metaDefault={metaDefault}>

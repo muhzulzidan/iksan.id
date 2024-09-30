@@ -68,8 +68,6 @@ const PolySansSlimsItalic = localFont({
   variable: '--font-PolySans-slimsItalic',
   display: 'swap'
 });
-
-
 const kanakira = localFont({
   src: './images/fonts/Kanakira/Kanakira-BoldInktrap.woff2',
   variable: '--font-Kanakira-BoldInktrap',
@@ -193,16 +191,6 @@ export default function RootLayout({
           }}
         />
         <body className={`
-        ${mabryRegular.variable} 
-        ${kanakira.variable}
-        ${kanakiraItalic.variable}
-        ${kanakiraHeavy.variable}
-        ${kanakiraHeavyItalic.variable}
-        ${mabryBold.variable}
-        ${mabryBoldItalic.variable}
-        ${mabryItalic.variable}
-        ${mabryLight.variable}
-        ${mabryLightItalic.variable}
         ${Circular.variable}
         ${CircularBold.variable}
         ${KomuA.variable}
