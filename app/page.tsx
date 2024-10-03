@@ -172,6 +172,8 @@ const Page = async () => {
     description: `${description}`,
   }
 
+  console.log('comingSoonKelas', comingSoonKelas[0])
+  // console.log('kelas', kelas)
 
   return (
     <Layout metaDefault={metaDefault}>
@@ -221,13 +223,12 @@ const Page = async () => {
               comingSoonKelas.map((k, index) => (
 
                 <div key={index} className="max-w-screen-lg mx-auto flex flex-col md:flex-row gap-4 ">
-
+                 
                   <div className="w-full md:w-8/12  flex justify-center items-center">
-                    <Image src={Capcut} alt="capcut kelas" className="border-stone-900 border  rounded-lg aspect-square " />
                     <CoverImageContentful
                       title={k.title}
-                      url={k?.image.fields.file.url}
-                      className="rounded-xl w-full lg:h-80 my-8"
+                      url={k?.imageComingSoon.fields.file.url}
+                      className="rounded-xl aspect-square w-full border border-stone-900 "
                     />
                   </div>
 

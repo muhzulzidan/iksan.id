@@ -99,7 +99,7 @@ export default function Header() {
       root: {
         base: "bg-white px-2 py-2.5 dark:border-stone-700 dark:bg-stone-800 sm:px-4 z-10",
         inner: {
-          "base": `mx-auto flex flex-wrap items-center justify-between  ${isScrolled ? 'max-w-screen-lg pb-4 px-0 xl:px-4' : ''}`,
+          "base": `mx-auto flex flex-wrap items-center justify-between `,
         }
       },
       link: {
@@ -153,31 +153,26 @@ export default function Header() {
 
 
   return (
-    <header className=" ">
+    <header className="sticky top-0 bg-stone-100 z-50 md:pb-4 ">
       <h1 className="hidden">iksanbangsawan</h1>
       <LazyLoad offset={100}>
-        <nav className='hidden md:block'>
+        <nav className='hidden md:block '>
 
           <Flowbite theme={{ theme: customTheme }}>
 
             <Navbar
-              className={`bg-stone-100 sticky top-0 max-w-screen-lg mx-auto border-0 pt-4 pb-0 ${isScrolled ? 'fixed top-0 left-0 w-full z-50 max-w-none px-0' : ''}`}
+              className={`bg-stone-100 sticky top-0 max-w-screen-lg mx-auto border-0 pt-4 pb-0 `}
               fluid={true}
               rounded={true}
             >
-
               <Navbar.Brand as={Link} href="/">
-
                 <CoverImageContentful
                   className="mr-3 h-6 w-auto sm:h-9"
                   title="iksan bangsawan indonesia"
                   url="https://images.ctfassets.net/1612ijcm5jnx/BJSXzbfipb7T7QD4M8Jyb/f9d3b5cc117f3a9cbb131dbcbfd5954c/Logo-Iksan-Bangsawan_2x.png"
                 />
-
               </Navbar.Brand>
-
               <Navbar.Toggle />
-
               <Navbar.Collapse>
                 {Object.entries(dropdownLinks).map(([dropdownLabel, links]) => {
                   if (dropdownLabel === "CONTACT") {
@@ -229,10 +224,10 @@ export default function Header() {
         </nav>
       </LazyLoad>
 
-      <nav className='block md:hidden'>
+      <nav className='block md:hidden w-full'>
         <Flowbite theme={{ theme: customTheme }}>
           <Navbar
-            className={`bg-stone-100 sticky top-0 max-w-screen-lg mx-auto border-0 px-4 pt-4  ${isScrolled ? 'fixed top-0 left-0 w-full z-50 max-w-none px-4' : ''}`}
+            className={`bg-stone-100 sticky top-0 max-w-screen-lg mx-auto border-0 px-4 pt-4 `}
             fluid={true}
             rounded={true}
           >
@@ -242,7 +237,7 @@ export default function Header() {
 
                 // className="mr-3 h-12 md:h-9 mb-4 md:mb-0"
                 quality={100}
-                width={150}
+                width={140}
                 height={100}
                 alt="iksanbangsawan" />
             </Navbar.Brand>
@@ -264,7 +259,7 @@ export default function Header() {
             </div>
           </Navbar>
         </Flowbite>
-        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4  ${isScrolled ? 'fixed top-[4.5rem] left-0 w-full z-50 max-w-none' : ''}`}>
+        <div className={`bg-stone-100  text-lg  top-0 max-w-screen-lg mx-auto px-4 py-4 border-y border-stone-950 border-solid my-4 `}>
           <Carousel>
             <CarouselContent className=''>
               {Object.entries(dropdownLinks).map(([dropdownLabel, links], index) => {
