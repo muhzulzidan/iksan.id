@@ -8,7 +8,11 @@ import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
-const ModalSearch = () => {
+interface ModalSearchProps {
+    className?: string;
+}
+
+const ModalSearch: React.FC<ModalSearchProps> = ({ className }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
@@ -23,7 +27,7 @@ const ModalSearch = () => {
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger className="flex justify-center items-center cursor-pointer">
+                <DialogTrigger className={`flex justify-center items-center cursor-pointer ${className}`}>
                 <Search />
             </DialogTrigger>
             <DialogContent className='w-[90%] rounded-lg'>

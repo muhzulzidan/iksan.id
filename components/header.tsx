@@ -216,24 +216,14 @@ export default function Header() {
                 })}
 
                 <div className='flex gap-4'>
+                  
+                  <ModalSearch className='flex justify-center items-center border border-stone-950 rounded-lg px-4 hover:bg-secondary2 hover:text-stone-50' />
                   <Cart />
                   <UserButton />
-                  {/* <SignedIn>
-                    <UserButton />
-                  </SignedIn>
-                  <SignedOut>
-
-                    <Button asChild variant={"outline"} className='border-stone-700 hover:bg-secondary2 hover:border-secondary2 bg-stone-100 hover:text-stone-50'>
-                      <Link href={"/sign-in"}> Sign In</Link>
-                    </Button>
-
-                  </SignedOut> */}
-
                 </div>
+
               </Navbar.Collapse>
-
             </Navbar>
-
           </Flowbite>
 
         </nav>

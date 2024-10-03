@@ -32,29 +32,25 @@ const SearchClient: React.FC<SearchClientProps> = ({ templates, products, templa
     const filteredTemplates = filterResults(templates);
     const filteredProducts = filterResults(products);
     const filteredBlogs = filterResults(blogs);
-    // const filteredInsights = filterResults(insights);
     const filteredKelas = filterResults(kelas);
 
-    // console.log(filteredTemplates, filteredProducts, filteredBlogs, filteredInsights, filteredKelas);
-
-    // console.log(templates, products, templateCategory, blogs, insights, );
-
-    console.log(blogs)
+    console.log(blogs, "blogs")
+    console.log(filteredBlogs, "filteredBlogs")
 
     return (
         <Layout>
-            <main className='bg-stone-50 text-stone-950  py-12 px-4 '>
+            <main className='bg-stone-100 text-stone-950  py-12 px-4 min-h-[80vh]  max-w-screen-lg mx-auto'>
                 <div className='container max-w-screen-xl mx-auto text-center'>
                     <h1 className='text-3xl font-bold'>Search Results</h1>
                     <p className='text-lg'>Search query: {query}</p>
                     {/* Add logic to display search results based on the query */}
                 </div>
-                <div className="grid grid-cols-1 gap-4 mt-8">
+                <div className="flex flex-col ">
                     {filteredTemplates.length > 0 && (
                         <div>
                             <h2 className="text-2xl font-bold">Templates</h2>
                             {filteredTemplates.map((template, index) => (
-                                <Link href={`/template/${template.slug}`} key={index} className="p-4 border rounded-md">
+                                <Link href={`/template/${template.slug}`} key={index} className="p-4 ">
                                     <h3 className="text-xl font-bold text-secondary2 hover:underline">{template.title}</h3>
                                     <ClampLines
                                         text={template.description}
@@ -74,7 +70,7 @@ const SearchClient: React.FC<SearchClientProps> = ({ templates, products, templa
                         <div>
                             <h2 className="text-2xl font-bold">Products</h2>
                             {filteredProducts.map((product, index) => (
-                                <div key={index} className="p-4 border rounded-md">
+                                <div key={index} className="p-4 ">
                                     <h3 className="text-xl font-bold">{product.title}</h3>
                                     <p>{product.description}</p>
                                 </div>
@@ -85,7 +81,7 @@ const SearchClient: React.FC<SearchClientProps> = ({ templates, products, templa
                         <div>
                             <h2 className="text-2xl font-bold">Kelas</h2>
                             {filteredKelas.map((kelas, index) => (
-                                <Link href={`/kelas/${kelas.slug}`} key={index} className="p-4 border rounded-md">
+                                <Link href={`/kelas/${kelas.slug}`} key={index} className="p-4 ">
                                     <h3 className="text-xl font-bold text-secondary2 hover:underline">{kelas.title}</h3>
                                     <p>{kelas.description.content.map((content: { value: any; }) => content.value).join(' ')}</p>
                                 </Link>
@@ -96,17 +92,17 @@ const SearchClient: React.FC<SearchClientProps> = ({ templates, products, templa
                         <div>
                             <h2 className="text-2xl font-bold">Blogs</h2>
                             {filteredBlogs.map((blog, index) => (
-                                <Link href={`/blogs/${blog.slug}`}  key={index} className="p-4 border rounded-md" >
+                                <Link href={`/blogs/${blog.slug}`}  key={index} className="p-4 " >
                                     <h3 className="text-xl font-bold text-secondary2 hover:underline">
                                         {blog.postTitle}
                                     </h3>
                                     <div className="text-sm py-1  mb-2 flex gap-5 text-stone-500 items-center">
-                                        <div className="flex gap-2 ">
+                                        {/* <div className="flex gap-2 ">
                                             <CalendarDateFill className="text-stone-400 mt-[.1em]" />
                                             <DateComponent dateString={blog.publishDate} />
-                                        </div>
+                                        </div> */}
                                         <div className="flex gap-1 ">
-                                            <PersonFill className="text-stone-600" />
+                                            <PersonFill className="text-stone-600 mt-1" />
                                             {"iksan bangsawan"}
                                             {/* <Avatar author={author} /> */}
                                         </div>
@@ -117,6 +113,13 @@ const SearchClient: React.FC<SearchClientProps> = ({ templates, products, templa
                         </div>
                     )}
                 </div>
+                {filteredTemplates.length === 0 && filteredProducts.length === 0 && filteredKelas.length === 0 && filteredBlogs.length === 0 && (
+                    <div className="text-center py-12">
+                        <p className="text-lg text-stone-500">
+                            No results found for <strong>{query}</strong>.
+                        </p>
+                    </div>
+                )}
             </main>
         </Layout>
     );
