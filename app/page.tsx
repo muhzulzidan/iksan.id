@@ -1,6 +1,6 @@
 import React, { Suspense } from "react"; // Ensure React is imported for JSX to work
 import { Metadata } from 'next'
-import { getHomepage, getMetaDefault, getTemplates, getTtemplateCategory, getProducts, getBlogs, getKelas } from "@/lib/contentful";
+import { getHomepage, getMetaDefault, getTemplates, getTtemplateCategory, getProducts, getBlogs, getKelas, getComingSoon } from "@/lib/contentful";
 import Markdown from 'react-markdown'
 import { UserButton, SignInButton } from "@clerk/nextjs";
 
@@ -147,8 +147,10 @@ const Page = async () => {
   const allPosts = await getBlogs();
   // const allPostsData = await getAllPostsForHome();
   const homepageDataResult = await getHomepage();
-  const kelas: any[] = await getKelas();
-  const comingSoonKelas = kelas.filter((k: Kelas) => k.comingSoon);
+  // const kelas: any[] = await getKelas();
+  const comingSoon: any[] = await getComingSoon();
+
+  // const comingSoonKelas = kelas.filter((k: Kelas) => k.comingSoon);
 
   const homepageData: HomepageData = homepageDataResult[0] as unknown as HomepageData;
 
@@ -172,8 +174,8 @@ const Page = async () => {
     description: `${description}`,
   }
 
-  console.log('comingSoonKelas', comingSoonKelas[0])
-  // console.log('kelas', kelas)
+  // console.log('comingSoon', comingSoon)
+  // console.log('comingSoon', comingSoon[0].items)
 
   return (
     <Layout metaDefault={metaDefault}>
@@ -218,37 +220,34 @@ const Page = async () => {
           </div>
         </section>
         <Suspense fallback={<Skeleton className="h-[20rem] w-full" />}>
-          <section className='bg-[#fdf9eb] w-full p-4 py-20'>
-            {comingSoonKelas.length > 0 ? (
-              comingSoonKelas.map((k, index) => (
-
-                <div key={index} className="max-w-screen-lg mx-auto flex flex-col md:flex-row gap-4 ">
-                 
-                  <div className="w-full md:w-8/12  flex justify-center items-center">
+          {comingSoon.length > 0 ? (
+            <section className='bg-[#fdf9eb] w-full p-4 py-20'>
+              {comingSoon.map((item, index) => (
+                <div key={index} className="max-w-screen-lg mx-auto flex flex-col md:flex-row gap-4">
+                  <div className="w-full md:w-8/12 flex justify-center items-center">
                     <CoverImageContentful
-                      title={k.title}
-                      url={k?.imageComingSoon.fields.file.url}
-                      className="rounded-xl aspect-square w-full border border-stone-900 "
+                      title={item.title}
+                      url={item.image.fields.file.url}
+                      className="rounded-xl aspect-square w-full border border-stone-900"
                     />
                   </div>
 
                   <div className="flex flex-col w-full justify-center">
-                    <h3 className="text-2xl ">🔥 COMING SOON 🔥</h3>
+                    <h3 className="text-2xl">{item.title}</h3>
                     <hr className="border-b border-stone-700 my-4" />
-                    <div className="prose text-sm ">
-                      <Markdown>{k.comingSoonText}</Markdown>
+                    <div className="prose text-sm">
+                      <Markdown>{item.description}</Markdown>
                     </div>
-                    <Link href={`/kelas/${k.slug}`} className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-tertiary1 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4 ">
+                    <Link href={`/kelas/${item.items.fields.slug}`} className="inline-flex font-kanakiraBold items-center justify-center px-5 py-3 mr-3 mb-4 md:mb-0 text-base font-medium text-center text-stone-50 rounded-lg bg-secondary3 hover:bg-tertiary1 focus:ring-4 focus:ring-stone-300 hover:text-stone-50 cursor-pointer w-fit mt-4">
                       Lihat Info Detail
                     </Link>
                   </div>
                 </div>
-
-              ))
-            ) : (
-              <div>No upcoming classes</div>
-            )}
-          </section>
+              ))}
+            </section>
+          ) : (
+            <></> // Empty fallback
+          )}
         </Suspense>
 
         <section className="bg-stone-100 w-full max-w-screen-lg mx-auto pt-32">

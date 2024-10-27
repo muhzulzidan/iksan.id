@@ -51,6 +51,15 @@ export async function getKelas() {
 
     return [];
 }
+export async function getComingSoon() {
+    const entries = await client.getEntries({
+      content_type: 'comingSoon',
+    });
+
+    if (entries.items) return entries.items.map((item) => item.fields);
+
+    return [];
+}
 export async function getEbooks() {
     const entries = await client.getEntries({
         content_type: 'ebook',
