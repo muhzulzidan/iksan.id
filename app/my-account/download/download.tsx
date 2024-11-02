@@ -22,6 +22,15 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
   const PaymentId = CustomerTransactions.find((transaction: any) => transaction.status === 'PAID')?.xenditId;
 
   console.log(PaymentId, "PaymentId");
+  function chunkArray(array: any[], chunkSize: number) {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  const chunkSize = 10; // Adjust the chunk size as needed
 
   useEffect(() => {
     if (!PaymentId || !userData) {
@@ -69,19 +78,29 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
               downloadLinks.push(data.fileUrl);
             }
           }
-          
-          const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
-            customerIksanId: userData.id,
-            downloadLinks: downloadLinks,
-          });
-console.log(customerDownloadLinkResponse, "customerDownloadLinkResponse");
-          if (customerDownloadLinkResponse.status === 200) {
-            // Reset the cart
-            productSlugs.forEach((slug: string) => removeFromCart(slug));
-            // console.log('Redirecting to /my-account/download');
-            // window.location.reload(); // Reload the page
-          } else {
-            console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
+
+          const downloadLinkChunks = chunkArray(downloadLinks, chunkSize);
+
+          for (const chunk of downloadLinkChunks) {
+            try {
+              const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
+                customerIksanId: userData.id,
+                downloadLinks: chunk,
+              });
+
+              console.log(customerDownloadLinkResponse, "customerDownloadLinkResponse");
+
+              if (customerDownloadLinkResponse.status === 200) {
+                // Reset the cart
+                productSlugs.forEach((slug: string) => removeFromCart(slug));
+                // console.log('Redirecting to /my-account/download');
+                // window.location.reload(); // Reload the page
+              } else {
+                console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
+              }
+            } catch (error) {
+              console.error('Error sending chunked request', error);
+            }
           }
 
           setIsLoading(false);
