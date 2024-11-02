@@ -53,7 +53,6 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
           const downloadLinks = [];
 
-
           // Extract productSlugs from orderItems of PAID transactions
           const productSlugs = CustomerTransactions
             .filter((transaction: any) => transaction.status === 'PAID')
@@ -64,10 +63,13 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
             const normalizedSlug = slugify(slug, { lower: true, remove: /[*+~.()'"!:@]/g });
             const response = await axios.get(`/api/file-download?fileName=${normalizedSlug}`);
             const data = response.data;
-            downloadLinks.push(data.fileUrl);
+
+            // Ensure the fileUrl is not null or an empty string before pushing
+            if (data.fileUrl) {
+              downloadLinks.push(data.fileUrl);
+            }
           }
-
-
+          
           const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
             customerIksanId: userData.id,
             downloadLinks: downloadLinks,
