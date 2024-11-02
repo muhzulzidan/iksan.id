@@ -12,11 +12,14 @@ const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest,) {
     const searchParams = req.nextUrl.searchParams
-    // const userId = searchParams.get('userId')
     const fileName = searchParams.get('fileName')
 
     console.log(fileName, "fileName");
 
+    // Ignore filenames that start with "kelas"
+    if (fileName && fileName.startsWith('kelas')) {
+        return NextResponse.json({ message: 'Ignored filename starting with "kelas"' }, { status: 200 });
+    }
 
     // Fetch templates from Contentful
     const templates = await getTemplates();
@@ -36,8 +39,8 @@ export async function GET(req: NextRequest,) {
     }
 
     console.log(fileUrl, "fileUrl");
-    
-    console.log(fileUrl,'Download recorded');
+
+    console.log(fileUrl, 'Download recorded');
     return NextResponse.json({ fileUrl: `https://${fileUrl}` });
     // redirect(`https://${fileUrl}`);
 }
