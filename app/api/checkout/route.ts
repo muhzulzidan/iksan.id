@@ -1,6 +1,8 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import axios from 'axios';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+// const successRedirectUrl = `${baseUrl}/my-account/payment-status?paymentId=${order.id}`;
 
 export async function POST(req: NextRequest, res: NextResponse) {
     const { customerData, cart } = await req.json();
@@ -97,7 +99,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
                     slug: item.id
                 })),
                 invoice_duration: 86400, // 24 hours in seconds
-                success_redirect_url: `http://iksan.id/my-account/payment-status?paymentId=${order.id}`,
+                success_redirect_url: `${baseUrl}/my-account/payment-status?paymentId=${order.id}`,
                 created: new Date().toISOString(), // Add the current date
                 customer: {
                     given_names: customerData.name,

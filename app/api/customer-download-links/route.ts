@@ -3,8 +3,9 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
 export async function POST(req: NextRequest, res: NextResponse) {
-    const { customerIksanId, downloadLinks } = await req.json()
+    const { customerIksanId, downloadLinks } = await req.json();
     console.log(customerIksanId, downloadLinks, "customer-download-link");
     if (!customerIksanId || !downloadLinks) {
         return NextResponse.json({ error: 'customerIksanId and downloadLinks are required' }, { status: 404 });
@@ -18,22 +19,40 @@ export async function POST(req: NextRequest, res: NextResponse) {
             },
         });
 
-        // Create a new DownloadLink for each download link
-        const newLinks = await Promise.all(downloadLinks.map((link: string) => {
-            return prisma.downloadLink.create({
-                data: {
-                    link,
-                    customerDownloadLinkId: newCustomerDownloadLink.id,
-                },
+        // Create or associate DownloadLink for each download link
+        const newLinks = await Promise.all(downloadLinks.map(async (link: string) => {
+            let existingLink = await prisma.downloadLink.findUnique({
+                where: { link },
             });
+
+            if (!existingLink) {
+                existingLink = await prisma.downloadLink.create({
+                    data: {
+                        link,
+                        customerDownloadLinkId: newCustomerDownloadLink.id,
+                    },
+                });
+            } else {
+                // Associate the existing link with the new CustomerDownloadLink
+                await prisma.customerDownloadLink.update({
+                    where: { id: newCustomerDownloadLink.id },
+                    data: {
+                        DownloadLink: {
+                            connect: { id: existingLink.id },
+                        },
+                    },
+                });
+            }
+
+            return existingLink;
         }));
 
         return NextResponse.json({ newLinks }, { status: 200 });
     } catch (error) {
+        console.error('Error:', error); // Log the error details
         return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
 }
-
 
 export async function GET(req: NextRequest, res: NextResponse) {
     const searchParams = req.nextUrl.searchParams

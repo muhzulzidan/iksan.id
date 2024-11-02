@@ -24,12 +24,14 @@ export default async function HistoryPage() {
   // Check if the user and email address are defined
   const email = user?.emailAddresses[0]?.emailAddress;
   if (!email) {
+    window.location.reload();
     return <div>Error: Email address not found</div>;
   }
 
   const customer = await getCustomerByEmail(email);
   console.log(customer, "customer");
   if (!customer) {
+    window.location.reload();
     return <div>Error: Customer not found</div>;
   }
 

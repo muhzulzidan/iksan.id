@@ -1,7 +1,6 @@
 // utils/contentful.js
 
 import { createClient } from 'contentful';
-import slugify from 'slugify';
 
 const client = createClient({
   space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACEID ?? '', // Ensure string type
@@ -212,13 +211,7 @@ export async function getgadget() {
 
     return [];
 }
-// export async function getGadgetBySlug(slug: string) {
-//   const gadgets = await getgadget();
 
-//   const gadget = gadgets.find((item) => slugify(item.title, { lower: true }) === slug);
-
-//   return gadget || null;
-// }
 
 export async function getHomepage() {
   const entries = await client.getEntries({

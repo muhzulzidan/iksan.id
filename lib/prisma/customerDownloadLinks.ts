@@ -49,3 +49,48 @@ export async function getCustomerDownloadLinks(customerId: number) {
         throw new Error('An error occurred while fetching the download links');
     }
 }
+
+
+export async function getAllCustomerDownloadLinks() {
+    try {
+        // Fetch all CustomerDownloadLink records along with their associated DownloadLink records
+        const customerDownloadLinks = await prisma.customerDownloadLink.findMany({
+            include: {
+                DownloadLink: true,
+            },
+        });
+
+        // Extract unique customerIksanIds from the fetched records
+        const customerIksanIds = Array.from(new Set(customerDownloadLinks.map((cdl: { customerIksanId: any; }) => cdl.customerIksanId)));
+
+        // Fetch the corresponding CustomerIksanId records
+        const customers = await prisma.customerIksanId.findMany({
+            where: {
+                id: {
+                    in: customerIksanIds,
+                },
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            },
+        });
+
+        // Create a map of customerId to customer details
+        const customerMap = new Map<number, { id: number; name: string; email: string }>(customers.map((customer: { id: number; name: string; email: string }) => [customer.id, customer]));
+
+        // Map the fetched records to include customer details
+        const downloadLinks = customerDownloadLinks.map((cdl: { customerIksanId: unknown; DownloadLink: any[]; }) => ({
+            customerId: cdl.customerIksanId,
+            customerName: customerMap.get(cdl.customerIksanId as number)?.name,
+            customerEmail: customerMap.get(cdl.customerIksanId as number)?.email,
+            links: cdl.DownloadLink.map((dl: string) => dl.link),
+        }));
+
+        return downloadLinks;
+    } catch (error) {
+        console.error(error);
+        throw new Error('An error occurred while fetching all download links');
+    }
+}

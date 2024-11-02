@@ -83,6 +83,14 @@ const UserButtonAndMenu = () => {
                         </DropdownMenu.Item>
                         <DropdownMenu.Separator className="my-4 " />
                      
+                        {/* <DropdownMenu.Item asChild className="outline-none">
+                            <Link href="/admin" passHref>
+                                <Button className='w-full justify-start  px-8' variant={"ghost"}>
+                                    <UserCircleIcon className="mr-2 h-6 w-auto" />
+                                    Admin
+                                </Button>
+                            </Link>
+                        </DropdownMenu.Item> */}
                         <DropdownMenu.Item asChild className="outline-none">
                             <Link href="/my-account" passHref>
                                 <Button className='w-full justify-start  px-8' variant={"ghost"}>

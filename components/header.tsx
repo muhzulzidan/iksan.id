@@ -178,14 +178,10 @@ export default function Header() {
                   if (dropdownLabel === "CONTACT") {
                     const contactLink = links as { href: string; text: string; };
                     return (
-
-
+                      
                       <Link key={contactLink.text} className='font-mabryBold text-lg self-center ' href={contactLink.href} passHref>
                         {contactLink.text}
-
                       </Link>
-
-
 
                     );
                   } else {

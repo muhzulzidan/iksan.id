@@ -1,6 +1,8 @@
+// data-table-history.tsx
+
 "use client"
 
-import { SetStateAction, useState, useRef, Suspense, useEffect } from "react";
+import { SetStateAction, useState, useRef, Suspense } from "react";
 import {
     ColumnDef,
     flexRender,
@@ -44,12 +46,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-
-interface DataTableProps {
-    data: CustomerDownloadData[];
-  
-}
-
 import { Skeleton } from '@/components/ui/skeleton';
 
 const SkeletonDataTable: React.FC = () => {
@@ -66,36 +62,106 @@ const SkeletonDataTable: React.FC = () => {
         </div>
     );
 };
+interface DataTableProps {
+    data: any[];
+}
 
-const DataTable: React.FC<DataTableProps> = ({ data }) => {
+const DataTable: React.FC<any> = ({ data }) => {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
-    // console.log(data, "data table")
-
-    const columns: ColumnDef<CustomerDownloadData>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'link',
-            header: () => 'Link',
+            accessorKey: 'id',
+            header: () => 'ID',
             cell: info => info.getValue(),
         },
         {
-            accessorKey: 'download',
-            header: () => 'download',
+            accessorKey: 'customerInfo',
+            header: () => 'Customer Info',
             cell: info => {
-                const date = info.getValue();
+                const customerName = info.row.original.customerName;
+                const customerEmail = info.row.original.customerEmail;
                 return (
-                    <a href={`${date}`} className="flex flex-col">
-                        <Button variant={"default"} className="w-full bg-secondary1 hover:bg-blue-700">download</Button>
-                    </a>
+                    <div>
+                        <div>{customerName}</div>
+                        <div className="text-sm text-gray-500">{customerEmail}</div>
+                    </div>
+                );
+            },
+            filterFn: (row, columnId, filterValue) => {
+                const customerName = row.original.customerName.toLowerCase();
+                const customerEmail = row.original.customerEmail.toLowerCase();
+                const searchValue = filterValue.toLowerCase();
+                return customerName.includes(searchValue) || customerEmail.includes(searchValue);
+            },
+        },
+        {
+            accessorKey: 'amount',
+            header: () => 'Amount',
+            cell: info => {
+                const value = info.getValue() as number; // Cast to number
+                const formattedValue = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                }).format(value);
+                return formattedValue;
+            },
+        },
+        {
+            accessorKey: 'status',
+            header: () => 'Status',
+            cell: info => info.getValue(),
+        },
+        {
+            accessorKey: 'createdAt',
+            header: () => 'Created At',
+            cell: info => {
+                const value = info.getValue() as Date;
+                const formattedDate = new Intl.DateTimeFormat('id-ID', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }).format(new Date(value));
+                return formattedDate;
+            },
+        },
+        {
+            accessorKey: 'orderItems',
+            header: () => 'Order Items',
+            cell: info => {
+                const items = info.getValue() as any;
+                return (
+                    <ul>
+                        {items.map((item: any) => (
+                            <li key={item.id}>
+                                {item.quantity} x {item.productSlug} @ {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.price)}
+                            </li>
+                        ))}
+                    </ul>
                 );
             },
         },
-       
+        {
+            accessorKey: 'downloadLinks',
+            header: () => 'Download Links',
+            cell: info => {
+                const links = info.getValue() as string[];
+                return (
+                    <div className="flex flex-col gap-2">
+                        {links.map((link, index) => (
+                            <a key={index} href={link} className="flex flex-col">
+                                <Button variant={"default"} className="w-full bg-secondary1 hover:bg-blue-700">Download</Button>
+                            </a>
+                        ))}
+                    </div>
+                );
+            },
+        },
+        // Add other columns as needed
     ];
-
 
     const table = useReactTable({
         data,
@@ -129,19 +195,19 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     }
 
     return (
-        <div className="w-full">
 
-            <Suspense fallback={<SkeletonDataTable />}>
-                <div className="flex items-center py-4">
+        <div className="w-full">
+            <div className="flex items-center py-4">
+               <Suspense fallback={<SkeletonDataTable />}>
                     <div className="flex gap-2 w-1/2">
                         <Input
-                            placeholder="Filter link Name..."
+                            placeholder="Filter Customer Info..."
                             onChange={(event) => {
                                 const value = event.target.value;
                                 setColumnFilters((old) =>
                                     old
-                                        .filter((filter) => filter.id !== "link") // Remove the existing email filter
-                                        .concat(value ? [{ id: "link", value }] : []) // Add the new email filter if value is not empty
+                                        .filter((filter) => filter.id !== "customerInfo") // Remove the existing filter
+                                        .concat(value ? [{ id: "customerInfo", value }] : []) // Add the new filter if value is not empty
                                 );
                             }}
                             className="max-w-sm"
@@ -175,16 +241,16 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                 })}
                         </DropdownMenuContent>
                     </DropdownMenu>
-                </div>
-            </Suspense>
+               </Suspense>
+            </div>
             <Suspense fallback={<SkeletonDataTable />}>
-                <div className="rounded-lg border">
-                    <Table className="rounded-2xl border-collapse">
-                        <TableHeader className=" text-stone-50 ">
+                <div className="rounded-md border">
+                    <Table>
+                        <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
-                                <TableRow key={headerGroup.id} className="bg-secondary1 rounded-t-lg hover:bg-blue-600 ">
+                                <TableRow key={headerGroup.id} className="bg-secondary1 text-stone-50 hover:bg-blue-600">
                                     {headerGroup.headers.map((header) => (
-                                        <TableHead key={header.id} className="">
+                                        <TableHead key={header.id}>
                                             {flexRender(header.column.columnDef.header, header.getContext())}
                                         </TableHead>
                                     ))}
@@ -205,8 +271,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
                     </Table>
                 </div>
             </Suspense>
-
-           
             <div className="flex items-center justify-between space-x-2 py-4">
                 <Button
                     variant="outline"
@@ -232,9 +296,8 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
                 </Button>
             </div>
         </div>
-    )
-}
 
+    );
+};
 
-
-export default DataTable
+export default DataTable;

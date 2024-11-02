@@ -76,7 +76,7 @@ const ProfilePage = ({ userData }: { userData: UserData }) => {
         }
     };
 
-console.log(userData, "userData");
+    // console.log(userData, "userData");
     return (
         <div className="">
             <Dialog open={showPhoneDialog} onOpenChange={setShowPhoneDialog}>
@@ -133,22 +133,27 @@ console.log(userData, "userData");
                         <div className='flex flex-col gap-4 w-full'>
                             <h2>Customer Details</h2>
 
-                            {userData && userData.name ?
-                                <Input type="text" name="name" value={userData.name} placeholder="Name" disabled />
-                                :
-                                <Input type="text" name="name" value={customerData.name} onChange={handleCustomerChange} placeholder="Name" required />
-                            }
-                            {userData && userData.email ?
-                                <Input type="text" name="name" value={userData.email} placeholder="Name" disabled />
-                                :
-                                <Input type="text" name="name" value={customerData.name} onChange={handleCustomerChange} placeholder="Name" required />
-                            }
-                            {userData && userData.phoneNumber ?
-                                <Input type="text" name="name" value={userData.phoneNumber} placeholder="Name" disabled />
-                                :
-                                <Input type="tel" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="Phone Number" required />
-                            }
-
+                            <div className='flex flex-col'>
+                                {userData && userData.name ?
+                                    <p className="text-lg"><strong>Name:</strong> {userData.name}</p>
+                                    :
+                                    <Input type="text" name="name" value={customerData.name} onChange={handleCustomerChange} placeholder="Name" required />
+                                }
+                                {userData && userData.email ?
+    
+                                    <p className="text-lg"><strong>Name:</strong> {userData.email}</p>
+                                    :
+                                    <Input type="text" name="name" value={customerData.name} onChange={handleCustomerChange} placeholder="Name" required />
+                                }
+                                {userData && userData.phoneNumber ?
+                                    <p className="text-lg"><strong>Name:</strong> {userData.phoneNumber}</p>
+                                    :
+                                    <Input type="tel" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="Phone Number" required />
+                                }
+                            </div>
+                            <Button size="sm" className='flex w-fit mt-4' onClick={openPhoneDialog}>
+                                Edit Phone Number
+                            </Button>
                         </div>
 
                         :
@@ -160,23 +165,6 @@ console.log(userData, "userData");
                         </div>
 
                     }
-                    {!isLoaded ? (
-                        <div className="flex flex-col items-center">
-                            <Skeleton className="w-[250px] h-[50px] rounded-lg" />
-                            <Skeleton className="w-[250px] h-[50px] rounded-lg" />
-
-                        </div>
-                    ) : (
-                        <div className=''>
-                            <p className="text-lg"><strong>Name:</strong> {user?.fullName}</p>
-                            <p className="text-lg"><strong>Email:</strong> {user?.primaryEmailAddress?.emailAddress}</p>
-                            <p className="text-lg"><strong>Phone:</strong> {phoneNumber}</p>
-                            {/* Button to open phone number edit dialog */}
-                            <Button size="sm" className='flex w-fit mt-4' onClick={openPhoneDialog}>
-                                Edit Phone Number
-                            </Button>
-                        </div>
-                    )}
 
                     <Button size="sm" className='flex w-fit mt-4' asChild>
                         <Link href={'/profile/'}>

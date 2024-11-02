@@ -21,3 +21,27 @@ export async function getCustomerTransactions(customerId: string) {
         throw new Error('Failed to fetch transactions');
     }
 }
+
+
+export async function getAllCustomerTransactions() {
+    try {
+        const transactions = await prisma.customerOrder.findMany({
+            include: {
+                payments: true,
+                orderItems: true,
+                customer: { // Include the related customer information
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+            },
+        });
+
+        return transactions;
+    } catch (error) {
+        console.error('Error fetching all transactions:', error);
+        throw new Error('Failed to fetch all transactions');
+    }
+}

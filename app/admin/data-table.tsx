@@ -1,6 +1,6 @@
 "use client"
 
-import { SetStateAction, useState, useRef } from "react";
+import { SetStateAction, useState, useRef, Suspense } from "react";
 import {
     ColumnDef,
     flexRender,
@@ -46,57 +46,62 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 
 interface DataTableProps {
-    data: CustomerDownloadData[];
-    onRefresh: () => void;
+    data: {
+        customerId: number;
+        customerName: string;
+        customerEmail: string;
+        download: string;
+        link: string;
+    }[];
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
+import { Skeleton } from '@/components/ui/skeleton';
+
+const SkeletonDataTable: React.FC = () => {
+    return (
+        <div className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-6 w-1/4" />
+        </div>
+    );
+};
+
+const DataTable: React.FC<DataTableProps> = ({ data }) => {
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
 
-
-    const columns: ColumnDef<CustomerDownloadData>[] = [
-        // {
-        //     accessorKey: 'userId',
-        //     header: () => 'User ID',
-        //     cell: info => info.getValue(),
-        // },
+    const columns: ColumnDef<DataTableProps['data'][0]>[] = [
         {
-            accessorKey: 'fileName',
-            header: () => 'File Name',
-            cell: info => info.getValue(),
-        },
-        
-        {
-            accessorKey: 'fullname',
-            header: () => 'Full Name',
+            accessorKey: 'customerName',
+            header: () => 'Customer Name',
             cell: info => info.getValue(),
         },
         {
-            accessorKey: 'email',
-            header: () => 'Email',
+            accessorKey: 'customerEmail',
+            header: () => 'Customer Email',
             cell: info => info.getValue(),
         },
         {
-            accessorKey: 'downloadDate',
-            header: () => 'Download Date',
+            accessorKey: 'link',
+            header: () => 'Download Link',
             cell: info => {
-                const date = new Date(info.getValue() as string);
-                const dateString = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                const timeString = date.toLocaleTimeString('en-US', { hour12: false });
+                const link = info.getValue() as string;
                 return (
-                    <div className="flex flex-col">
-                        <b>{dateString}</b>
-                        {/* <br /> */}
-                       <p className="text-sm"> {timeString}</p>
-                    </div>
+                    <a href={info.row.original.download} className="flex flex-col">
+                        <Button variant={"default"} className="w-full bg-secondary1 hover:bg-blue-700">{link}</Button>
+                    </a>
                 );
             },
         },
     ];
-
 
     const table = useReactTable({
         data,
@@ -118,107 +123,86 @@ const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
     });
 
     function toggleColumnVisibility(column: any, value: boolean) {
-        if (column.id === 'userId') {
-            // If the column is 'userId', set its visibility to false by default
-            column.toggleVisibility(value);
-            console.log(value, "toggleVisibility")
-
-        } else {
-            // For other columns, use the provided value
-            column.toggleVisibility(value);
-        }
+        column.toggleVisibility(value);
     }
 
     return (
         <div className="w-full">
-
-
-            <div className="flex items-center py-4">
-                <div className="flex gap-2 w-1/2">
-                    <Input
-                        placeholder="Filter Brand Name..."
-                        onChange={(event) => {
-                            const value = event.target.value;
-                            setColumnFilters((old) =>
-                                old
-                                    .filter((filter) => filter.id !== "brand_name") // Remove the existing email filter
-                                    .concat(value ? [{ id: "brand_name", value }] : []) // Add the new email filter if value is not empty
-                            );
-                        }}
-                        className="max-w-sm"
-                    />
-                    <Input
-                        placeholder="Filter location..."
-                        onChange={(event) => {
-                            const value = event.target.value;
-                            setColumnFilters((old) =>
-                                old
-                                    .filter((filter) => filter.id !== "location") // Remove the existing email filter
-                                    .concat(value ? [{ id: "location", value }] : []) // Add the new email filter if value is not empty
-                            );
-                        }}
-                        className="max-w-sm"
-                    />
-                </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Filter Column
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter(
-                                (column) => column.getCanHide()
-                            )
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            toggleColumnVisibility(column, !!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
+            <Suspense fallback={<SkeletonDataTable />}>
+                <div className="flex items-center py-4">
+                    <div className="flex gap-2 w-1/2">
+                        <Input
+                            placeholder="Filter by Customer Name..."
+                            onChange={(event) => {
+                                const value = event.target.value;
+                                setColumnFilters((old) =>
+                                    old
+                                        .filter((filter) => filter.id !== "customerName")
+                                        .concat(value ? [{ id: "customerName", value }] : [])
+                                );
+                            }}
+                            className="max-w-sm"
+                        />
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="ml-auto">
+                                Filter Column
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter(
+                                    (column) => column.getCanHide()
                                 )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            className="capitalize"
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) =>
+                                                toggleColumnVisibility(column, !!value)
+                                            }
+                                        >
+                                            {column.id}
+                                        </DropdownMenuCheckboxItem>
+                                    )
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </Suspense>
+            <Suspense fallback={<SkeletonDataTable />}>
+                <div className="rounded-lg border">
+                    <Table className="rounded-2xl border-collapse">
+                        <TableHeader className=" text-stone-50 ">
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id} className="bg-secondary1 rounded-t-lg hover:bg-blue-600 ">
+                                    {headerGroup.headers.map((header) => (
+                                        <TableHead key={header.id} className="">
+                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                        </TableHead>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </TableHeader>
+                        <TableBody>
+                            {table.getRowModel().rows.map((row) => (
+                                <TableRow key={row.id}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+            </Suspense>
 
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows.map((row) => (
-                            <TableRow key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
-
-
-           
             <div className="flex items-center justify-between space-x-2 py-4">
                 <Button
                     variant="outline"
@@ -247,6 +231,4 @@ const DataTable: React.FC<DataTableProps> = ({ data, onRefresh }) => {
     )
 }
 
-
-
-export default DataTable
+export default DataTable;
