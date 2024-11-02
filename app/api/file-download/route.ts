@@ -16,9 +16,9 @@ export async function GET(req: NextRequest,) {
 
     console.log(fileName, "fileName");
 
-    // Ignore filenames that start with "kelas"
-    if (fileName && fileName.startsWith('kelas')) {
-        return NextResponse.json({ message: 'Ignored filename starting with "kelas"' }, { status: 200 });
+    // Ignore filenames that do not start with "template"
+    if (fileName && !fileName.startsWith('template')) {
+        return NextResponse.json({ message: 'Ignored filename not starting with "template"' }, { status: 200 });
     }
 
     // Fetch templates from Contentful
