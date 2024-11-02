@@ -30,7 +30,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
     return chunks;
   }
 
-  const chunkSize = 10; // Adjust the chunk size as needed
+  const chunkSize = 3; // Adjust the chunk size as needed
 
   useEffect(() => {
     if (!PaymentId || !userData) {
