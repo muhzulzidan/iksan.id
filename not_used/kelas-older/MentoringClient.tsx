@@ -159,7 +159,7 @@ const MentoringClient = () => {
                         <div className='flex gap-4 mb-4'>
                             <a href='https://iksanbangsawan.myr.id/pl/ccm3'>
                                 <Button className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'  >
-                                    <ArrowRightCircleFill className="mr-2" />
+                                    <ArrowRightCircleFill className="mr-2 w-4 h-4 fill-stone-50" />
                                     DAFTAR
                                 </Button>
                             </a>
@@ -283,7 +283,7 @@ const MentoringClient = () => {
                 )}
                 <a href='https://iksanbangsawan.myr.id/pl/ccm3'>
                 <Button  className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'  >
-                    <ArrowRightCircleFill className="mr-2" />
+                    <ArrowRightCircleFill className="mr-2 w-4 h-4 fill-stone-50" />
                     DAFTAR
                 </Button>
                 </a>

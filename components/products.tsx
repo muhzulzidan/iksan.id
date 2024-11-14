@@ -183,7 +183,7 @@ function ProductsClients({
                     <div className='flex flex-col mt-6 gap-4 md:px-10'>
                         
                         <div className="relative max-w-xl mx-auto w-full flex justify-center items-center mb-4">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
                             <Input
                                 type="text"
                                 placeholder="Cari Produk..."
@@ -226,7 +226,7 @@ function ProductsClients({
                                                             </p>
 
                                                             <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: item.slug, name: item.title, price: item.price, image: item.image, quantity: 1 })}>
-                                                                <CartPlusFill className="mr-2" />
+                                                                <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                                 Add to Cart</Button>
                                                         </div>
                                                     </div>
@@ -326,7 +326,7 @@ function ProductsClients({
                                                             </p>
 
                                                             <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: item.slug, name: item.title, price: item.price1, image: item.image, quantity: 1 })}>
-                                                                <CartPlusFill className="mr-2" />
+                                                                <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                                 Add to Cart
                                                             </Button>
                                                         </div>
@@ -371,7 +371,7 @@ function ProductsClients({
                                                     </p>
 
                                                     <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })}>
-                                                        <CartPlusFill className="mr-2" />
+                                                        <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                         Add to Cart</Button>
                                                 </div>
                                             </div>
@@ -405,7 +405,7 @@ function ProductsClients({
                                                 </p>
 
                                                 <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: course.slug, name: course.title, price: course.price, image: course.image, quantity: 1 })}>
-                                                    <CartPlusFill className="mr-2" />
+                                                    <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                     Add to Cart</Button>
                                             </div>
                                         </div>
@@ -436,7 +436,7 @@ function ProductsClients({
                                                     Rp{ebook.price},000
                                                 </p>
                                                 <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: ebook.slug, name: ebook.title, price: ebook.price, image: ebook.image, quantity: 1 })}>
-                                                    <CartPlusFill className="mr-2" />
+                                                    <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                     Add to Cart</Button>
                                             </div>
                                         </div>
@@ -479,7 +479,7 @@ function ProductsClients({
                                                     </p>
 
                                                     <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price1, image: template.image, quantity: 1 })}>
-                                                        <CartPlusFill className="mr-2" />
+                                                        <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                         Add to Cart
                                                     </Button>
                                                 </div>

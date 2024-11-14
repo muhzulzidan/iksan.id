@@ -3,12 +3,23 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+const isValidLink = (link: string) => {
+    // Add your validation logic here
+    // For example, you can check if the link starts with "https://assets.ctfassets.net/"
+    return link.startsWith('https://assets.ctfassets.net/');
+};
 
 export async function POST(req: NextRequest, res: NextResponse) {
     const { customerIksanId, downloadLinks } = await req.json();
     console.log(customerIksanId, downloadLinks, "customer-download-link");
     if (!customerIksanId || !downloadLinks) {
         return NextResponse.json({ error: 'customerIksanId and downloadLinks are required' }, { status: 404 });
+    }
+
+    // Validate download links
+    const invalidLinks = downloadLinks.filter((link: string) => !isValidLink(link));
+    if (invalidLinks.length > 0) {
+        return NextResponse.json({ error: 'Invalid download links provided' }, { status: 400 });
     }
 
     try {

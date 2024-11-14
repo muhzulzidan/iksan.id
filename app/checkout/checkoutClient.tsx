@@ -33,7 +33,7 @@ const Checkout = ({ userData }: { userData: UserData }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isPaid, setIsPaid] = useState(false);
     const { cart, removeFromCart, decrementQuantity, incrementQuantity } = useStore();
-
+    const [statusMessage, setStatusMessage] = useState('Processing your request...');
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
     const { user, isSignedIn } = useUser();
@@ -55,125 +55,206 @@ const Checkout = ({ userData }: { userData: UserData }) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
+        setStatusMessage('Processing your request...');
+
+        // Check if the item is free
+        const isFree = cart.every(item => item.price === 0);
+
+        if (isFree) {
+            try {
+                setStatusMessage('Processing free checkout...');
+                const response = await axios.post('/api/checkout-free', {
+                    customerData,
+                    cart
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (!response) {
+                    console.error('Checkout failed');
+                    toast({
+                        variant: "destructive",
+                        title: `Checkout failed`,
+                    });
+                    setIsLoading(false);
+                    return;
+                }
+
+                const data = await response.data;
+                console.log('Checkout successful (Free item)', data);
+                toast({
+                    variant: "default",
+                    title: `Checkout successful (Free item)`,
+                });
+
+                // Process download links for free items
+                const downloadLinks = [];
+
+                for (const item of cart) {
+                    console.log(item, "item from cart");
+
+                    const response = await axios.get(`/api/file-download?fileName=${item.id}`);
+                    const data = response.data;
+
+                    downloadLinks.push(data.fileUrl);
+                }
+
+                const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
+                    customerIksanId: userData.id,
+                    downloadLinks: downloadLinks,
+                });
+
+                if (customerDownloadLinkResponse.status === 200) {
+                    // Remove items from cart
+                    cart.forEach((item) => removeFromCart(item.id));
+                    router.push("/my-account/download");
+                } else {
+                    console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
+                }
+
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error processing free checkout', error);
+                toast({
+                    variant: "destructive",
+                    title: `Checkout failed`,
+                });
+                setIsLoading(false);
+            }
+            return;
+        }
 
         console.log(customerData, "customerData handle submit");
 
-        const response = await axios.post('/api/checkout', {
-            customerData,
-            cart
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
+        try {
+            setStatusMessage('Processing checkout...');
+            const response = await axios.post('/api/checkout', {
+                customerData,
+                cart
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
-        if (!response) {
-            console.error('Checkout failed');
+            if (!response) {
+                console.error('Checkout failed');
+                toast({
+                    variant: "destructive",
+                    title: `Checkout failed`,
+                });
+                setIsLoading(false);
+                return;
+            }
+
+            const data = await response.data;
+            console.log('Checkout successful', data.data);
+            toast({
+                variant: "default",
+                title: `Checkout successful`,
+            });
+            console.log(data, "data");
+
+            setStatusMessage('Redirecting to payment...');
+            setTimeout(() => {
+                window.open(data.data.invoice_url, '_top');
+            });
+
+            const intervalId = setInterval(async () => {
+                const paymentId = data.data.id;
+
+                console.log(paymentId, "paymentId");
+
+                setStatusMessage('Verifying payment status...');
+                const response = await fetch(`/api/customers?id=${paymentId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.log('Failed to fetch payment status', response);
+                    throw new Error('Failed to fetch payment status');
+                }
+
+                const payment = await response.json();
+
+                console.log(response, "response");
+                console.log(payment, "payment status");
+
+                if (payment && payment.order && payment.order.status === 'PAID') {
+                    setIsPaid(true);
+                    clearInterval(intervalId);
+                    console.log('Payment successful', cart);
+                    try {
+                        setStatusMessage('Processing download links...');
+                        const downloadLinks = [];
+
+                        for (const item of cart) {
+                            console.log(item, "item from cart");
+
+                            const response = await axios.get(`/api/file-download?fileName=${item.id}`);
+                            const data = response.data;
+
+                            downloadLinks.push(data.fileUrl);
+                        }
+
+                        const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
+                            customerIksanId: userData.id,
+                            downloadLinks: downloadLinks,
+                        });
+
+                        if (customerDownloadLinkResponse.status === 200) {
+                            router.push("/my-account/download");
+                        } else {
+                            console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
+                        }
+
+                        setIsLoading(false);
+                    } catch (err) {
+                        console.error('Error downloading invoice', err);
+                        setIsLoading(false);
+                    }
+                    setTimeout(() => setIsLoading(false), 1000);
+                }
+            }, 10000);
+        } catch (error) {
+            console.error('Error processing checkout', error);
             toast({
                 variant: "destructive",
                 title: `Checkout failed`,
             });
-            return;
+            setIsLoading(false);
         }
-
-        const data = await response.data;
-        console.log('Checkout successful', data.data);
-        toast({
-            variant: "default",
-            title: `Checkout successful`,
-        });
-        console.log(data, "data");
-
-        setTimeout(() => {
-            window.open(data.data.invoice_url, '_top');
-        });
-
-        const intervalId = setInterval(async () => {
-            const paymentId = data.data.id;
-
-            console.log(paymentId, "paymentId");
-
-            const response = await fetch(`/api/customers?id=${paymentId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                console.log('Failed to fetch payment status', response);
-                throw new Error('Failed to fetch payment status');
-            }
-
-            const payment = await response.json();
-
-            console.log(response, "response");
-            console.log(payment, "payment status");
-
-            if (payment && payment.order && payment.order.status === 'PAID') {
-                setIsPaid(true);
-                clearInterval(intervalId);
-                console.log('Payment successful', cart);
-                try {
-                    const downloadLinks = [];
-
-                    for (const item of cart) {
-                        console.log(item, "item from cart");
-
-                        const response = await axios.get(`/api/file-download?fileName=${item.id}`);
-                        const data = response.data;
-
-                        downloadLinks.push(data.fileUrl);
-                    }
-
-                    const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
-                        customerIksanId: userData.id,
-                        downloadLinks: downloadLinks,
-                    });
-
-                    if (customerDownloadLinkResponse.status === 200) {
-                        router.push("/my-account/download");
-                    } else {
-                        console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
-                    }
-
-                    setIsLoading(false);
-                } catch (err) {
-                    console.error('Error downloading invoice', err);
-                    setIsLoading(false);
-                }
-                setTimeout(() => setIsLoading(false), 1000);
-            }
-        }, 10000);
     };
 
-    // console.log(user, "user")
 
     return (
         <Layout>
             <div className='max-w-screen-lg mx-auto container py-12 flex gap-4'>
                 {/* {isLoading && <Spinner />} */}
-                <AlertDialog open={isLoading} onOpenChange={setIsLoading} >
-
+                <AlertDialog open={isLoading} onOpenChange={setIsLoading}>
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle className='text-center'>Processing The Checkout</AlertDialogTitle>
                             <AlertDialogDescription>
-                                {isPaid ?
-                                    <>
-                                        <div className="flex justify-center items-center p-4  md:p-12 ">
-                                            <div className='p-1  rounded-full border border-green-500'>
-                                                <Check className="h-12 w-12 md:h-24 md:w-24 text-green-500" />
-                                            </div>
+                                {isPaid ? (
+                                    <div className="flex justify-center items-center p-4 md:p-12">
+                                        <div className='p-1 rounded-full border border-green-500'>
+                                            <Check className="h-12 w-12 md:h-24 md:w-24 text-green-500" />
                                         </div>
-                                    </>
-                                    : <Spinner />}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center">
+                                        <Spinner />
+                                        <p className="mt-4">{statusMessage}</p>
+                                    </div>
+                                )}
                             </AlertDialogDescription>
                         </AlertDialogHeader>
-                        {/* <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction>Continue</AlertDialogAction>
-                        </AlertDialogFooter> */}
                     </AlertDialogContent>
                 </AlertDialog>
 

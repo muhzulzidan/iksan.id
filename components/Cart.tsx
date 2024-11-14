@@ -25,8 +25,8 @@ const Cart = () => {
             <Sheet>
                 <SheetTrigger className='' asChild>
                     {totalQuantity > 0 && (
-                        <Button variant={"outline"} className='flex gap-1 bg-border border-tertiary1 text-stone-950 bg-transparent hover:bg-tertiary1 hover:text-stone-50' >
-                            <FaShoppingCart className="mb-1 stroke-[inherit] " /> : {totalQuantity}
+                        <Button variant={"outline"} className='flex gap-1 bg-border border-tertiary1 text-stone-950 bg-transparent hover:bg-tertiary1 hover:text-stone-50 group' >
+                            <FaShoppingCart className="mb-1 stroke-[inherit] w-4 h-4 relative group-hover:fill-stone-50 " /> : {totalQuantity}
                         </Button>
                     )}
                 </SheetTrigger>

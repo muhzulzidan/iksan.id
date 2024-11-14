@@ -80,7 +80,7 @@ function KelasClient({
                                             </p>
 
                                             <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price1, image: template.image, quantity: 1 })}>
-                                                <CartPlusFill className="mr-2" />
+                                                <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50 w-4 h-4 fill-stone-50" />
                                                 Add to Cart
                                             </Button>
                                         </div>

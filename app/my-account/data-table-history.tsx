@@ -161,7 +161,7 @@ const DataTable: React.FC<any> = ({ data }) => {
     return (
 
         <div className="w-full">
-            <div className="flex items-center py-4">
+            <div className="flex items-center pb-4">
                <Suspense fallback={<SkeletonDataTable />}>
                     <div className="flex gap-2 w-1/2">
                         <Input
@@ -259,6 +259,7 @@ const DataTable: React.FC<any> = ({ data }) => {
                     Next
                 </Button>
             </div>
+           
         </div>
 
     );

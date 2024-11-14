@@ -42,8 +42,8 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
                         <h2 className="text-2xl md:text-3xl font-bold font-mabryBold mb-4 ">Blog</h2>
                         <hr className="border border-b-2 border-secondary1 w-24" />
                     </div>
-                    <Link href={'/blogs/'} className="appearance-none border border-solid rounded-lg h-fit px-4 py-2  bg-stone-200 text-xs md:text-base flex items-center gap-2 mt-4 md:mt-0 hover:bg-secondary2 hover:text-stone-50" >
-                        View More <ArrowRightCircleFill />
+                    <Link href={'/blogs/'} className="appearance-none border border-solid rounded-lg h-fit px-4 py-2  bg-stone-200 text-xs md:text-base flex items-center gap-2 mt-4 md:mt-0 hover:bg-secondary2 hover:text-stone-50 group" >
+                        View More <ArrowRightCircleFill className="h-4 w-4 group-hover:fill-stone-50"/>
                     </Link>
                 </div>
 
@@ -88,7 +88,7 @@ const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ data, blogs, insights
                                             innerElement="h3"
                                         />
                                         <div className="flex gap-2 pt-2 text-stone-600">
-                                            <p className='flex gap-2 items-center'> <Calendar /> {formatDate(blog.publishDate)}</p>
+                                            <p className='flex gap-2 items-center'> <Calendar className="h-4 w-4"/> {formatDate(blog.publishDate)}</p>
                                             {/* <p className='flex gap-2 items-center'> <Folder /> {blog.node.categories.edges[0].node.name}</p> */}
                                         </div>
                                     </div>

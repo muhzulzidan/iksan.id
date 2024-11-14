@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 
 import axios from 'axios';
 import { PrismaClient } from '@prisma/client';
-import { currentUser } from '@clerk/nextjs';
+// import { currentUser } from '@clerk/nextjs';
 import { getTemplates } from '@/lib/contentful';
 import { redirect } from 'next/navigation';
 

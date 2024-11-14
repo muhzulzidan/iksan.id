@@ -66,15 +66,28 @@ const ClientPaymentStatus = () => {
                     return;
                 }
 
+                const hasTemplate = cart.some(item => item.id.includes('template'));
+
+                if (!hasTemplate) {
+                    setIsPaid(true);
+                    // Remove items from the cart
+                    cart.forEach(item => removeFromCart(item.id));
+                    // Redirect to history page if no item.id includes 'template'
+                    router.push("/my-account/history");
+                    return;
+                }
+
                 const downloadLinks = [];
 
                 for (const item of cart) {
-                    try {
-                        const response = await axios.get(`/api/file-download?fileName=${item.id}`);
-                        const data = response.data;
-                        downloadLinks.push(data.fileUrl);
-                    } catch (error) {
-                        console.error(`Error fetching download link for item ${item.id}:`, error);
+                    if (item.id.includes('template')) {
+                        try {
+                            const response = await axios.get(`/api/file-download?fileName=${item.id}`);
+                            const data = response.data;
+                            downloadLinks.push(data.fileUrl);
+                        } catch (error) {
+                            console.error(`Error fetching download link for item ${item.id}:`, error);
+                        }
                     }
                 }
 

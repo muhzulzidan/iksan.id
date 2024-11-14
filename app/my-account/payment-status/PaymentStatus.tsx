@@ -46,7 +46,6 @@ const PaymentStatus = () => {
 
         const intervalId = setInterval(async () => {
             try {
-                
                 const response = await fetch(`/api/customers?id=${PaymentId}`, {
                     method: 'GET',
                     headers: {
@@ -66,22 +65,33 @@ const PaymentStatus = () => {
                     clearInterval(intervalId);
 
                     const downloadLinks = [];
+                    let hasTemplate = false;
 
                     for (const item of cart) {
-                        const response = await axios.get(`/api/file-download?fileName=${item.id}`);
-                        const data = response.data;
-                        downloadLinks.push(data.fileUrl);
+                        if (item.id.includes('template')) {
+                            console.log("template icludess")
+                            hasTemplate = true;
+                            const response = await axios.get(`/api/file-download?fileName=${item.id}`);
+                            const data = response.data;
+                            downloadLinks.push(data.fileUrl);
+                        }
                     }
 
-                    const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
-                        customerIksanId: userData.id,
-                        downloadLinks: downloadLinks,
-                    });
+                    if (hasTemplate) {
+                        console.log("template icludess second")
 
-                    if (customerDownloadLinkResponse.status === 200) {
-                        router.push("/my-account/download");
+                        const customerDownloadLinkResponse = await axios.post('/api/customer-download-links', {
+                            customerIksanId: userData.id,
+                            downloadLinks: downloadLinks,
+                        });
+
+                        if (customerDownloadLinkResponse.status === 200) {
+                            router.push("/my-account/download");
+                        } else {
+                            console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
+                        }
                     } else {
-                        console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
+                        router.push("/my-account/history");
                     }
 
                     setIsLoading(false);

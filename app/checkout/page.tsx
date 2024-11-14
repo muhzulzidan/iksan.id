@@ -4,12 +4,14 @@ import Checkout from './checkoutClient';
 import { getUser } from '@/lib/getUser';
 
 async function checkoutPage() {
-    const user = await getUser()
-
-    // console.log(user, "user check out page");
-
-    return <Checkout userData={user} />;
+    try {
+        const user = await getUser();
+        return <Checkout userData={user} />;
+    } catch (error) {
+        console.error('Error in checkoutPage:', error);
+        // Handle the error appropriately, e.g., show an error message or redirect
+        return <div>Error loading checkout page. Please try again later.</div>;
+    }
 }
 
 export default checkoutPage;
-

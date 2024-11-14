@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense } from "react";
 import { getCustomerTransactions } from "@/lib/prisma/getCustomerTransactions";
 import { getUser } from "@/lib/getUser";
+import { Separator } from "@/components/ui/separator";
 
 const SkeletonDownloadList: React.FC = () => {
   return (
@@ -39,11 +40,20 @@ export default async function SettingsAccountPage() {
     const downloadLinks = await getCustomerDownloadLinks(customer.id);
 
     return (
-      <Suspense fallback={<SkeletonDownloadList />}>
-        <div className="flex flex-col gap-6">
-          <DownloadListPage downloadsData={downloadLinks} CustomerTransactions={CustomerTransactions} userData={userData} customer={customer.id} />
+      <div className="flex flex-col gap-2">
+        <div className='flex flex-col gap-2'>
+          <div>
+            <h3 className="text-lg font-medium">Download Page</h3>
+            <p className="text-sm text-muted-foreground">
+              Here you can download your purchased items.
+            </p>
+          </div>
+          <Separator />
         </div>
-      </Suspense>
+        <Suspense fallback={<SkeletonDownloadList />}>
+          <DownloadListPage downloadsData={downloadLinks} CustomerTransactions={CustomerTransactions} userData={userData} customer={customer.id} />
+        </Suspense>
+      </div>
     );
   } catch (error) {
     console.error('Error in SettingsAccountPage:', error);

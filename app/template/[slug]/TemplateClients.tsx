@@ -188,11 +188,11 @@ const TemplateClients = ({ template }: { template: Template }) => {
                         <h1 className="text-4xl mb-4 font-bold w-full md:w-8/12">{template.title}</h1>
                         <div className='flex gap-4 mb-4'>
                             <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
-                                <ArrowRightCircleFill className="mr-2" />
+                                <ArrowRightCircleFill className="mr-2 w-4 h-4 fill-stone-50" />
                                 Dapatkan Segera
                             </Button>
                             <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
-                                <CartPlusFill className="mr-2" />
+                                <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                 Add to Cart
                             </Button>
                         </div>

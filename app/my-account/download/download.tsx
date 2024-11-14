@@ -9,9 +9,6 @@ import { useRouter } from 'next/navigation';
 import slugify from 'slugify';
 
 const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, customer }: { downloadsData: string[], CustomerTransactions: any, userData: any, customer: any }) => {
-  console.log(CustomerTransactions, "CustomerTransactions");
-  console.log(downloadsData, "downloadsData");
-  console.log(customer, "customer");
 
   const [isPaid, setIsPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +37,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
     console.log(userData, "user");
 
     const checkPaymentStatus = async () => {
-      console.log('Checking payment status');
+      // console.log('Checking payment status');
       try {
         const response = await fetch(`/api/payment-status-xendit?xenditId=${PaymentId}`, {
           method: 'GET',
@@ -48,14 +45,14 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
             'Content-Type': 'application/json',
           },
         });
-        console.log(response, "response");
+        // console.log(response, "response");
         if (!response.ok) {
           console.log('Failed to fetch payment status', response);
           throw new Error('Failed to fetch payment status');
         }
 
         const payment = await response.json();
-        console.log(payment, "payment");
+        // console.log(payment, "payment");
 
         if (payment && payment.order && payment.order.status === 'PAID') {
           setIsPaid(true);
@@ -75,7 +72,9 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
             // Ensure the fileUrl is not null or an empty string before pushing
             if (data.fileUrl) {
-              downloadLinks.push(data.fileUrl);
+              // Base64 encode the URL
+              const encodedUrl = btoa(data.fileUrl);
+              downloadLinks.push(encodedUrl);
             }
           }
 
@@ -88,7 +87,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
                 downloadLinks: chunk,
               });
 
-              console.log(customerDownloadLinkResponse, "customerDownloadLinkResponse");
+              // console.log(customerDownloadLinkResponse, "customerDownloadLinkResponse");
 
               if (customerDownloadLinkResponse.status === 200) {
                 // Reset the cart
@@ -122,13 +121,11 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
     const linkName = fileName.replace(/_/g, ' ').split('.')[0];
 
     return {
-      download: download,
+      download: btoa(download), // Base64 encode the URL
       link: linkName,
     };
   });
 
-
-  console.log(transformedData, "transformedData");
   return (
     <div className="">
       <section className="pb-24">
@@ -142,6 +139,9 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
             <div>No Downloads yet</div>
           )
         }
+        <div>
+          <p className="text-sm text-gray-500 italic">*** Anda akan dihubungi melalui WhatsApp jika Anda sudah membayar untuk kelas. ***</p>
+        </div>
       </section>
     </div>
   );

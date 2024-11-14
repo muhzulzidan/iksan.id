@@ -131,7 +131,7 @@ const TemplateClients = ({ template }: { template: any }) => {
                         <div className='flex flex-col md:pr-12'>
                             <div className='grid grid-cols-1 gap-4 mb-4'>
                                 <Button onClick={handleCreateInvoice} className='bg-tertiary1 hover:bg-green-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
-                                    <ArrowRightCircleFill className="mr-2" />
+                                    <ArrowRightCircleFill className="mr-2 w-4 h-4 fill-stone-50" />
                                     Dapatkan Segera
                                 </Button>
                             </div>
@@ -139,11 +139,11 @@ const TemplateClients = ({ template }: { template: any }) => {
 
 
                                 <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price1, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
-                                    <CartPlusFill className="mr-2" />
+                                    <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                     Add to Cart ({template.priceDesc[0]})
                                 </Button>
                                 <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price2, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
-                                    <CartPlusFill className="mr-2" />
+                                    <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50 " />
                                     Add to Cart ({template.priceDesc[1]})
                                 </Button>
                             </div>

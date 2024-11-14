@@ -47,7 +47,6 @@ import { toast } from "@/components/ui/use-toast";
 
 interface DataTableProps {
     data: CustomerDownloadData[];
-  
 }
 
 import { Skeleton } from '@/components/ui/skeleton';
@@ -72,8 +71,46 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+    const [tableData, setTableData] = useState(data);
 
-    // console.log(data, "data table")
+    const handleDownload = (encodedUrl: string) => {
+        try {
+            console.log('Encoded URL:', encodedUrl);
+            const decodedUrl = atob(encodedUrl);
+            console.log('Decoded URL:', decodedUrl);
+            window.location.href = decodedUrl;
+        } catch (error) {
+            console.error('Failed to decode URL:', error);
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        try {
+            const response = await fetch('/api/delete-download-link', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete download link');
+            }
+
+            setTableData((prevData) => prevData.filter((item) => item.id !== id));
+            toast({
+                variant: "default",
+                title: `Item deleted successfully`,
+            });
+        } catch (error) {
+            console.error('Error deleting download link:', error);
+            toast({
+                variant: "destructive",
+                title: `Failed to delete item`,
+            });
+        }
+    };
 
     const columns: ColumnDef<CustomerDownloadData>[] = [
         {
@@ -83,22 +120,30 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         },
         {
             accessorKey: 'download',
-            header: () => 'download',
+            header: () => 'Download',
             cell: info => {
                 const date = info.getValue();
                 return (
-                    <a href={`${date}`} className="flex flex-col">
-                        <Button variant={"default"} className="w-full bg-secondary1 hover:bg-blue-700">download</Button>
+                    <a className="flex flex-col" onClick={() => handleDownload(`${date}`)}>
+                        <Button variant={"default"} className="w-full bg-secondary1 hover:bg-blue-700">Download</Button>
                     </a>
                 );
             },
         },
-       
+        // {
+        //     accessorKey: 'delete',
+        //     header: () => 'Delete',
+        //     cell: info => {
+        //         const id = info.row.original.id;
+        //         return (
+        //             <Button variant={"destructive"} className="w-full" onClick={() => handleDelete(id)}>Delete</Button>
+        //         );
+        //     },
+        // },
     ];
 
-
     const table = useReactTable({
-        data,
+        data: tableData,
         columns,
         state: {
             sorting,
@@ -121,7 +166,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
             // If the column is 'userId', set its visibility to false by default
             column.toggleVisibility(value);
             console.log(value, "toggleVisibility")
-
         } else {
             // For other columns, use the provided value
             column.toggleVisibility(value);
@@ -130,7 +174,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 
     return (
         <div className="w-full">
-
             <Suspense fallback={<SkeletonDataTable />}>
                 <div className="flex items-center py-4">
                     <div className="flex gap-2 w-1/2">
@@ -205,8 +248,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
                     </Table>
                 </div>
             </Suspense>
-
-           
             <div className="flex items-center justify-between space-x-2 py-4">
                 <Button
                     variant="outline"
@@ -235,6 +276,4 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
     )
 }
 
-
-
-export default DataTable
+export default DataTable;

@@ -11,27 +11,25 @@ import TemplateClients from './TemplateClients';
 import { Metadata } from 'next';
 import { TemplateString } from 'next/dist/lib/metadata/types/metadata-types';
 
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-    const { slug } = params;
+    const { slug } = await params;
 
     const data = await getTemplates();
     const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
     const metaDefault = metaDefaults[0];
 
-    const template = data.find((template) => template.slug === params.slug);
+    const template = data.find((template) => template.slug === slug);
 
     // If template is null or undefined, throw an error
     if (!template) {
         throw new Error(`Template with slug "${slug}" not found`);
     }
 
-    // const title = template.title || metaDefault?.title || 'Default Title';
     let title: string | TemplateString | null | undefined = 'Default Title';
     if (typeof template.title === 'string') {
         title = template.title;
     } else if (template.title === true) {
-        // handle the case where template.title is true
-        // replace 'True Title' with the appropriate value
         title = 'True Title';
     } else {
         title = metaDefault?.title;
@@ -45,7 +43,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         const templateObj = template as { image?: { fields?: { file?: { url?: string } } } };
         url = templateObj?.image?.fields?.file?.url;
     }
-
 
     let description = 'Default Description';
     if (typeof template.description === 'string') {
@@ -89,15 +86,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 async function TemplatePage({ params }: { params: { slug: string } }) {
-    const { slug } = params;
-    const templates = await getTemplates() as unknown as Template[]; 
-    const template = templates.find((template) => template.slug === params.slug);
+    const { slug } = await params;
+    const templates = await getTemplates() as unknown as Template[];
+    const template = templates.find((template) => template.slug === slug);
+
     // If template is null or undefined, throw an error
     if (!template) {
-        throw new Error(`Template with slug "${params.slug}" not found`);
+        throw new Error(`Template with slug "${slug}" not found`);
     }
+
     return <TemplateClients template={template} />;
 }
-    
+
 export default TemplatePage;
 

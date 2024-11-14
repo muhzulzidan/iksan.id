@@ -1,38 +1,44 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from 'cookie';
-// import { parseCookies } from 'nookies';
 
-export default authMiddleware({
-    publicRoutes: ["((?!^/api|^/admin|^/profile|^/my-account).*)"],
-    async afterAuth(auth, req: NextRequest) {
-        // const cookies = parseCookies();
+const isProtectedRoute = createRouteMatcher(['/dashboard(.*)', '/forum(.*)']);
 
-        if (auth.isPublicRoute) {
-            return NextResponse.next();
-        }
+export default clerkMiddleware(async (auth, req: NextRequest) => {
+    console.log('Middleware invoked');
+    const { userId, redirectToSignIn } = await auth()
 
-        const url = new URL(req.nextUrl.origin);
-
-        if (!auth.userId) {
-            // Store the current URL in a cookie
-            const cookie = serialize('redirectURL', req.nextUrl.pathname, { path: '/', httpOnly: true });
-
-            // Redirect to the sign in page
-            url.pathname = "/sign-in";
-            return NextResponse.redirect(url);
-        }
-
-        // Get the stored URL from the cookie
-        // This part needs to be handled in your sign in logic
-        // const redirectURL = req.cookies.redirectURL;
-        // const redirectURL = cookies.redirectURL || '/default-page';
-        // NextResponse.redirect(redirectURL);
-        // If there's no stored URL, continue as usual
+    if (!isProtectedRoute(req)) {
+        console.log('Public route accessed');
         return NextResponse.next();
-    },
+    }
+
+    const url = new URL(req.nextUrl.origin);
+
+    if (!userId) {
+        console.log('User not authenticated, redirecting to sign-in');
+
+        // Store the current URL in a cookie
+        const cookie = serialize('redirectURL', req.nextUrl.pathname, { path: '/', httpOnly: true });
+        const response = NextResponse.redirect(url);
+        response.headers.set('Set-Cookie', cookie);
+
+        // Redirect to the sign in page
+        url.pathname = "/sign-in";
+        return response;
+    }
+
+    console.log('User authenticated, proceeding to next middleware');
+
+    // If there's no stored URL, continue as usual
+    return NextResponse.next();
 });
 
 export const config = {
-    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+    matcher: [
+        // Skip Next.js internals and all static files, unless found in search params
+        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+        // Always run for API routes
+        '/(api|trpc)(.*)',
+    ],
 };

@@ -27,8 +27,8 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ className }) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogTrigger className={`flex justify-center items-center cursor-pointer ${className}`}>
-                <Search />
+            <DialogTrigger className={`flex justify-center group items-center cursor-pointer ${className}`}>
+                <Search className='relative w-4 h-auto fill-stone-950 group-hover:fill-white '/>
             </DialogTrigger>
             <DialogContent className='w-[90%] rounded-lg'>
                 <DialogHeader>
@@ -38,7 +38,7 @@ const ModalSearch: React.FC<ModalSearchProps> = ({ className }) => {
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto w-full flex justify-center items-center mb-8">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
                     <Input
                         type="text"
                         placeholder="Search..."

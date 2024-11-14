@@ -102,30 +102,6 @@ const WallpapersClient: React.FC<WallpapersClientProps> = ({ wallpapers, pageTit
                         </Link>
                     ))}
                 </div>
-                {selectedWallpaper && (
-                    <Dialog open={isOpen} onClose={closeModal} className="fixed z-10 inset-0 overflow-y-auto ">
-                        <div className="flex items-center justify-center min-h-screen">
-                            <Dialog.Overlay className="fixed inset-0 bg-stone-950 opacity-75" />
-                            <div className="mx-auto z-50 p-12 md:w-6/12 flex justify-center items-center flex-col">
-                                <div className='flex gap-4 justify-between py-4 items-center w-full'>
-                                    <Dialog.Title className="text-2xl font-bold text-white text-center">
-                                        {selectedWallpaper.title}
-                                    </Dialog.Title>
-                                    <div className="modal-buttons bg-stone-50 rounded-lg p-4 py-2 w-fit">
-                                        <button className="text-stone-950" onClick={closeModal}>
-                                            Close
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="modal-content ">
-                                    <CoverImageContentful title={selectedWallpaper.title}
-                                        url={selectedWallpaper.image.fields.file.url} className="" />
-                                </div>
-
-                            </div>
-                        </div>
-                    </Dialog>
-                )}
             </div>
         </Layout>
     );

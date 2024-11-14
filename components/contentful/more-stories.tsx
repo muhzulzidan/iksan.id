@@ -136,7 +136,7 @@ const MoreStories: React.FC<MoreStoriesProps> = ({ posts, more }) => {
                 placeholder="Search"
                 className="w-full py-3 pl-10 pr-4 text-sm border rounded-lg focus:outline-none focus:ring focus:ring-opacity-50 bg-stone-200 text-stone-300 focus:outline-0 focus:ring-secondary2  focus:border-stone-50 focus:text-stone-950"
               />
-              <Search className="absolute top-3 left-4 text-stone-400" />
+              <Search className="absolute top-3 left-4 text-stone-400 h-4 w-4" />
             </div>
           </div>
         </>

@@ -151,9 +151,9 @@ const ProfilePage = ({ userData }: { userData: UserData }) => {
                                     <Input type="tel" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="Phone Number" required />
                                 }
                             </div>
-                            <Button size="sm" className='flex w-fit mt-4' onClick={openPhoneDialog}>
+                            {/* <Button size="sm" className='flex w-fit mt-4' onClick={openPhoneDialog}>
                                 Edit Phone Number
-                            </Button>
+                            </Button> */}
                         </div>
 
                         :
@@ -166,7 +166,7 @@ const ProfilePage = ({ userData }: { userData: UserData }) => {
 
                     }
 
-                    <Button size="sm" className='flex w-fit mt-4' asChild>
+                    <Button size="sm" className='flex w-fit mt-4 hover:bg-secondary2 hover:text-stone-50' asChild>
                         <Link href={'/profile/'}>
                             Edit Profile
                         </Link>

@@ -88,7 +88,7 @@ export default function FooterWithSocialMediaIcons({ metaDefault }: { metaDefaul
         <footer className='max-w-screen-lg  mx-auto bg-stone-50'>
             <Flowbite theme={{ theme: customTheme }}>
                 <Footer container>
-                    <div className="w-full">
+                    <div className="w-full flex flex-col gap-4">
                         <div className="grid w-full gap-12 justify-between sm:flex sm:justify-between md:flex md:grid-cols-1  ">
                             <Link href={"/"} className='sm:mt-4 '>
                                 <Footer.Brand
@@ -181,7 +181,7 @@ export default function FooterWithSocialMediaIcons({ metaDefault }: { metaDefaul
                             </div>
                         </div>
                         <Footer.Divider />
-                        <div className="w-full sm:flex sm:items-center sm:justify-between">
+                        <div className="w-full sm:flex sm:items-center sm:justify-between ">
                             <Footer.Copyright
                                 by="IksanBangsawan"
                                 href=""

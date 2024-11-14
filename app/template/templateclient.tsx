@@ -73,7 +73,7 @@ function TemplatesClient({
                             className={`flex p-4 justify-center items-center gap-2 rounded-lg ${selectedCategory === "all" ? 'bg-secondary2 text-stone-50' : 'bg-stone-200 text-stone-950'}`}
                             onClick={() => handleCategorySelect("all")}
                         >
-                            <Globe />
+                            <Globe className={`h-4 w-4 ${selectedCategory === "all" ? 'fill-stone-50' : 'fill-stone-950'}`} />
                             <p>All</p>
                         </button>
 
@@ -86,7 +86,13 @@ function TemplatesClient({
                                     }`}
                                 onClick={() => handleCategorySelect(category.slug)}
                             >
-                                {category.slug === "creator" ? <PersonVideo /> : <Laptop />}
+                                {category.slug === "creator" ? <PersonVideo className={`h-4 w-4 ${(typeof selectedCategory !== 'string' && selectedCategory.slug === category.slug)
+                                    ? 'fill-stone-50'
+                                    : 'fill-stone-950'
+                                    }`} /> : <Laptop className={`h-4 w-4 ${(typeof selectedCategory !== 'string' && selectedCategory.slug === category.slug)
+                                        ? 'fill-stone-50'
+                                        : 'fill-stone-950'
+                                        }`} />}
                                 {category.slug}
                             </button>
                         ))}
@@ -159,7 +165,7 @@ function TemplatesClient({
                                                 </p>
                                                 
                                                 <Button className='bg-primary1 hover:bg-pink-800 text-stone-50 rounded-lg py-2 px-3 text-xs h-fit' onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })}>
-                                                    <CartPlusFill className="mr-2" />
+                                                    <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
                                                     Add to Cart</Button>
                                             </div>
                                         </div>
