@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styles from '../post-body.module.css'
 import parse, { DOMNode } from 'html-react-parser';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogBackdrop, Transition } from '@headlessui/react';
 
 interface GalleryModalProps {
   imageUrl: string;
@@ -33,7 +33,7 @@ const GalleryModal: React.FC<GalleryModalProps> = ({ imageUrl, isOpen, closeModa
             leaveTo="opacity-0"
           >
             {/* Dark background overlay */}
-            <Dialog.Overlay className="fixed inset-0 bg-stone-950 opacity-75" />
+            <DialogBackdrop className="fixed inset-0 bg-stone-950 opacity-75" />
           </Transition.Child>
 
           {/* Modal content */}

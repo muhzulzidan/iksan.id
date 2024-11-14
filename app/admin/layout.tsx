@@ -2,12 +2,12 @@
 
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs'; // Update with your actual auth hook
 import { Separator } from "@/components/ui/separator"
 import { SidebarNav } from "./components/sidebar-nav"
 import Layout from '@/components/layout';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { auth } from '@clerk/nextjs/server';
 
 const SkeletonMainContent: React.FC = () => {
     return (
@@ -49,7 +49,7 @@ export default async function AdminPage({
 }: {
     children: React.ReactNode
 }) {
-    const { userId } = auth(); // Get the current user's ID
+    const { userId } = await auth(); // Get the current user's ID
     const ADMIN_USER_ID = process.env.NEXT_PUBLIC_ADMIN_USER_ID;
 
     // Check if the current user is not the admin

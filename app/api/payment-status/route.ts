@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest,) {
     const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get('id');
     console.log(id, "id payment-status api");

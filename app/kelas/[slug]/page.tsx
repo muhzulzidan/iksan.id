@@ -11,7 +11,7 @@ import TemplateClients from './TemplateClients';
 import { Metadata } from 'next';
 import { TemplateString } from 'next/dist/lib/metadata/types/metadata-types';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
     const { slug } = params;
 
     const data = await getKelas();
@@ -88,7 +88,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-async function TemplatePage({ params }: { params: { slug: string } }) {
+async function TemplatePage({ params }: { params: any }) {
     const { slug } = params;
     const templates = await getKelas() as unknown as any[]; 
     const template = templates.find((template) => template.slug === params.slug);

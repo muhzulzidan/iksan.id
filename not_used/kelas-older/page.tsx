@@ -12,7 +12,7 @@ import { Metadata } from 'next';
 import { TemplateString } from 'next/dist/lib/metadata/types/metadata-types';
 import MentoringClient from './MentoringClient';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
     const { slug } = params;
 
     const data = await getTemplates();
@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-async function MentoringPage({ params }: { params: { slug: string } }) {
+async function MentoringPage({ params }: { params: any }) {
 
     return <MentoringClient  />;
 }

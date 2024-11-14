@@ -1,15 +1,12 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
     const { customerData, cart } = await req.json();
 
     // Validate customerData and cart
     if (!customerData || !cart) {
-        return new Response('Missing customer data or cart items', {
-            status: 500,
-        });
+        return NextResponse.json({ error: 'Missing customer data or cart items' }, { status: 500 });
     }
 
     console.log(customerData, "customerData checkout api");
@@ -18,9 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     // Validate cart items
     for (const item of cart) {
         if (!item.id) {
-            return new Response('Missing id in cart item', {
-                status: 500,
-            });
+            return NextResponse.json({ error: 'Missing id in cart item' }, { status: 500 });
         }
     }
 

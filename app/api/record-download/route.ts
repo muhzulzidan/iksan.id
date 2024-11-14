@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { currentUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from "next/navigation";
 export async function GET(req: NextRequest,) {
     const downloads = await prisma.downloadIksanId.findMany();

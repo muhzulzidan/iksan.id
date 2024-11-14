@@ -60,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
     const metaDefault = await getMetaDefault() as unknown as MetaDefault
     
      const headersList = headers();
-     const activePath = headersList.get("x-invoke-path");
+     const activePath = (await headersList).get("x-invoke-path");
 
      console.log(activePath, "headers");
 

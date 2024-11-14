@@ -10,13 +10,13 @@ import { Metadata } from 'next'
 // can you see the data.post.content  ?
 // const excerpt = data.post.content.slice(0, 160); 
 
-// export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+// export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
 //     const { slug } = params;
 //     const allPosts = await getBlogs();
 //     const data = await getBlogBySlug(slug, );
 //     const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
 //     const metaDefault = metaDefaults[0];
-    
+
 //     // console.log(`/blogs/${slug}`, "data.post.content")
 
 //     const title = data.title || metaDefault?.title || 'Default Title';
@@ -58,16 +58,19 @@ import { Metadata } from 'next'
 //         },
 //     };
 // }
-async function BlogPages({ params }: { params: { slug: string } }) {
+
+
+async function BlogPages({ params }: any) {
     const { slug } = params;
-    const data = await getBlogBySlug(slug,);
-    const metaDefault = await getMetaDefault()  as unknown as MetaDefault
-    console.log(data, "blogs")
+    const data = await getBlogBySlug(slug);
+    // const metaDefault = await getMetaDefault() as unknown as MetaDefault;
+    // console.log(data, "blogs");
     // Pass fetched data to the client component
-    return(
+    return (
         <PostPageClient
-            post={data}    
-            />
-    )
+            post={data}
+        />
+    );
 }
+
 export default BlogPages

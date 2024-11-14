@@ -1,6 +1,7 @@
 // /app/search/page.tsx
 
 import { getBlogs, getKelas, getMetaDefault, getProducts, getTemplates, getTtemplateCategory } from '@/lib/contentful';
+import { Suspense } from 'react';
 import SearchClient from './SearchClient';
 import { Product, WithContext } from 'schema-dts';
 
@@ -26,13 +27,15 @@ const Search = async () => {
     };
 
     return (
-        <SearchClient
-            templates={templates}
-            products={products}
-            templateCategory={templateCategory}
-            blogs={allPosts}
-            kelas={kelas}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+            <SearchClient
+                templates={templates}
+                products={products}
+                templateCategory={templateCategory}
+                blogs={allPosts}
+                kelas={kelas}
+            />
+        </Suspense>
     );
 };
 

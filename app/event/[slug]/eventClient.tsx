@@ -2,15 +2,13 @@
 "use client";
 
 import React, { Fragment, useState } from 'react';
-import Image from 'next/image';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogBackdrop, Transition } from '@headlessui/react';
 import { XCircle, Download } from 'react-bootstrap-icons';
 import Markdown from 'react-markdown';
 import Layout from '@/components/layout';
 import CoverImageContentful from "@/components/cover-image-contentful";
 
 const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault }) => {
-
     const [selectedImage, setSelectedImage] = useState("");
 
     return (
@@ -25,7 +23,6 @@ const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault })
                             {event?.description}
                         </Markdown>
                     </div>
-                    {/* <p>{event.description}</p> */}
                     <p className="text-stone-600">
                         Date: {event?.date}
                     </p>
@@ -35,21 +32,16 @@ const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault })
                         <button
                             key={index}
                             onClick={() => setSelectedImage(file.fields.file.url)}
-                            className="w-full  relative group cursor-pointer overflow-hidden rounded-lg focus:outline-none focus:ring focus:ring-secondary2"
+                            className="w-full relative group cursor-pointer overflow-hidden rounded-lg focus:outline-none focus:ring focus:ring-secondary2"
                         >
-
                             <CoverImageContentful
                                 url={file.fields.file.url}
                                 title={file.fields.file.fileName}
                                 className="transition-transform duration-300 transform group-hover:scale-105 rounded-lg aspect-auto"
                             />
-
-
                         </button>
                     ))}
                 </div>
-
-
 
                 {/* Modal for Image */}
                 <Transition show={selectedImage !== ""} as={Fragment}>
@@ -68,7 +60,7 @@ const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault })
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                <Dialog.Overlay className="fixed inset-0 bg-stone-100    bg-opacity-30 backdrop-blur-sm" />
+                                <DialogBackdrop className="fixed inset-0 bg-stone-100 bg-opacity-30 backdrop-blur-sm" />
                             </Transition.Child>
 
                             <span
@@ -87,7 +79,7 @@ const EventPageClient: React.FC<EventPageClientProps> = ({ event, metaDefault })
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle ">
+                                <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle">
                                     <div className="bg-white p-4">
                                         <CoverImageContentful
                                             url={selectedImage}

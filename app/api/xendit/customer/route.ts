@@ -2,10 +2,10 @@
 
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
-import { currentUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation';
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest, ) {
     const searchParams = req.nextUrl.searchParams
     const reference_id = searchParams.get('reference_id')
     // Check if the user is logged in
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, ) {
     const body = await req.json();
     const { name, email, phoneNumber, id } = body;
 

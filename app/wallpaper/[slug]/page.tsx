@@ -34,7 +34,7 @@ interface Wallpaper {
     };
 }
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: any): Promise<Metadata> {
     const metaDefaults = await getMetaDefault() as unknown as MetaDefault[];
     const metaDefault = metaDefaults[0];
 
@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     };
 }
 
-async function WallpaperPageServer({ params }: Params) {
+async function WallpaperPageServer({ params }: any) {
     const { slug } = params;
 
     try {

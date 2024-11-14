@@ -9,7 +9,7 @@ const isValidLink = (link: string) => {
     return link.startsWith('https://assets.ctfassets.net/');
 };
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
     const { customerIksanId, downloadLinks } = await req.json();
     console.log(customerIksanId, downloadLinks, "customer-download-link");
     if (!customerIksanId || !downloadLinks) {
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     }
 }
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const customerId = searchParams.get('customerId')
 

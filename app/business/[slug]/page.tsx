@@ -6,7 +6,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { Metadata } from 'next';
 
 
-export async function generateMetadata({ params }: { params: ParsedUrlQuery }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
 
     // Ensure slug is a string. If it's an array or undefined, handle accordingly.
     const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: { params: ParsedUrlQuery }): 
 }
 
 
-async function BusinessPage({ params }: { params: ParsedUrlQuery }): Promise<{ props: Props }> {
+async function BusinessPage({ params }: { params: any }): Promise<{ props: any }> {
     // Ensure slug is a string. If it's an array or undefined, handle accordingly.
     const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
