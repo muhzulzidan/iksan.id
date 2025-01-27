@@ -141,12 +141,12 @@ const ProfilePage = ({ userData }: { userData: UserData }) => {
                                 }
                                 {userData && userData.email ?
     
-                                    <p className="text-lg"><strong>Name:</strong> {userData.email}</p>
+                                    <p className="text-lg"><strong>Email:</strong> {userData.email}</p>
                                     :
                                     <Input type="text" name="name" value={customerData.name} onChange={handleCustomerChange} placeholder="Name" required />
                                 }
                                 {userData && userData.phoneNumber ?
-                                    <p className="text-lg"><strong>Name:</strong> {userData.phoneNumber}</p>
+                                    <p className="text-lg"><strong>Phone Number:</strong> {userData.phoneNumber}</p>
                                     :
                                     <Input type="tel" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="Phone Number" required />
                                 }
