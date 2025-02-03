@@ -74,7 +74,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
             if (data.fileUrl) {
               // Base64 encode the URL
               const encodedUrl = btoa(data.fileUrl);
-              downloadLinks.push(encodedUrl);
+              downloadLinks.push(data.fileUrl);
             }
           }
 
