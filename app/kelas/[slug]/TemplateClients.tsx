@@ -132,7 +132,7 @@ const TemplateClients = ({ template }: { template: any }) => {
                             <div className='grid grid-cols-1 gap-4 mb-4'>
                                 <Button onClick={handleCreateInvoice} className='bg-tertiary1 hover:bg-green-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
                                     <ArrowRightCircleFill className="mr-2 w-4 h-4 fill-stone-50" />
-                                    Dapatkan Segera
+                                    Download
                                 </Button>
                             </div>
                             <div className='grid grid-cols-1  gap-4 mb-4'>

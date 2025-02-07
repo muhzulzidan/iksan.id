@@ -189,7 +189,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
                         <div className='flex gap-4 mb-4'>
                             <Button onClick={handleCreateInvoice} className='bg-secondary2 hover:bg-purple-800 text-stone-50 hover:scale-105'>
                                 <ArrowRightCircleFill className="mr-2 w-4 h-4 fill-stone-50" />
-                                Dapatkan Segera
+                                Download
                             </Button>
                             <Button onClick={() => addToCart({ id: template.slug, name: template.title, price: template.price, image: template.image, quantity: 1 })} className='bg-secondary2 hover:bg-purple-800 text-stone-50 transform transition duration-500 ease-in-out hover:scale-105'>
                                 <CartPlusFill className="mr-2 w-4 h-4 fill-stone-50" />
@@ -216,7 +216,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
                 </div>
 
                 {/* testimony */}
-                <section className='grid grid-cols-1 gap-4 md:grid-cols-3 py-12'>
+                {/* <section className='grid grid-cols-1 gap-4 md:grid-cols-3 py-12'>
                     {Array.from({ length: 3 }).map((_, index) => (
                         <Card key={index} className='text-center'>
 
@@ -247,7 +247,7 @@ const TemplateClients = ({ template }: { template: Template }) => {
 
 
                     ))}
-                </section>
+                </section> */}
 
 
                 <div ref={myRef} className='flex flex-col prose max-w-none px-4 w-full'>

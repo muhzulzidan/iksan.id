@@ -114,7 +114,7 @@ function TemplatesClient({
                                             </p>
                                         </div>
                                         <Link href={`/template/${templatePop.slug}`} className='px-4 py-2 bg-secondary2 text-stone-50 w-fit rounded-xl hover:bg-stone-100 hover:border hover:border-secondary2 '>
-                                            Dapatkan Segera
+                                            Download
                                         </Link>
                                     </div>
                                     <div className='md:w-7/12  flex items-center justify-center' >
