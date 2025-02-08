@@ -2,15 +2,16 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from 'cookie';
 
-const isProtectedRoute = createRouteMatcher(['/dashboard(.*)', '/forum(.*)']);
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)'])
+
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
     console.log('Middleware invoked');
     const { userId, redirectToSignIn } = await auth()
-
-    if (!isProtectedRoute(req)) {
+    
+    if (!isPublicRoute(req)) {
         console.log('Public route accessed');
-        return NextResponse.next();
+        await auth.protect()
     }
 
     const url = new URL(req.nextUrl.origin);
