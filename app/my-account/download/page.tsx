@@ -31,13 +31,17 @@ export default async function SettingsAccountPage() {
     }
 
     const userData = await getUser();
-    const customer = await getCustomerByEmail(email);
-    if (!customer) {
+    const customers = await getCustomerByEmail(email);
+    if (!customers || customers.length === 0) {
       return <div>Error: Customer not found</div>;
     }
 
-    const CustomerTransactions = await getCustomerTransactions(customer.id);
+    const customer = customers[0];
+    console.log(customer, "customer");
+    const CustomerTransactions = await getCustomerTransactions(customer.id.toString());
+    // console.log(CustomerTransactions, "CustomerTransactions");
     const downloadLinks = await getCustomerDownloadLinks(customer.id);
+    console.log(downloadLinks, "downloadLinks");
 
     return (
       <div className="flex flex-col gap-2">

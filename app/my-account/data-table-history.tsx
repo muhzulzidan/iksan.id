@@ -100,11 +100,15 @@ const DataTable: React.FC<any> = ({ data }) => {
             header: () => 'Created At',
             cell: info => {
                 const value = info.getValue() as Date;
+                const date = new Date(value);
+                if (isNaN(date.getTime())) {
+                    return 'Invalid date'; // Return a default value if the date is invalid
+                }
                 const formattedDate = new Intl.DateTimeFormat('id-ID', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
-                }).format(new Date(value));
+                }).format(date);
                 return formattedDate;
             },
         },

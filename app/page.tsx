@@ -19,6 +19,8 @@ import TemplatesClient from '@/app/template/templateclient';
 import ProductsClients from "@/components/products"
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+
+
 // Ensure the environment variable is set, otherwise use a fallback URL
 if (!API_URL) {
   throw new Error("WORDPRESS_API_URL environment variable is not set.");
@@ -140,6 +142,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // Example Page component assuming other necessary imports and definitions
 const Page = async () => {
+
 
   const templates = await getTemplates() as unknown as Template[];
   const products = await getProducts() as unknown as any[];

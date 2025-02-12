@@ -6,7 +6,8 @@ import { redirect } from 'next/navigation'
 
 async function checkoutPage() {
     // const router = useRouter();
-
+    // const user = await getUser();
+    // <Checkout userData={user} />
     try {
         const user = await getUser();
         if (!user) {
@@ -15,9 +16,10 @@ async function checkoutPage() {
         }
         return <Checkout userData={user} />;
     } catch (error) {
-        redirect('/sign-in'); 
+        // redirect('/sign-in'); 
         console.error('Error in checkoutPage:', error);
         // Handle the error appropriately, e.g., show an error message or redirect
+        redirect('/sign-in'); 
         return <div>Error loading checkout page. Please try again later.</div>;
     }
 }

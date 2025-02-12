@@ -1,33 +1,33 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from 'cookie';
+const protectedRoutes = ['/my-account(.*)', '/admin(.*)' ];
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)'])
-
+const isProtectedRoute = createRouteMatcher(protectedRoutes);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
     console.log('Middleware invoked');
-    const { userId, redirectToSignIn } = await auth()
-    
-    if (!isPublicRoute(req)) {
-        console.log('Public route accessed');
-        await auth.protect()
+    const { userId, redirectToSignIn } = await auth();
+
+    if (isProtectedRoute(req)) {
+        console.log('Protected route accessed');
+        await auth.protect();
     }
 
-    const url = new URL(req.nextUrl.origin);
+    // const url = new URL(req.nextUrl.origin);
 
-    if (!userId) {
-        console.log('User not authenticated, redirecting to sign-in');
+    // if (!userId) {
+    //     console.log('User not authenticated, redirecting to sign-in');
 
-        // Store the current URL in a cookie
-        const cookie = serialize('redirectURL', req.nextUrl.pathname, { path: '/', httpOnly: true });
-        const response = NextResponse.redirect(url);
-        response.headers.set('Set-Cookie', cookie);
+    //     // Store the current URL in a cookie
+    //     // const cookie = serialize('redirectURL', req.nextUrl.pathname, { path: '/', httpOnly: true });
+    //     const response = NextResponse.redirect(url);
+    //     // response.headers.set('Set-Cookie', cookie);
 
-        // Redirect to the sign in page
-        url.pathname = "/sign-in";
-        return response;
-    }
+    //     // Redirect to the sign in page
+    //     url.pathname = "/sign-in";
+    //     return response;
+    // }
 
     console.log('User authenticated, proceeding to next middleware');
 

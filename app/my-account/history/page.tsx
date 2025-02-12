@@ -36,22 +36,24 @@ export default async function HistoryPage() {
     return <div>Error: Customer not found</div>;
   }
 
-  const downloadLinks = await getCustomerTransactions(customer.id);
+  const downloadLinks = await getCustomerTransactions(customer[0].id.toString());
   console.log(downloadLinks, "downloadLinks");
 
-  const transformedData = downloadLinks.map((link: { id: any; total: any; status: any; createdAt: any; paidAt: any; orderItems: any[]; }) => ({
-    id: link.id,
-    amount: link.total,
-    status: link.status,
-    createdAt: link.createdAt,
-    updatedAt: link.paidAt,
-    orderItems: link.orderItems.map((item: { id: any; quantity: any; price: any; productSlug: any; }) => ({
-      id: item.id,
-      quantity: item.quantity,
-      price: item.price,
-      productSlug: item.productSlug,
-    })),
+  const transformedData = downloadLinks.map((link: { CustomerOrder: any; Payment: any; OrderItem: any; }) => ({
+    id: link.CustomerOrder.id,
+    amount: link.CustomerOrder.total,
+    status: link.CustomerOrder.status,
+    createdAt: link.CustomerOrder.createdAt,
+    updatedAt: link.CustomerOrder.paidAt,
+    orderItems: link.OrderItem ? [{
+      id: link.OrderItem.id,
+      quantity: link.OrderItem.quantity,
+      price: link.OrderItem.price,
+      productSlug: link.OrderItem.productSlug,
+    }] : [], // Default to an empty array if OrderItem is undefined
   }));
+
+  console.log(transformedData, "transformedData");
 
   return (
     <Suspense fallback={<SkeletonDataTable />}>

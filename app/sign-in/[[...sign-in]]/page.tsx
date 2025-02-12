@@ -14,12 +14,13 @@ function useLocalStorage(key: any, defaultValue: any) {
 }
 
 export default function Page() {
-    const [redirectURL] = useLocalStorage('redirectURL', '/');
-    console.log(redirectURL, "redirectURL")
+    // const [redirectURL] = useLocalStorage('redirectURL', '/');
+    // console.log(redirectURL, "redirectURL")
     return (
         <Layout >
             <div className="flex justify-center items-center h-screen">
-                <SignIn redirectUrl={redirectURL} afterSignInUrl={redirectURL} />
+                {/* <SignIn redirectUrl={redirectURL} afterSignInUrl={redirectURL} /> */}
+                <SignIn/>
             </div>
         </Layout>
     )
