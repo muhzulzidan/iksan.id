@@ -1,5 +1,3 @@
-// data-table-history.tsx
-
 "use client"
 
 import { SetStateAction, useState, useRef, Suspense } from "react";
@@ -62,6 +60,7 @@ const SkeletonDataTable: React.FC = () => {
         </div>
     );
 };
+
 interface DataTableProps {
     data: any[];
 }
@@ -119,12 +118,16 @@ const DataTable: React.FC<any> = ({ data }) => {
             accessorKey: 'createdAt',
             header: () => 'Created At',
             cell: info => {
-                const value = info.getValue() as Date;
+                const value = info.getValue();
+                const date = new Date(value as string | number | Date);
+                if (isNaN(date.getTime())) {
+                    return 'Invalid date';
+                }
                 const formattedDate = new Intl.DateTimeFormat('id-ID', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
-                }).format(new Date(value));
+                }).format(date);
                 return formattedDate;
             },
         },
@@ -198,7 +201,7 @@ const DataTable: React.FC<any> = ({ data }) => {
 
         <div className="w-full">
             <div className="flex items-center pb-4">
-               <Suspense fallback={<SkeletonDataTable />}>
+                <Suspense fallback={<SkeletonDataTable />}>
                     <div className="flex gap-2 w-1/2">
                         <Input
                             placeholder="Filter Customer Info..."
@@ -241,7 +244,7 @@ const DataTable: React.FC<any> = ({ data }) => {
                                 })}
                         </DropdownMenuContent>
                     </DropdownMenu>
-               </Suspense>
+                </Suspense>
             </div>
             <Suspense fallback={<SkeletonDataTable />}>
                 <div className="rounded-md border">

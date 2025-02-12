@@ -49,14 +49,14 @@ export default async function AdminPage({
 }: {
     children: React.ReactNode
 }) {
-    const { userId } = await auth(); // Get the current user's ID
-    const ADMIN_USER_ID = process.env.NEXT_PUBLIC_ADMIN_USER_ID;
+    // const { userId } = await auth(); // Get the current user's ID
+    // const ADMIN_USER_ID = process.env.NEXT_PUBLIC_ADMIN_USER_ID;
 
-    // Check if the current user is not the admin
-    if (userId !== ADMIN_USER_ID) {
-        // Redirect to home page or another page if not admin
-        redirect('/');
-    }
+    // // Check if the current user is not the admin
+    // if (userId !== ADMIN_USER_ID) {
+    //     // Redirect to home page or another page if not admin
+    //     redirect('/');
+    // }
 
     // Render admin page content for the admin user
     return (

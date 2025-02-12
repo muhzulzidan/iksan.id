@@ -12,21 +12,21 @@ interface DownloadData {
   links: string[];
 }
 
-const DownloadListPage = ({ downloadsData }: { downloadsData: DownloadData[] }) => {
+const DownloadListPage = ({ downloadsData }: { downloadsData: any[] }) => {
   console.log(downloadsData, "downloadsData");
 
   const transformedData = downloadsData.flatMap((download) => {
-    return download.links.map((link) => {
+    return download.links.map((link: string) => {
       const urlParts = link.split('/');
       const fileName = urlParts[urlParts.length - 1];
       const linkName = fileName.replace(/_/g, ' ').split('.')[0];
 
       return {
-        customerId: download.customerId,
-        customerName: download.customerName,
-        customerEmail: download.customerEmail,
-        download: link,
-        link: linkName,
+      customerId: download.customerId,
+      customerName: download.customerName,
+      customerEmail: download.customerEmail,
+      download: link,
+      link: linkName,
       };
     });
   });

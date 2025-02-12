@@ -1,5 +1,3 @@
-// pages/member/history/page.tsx
-
 import { getAllCustomerTransactions } from "@/lib/prisma/getCustomerTransactions";
 import { currentUser } from '@clerk/nextjs/server';
 import DataTable from "../data-table-history";
@@ -26,7 +24,7 @@ export default async function HistoryPage() {
   if (!user) {
     return <div>Error: User not found</div>;
   }
-  
+
   const alldownloadLinks = await getAllCustomerDownloadLinks();
   console.log(alldownloadLinks, "alldownloadLinks");
 
@@ -34,7 +32,7 @@ export default async function HistoryPage() {
   const transactions = await getAllCustomerTransactions();
   console.log(transactions, "transactions");
 
-  const transformedData = transactions.map((transaction: { id: any; total: any; status: any; createdAt: any; paidAt: any; orderItems: any[]; customer: { id: any; name: any; email: any; }; }) => {
+  const transformedData = transactions.map((transaction: any) => {
     const customerDownloads = alldownloadLinks.filter((link: { customerId: any; }) => link.customerId === transaction.customer.id);
     const downloadLinks = customerDownloads.flatMap((download: { links: any; }) => download.links);
 
@@ -47,12 +45,12 @@ export default async function HistoryPage() {
       customerId: transaction.customer.id,
       customerName: transaction.customer.name,
       customerEmail: transaction.customer.email,
-      orderItems: transaction.orderItems.map((item: { id: any; quantity: any; price: any; productSlug: any; }) => ({
+      orderItems: transaction.orderItems ? transaction.orderItems.map((item: { id: any; quantity: any; price: any; productSlug: any; }) => ({
         id: item.id,
         quantity: item.quantity,
         price: item.price,
         productSlug: item.productSlug,
-      })),
+      })) : [], // Default to an empty array if orderItems is undefined
       downloadLinks: downloadLinks,
     };
   });

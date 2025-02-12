@@ -154,6 +154,7 @@ export async function getCustomerDownloadLinks(customerId: number) {
     }
 }
 
+
 export async function getAllCustomerDownloadLinks() {
     try {
         // Fetch all CustomerDownloadLink records along with their associated DownloadLink records
@@ -161,24 +162,47 @@ export async function getAllCustomerDownloadLinks() {
             .leftJoin(downloadLink, eq(downloadLink.customerDownloadLinkId, customerDownloadLink.id))
             .execute();
 
-        // Extract unique customerIksanIds from the fetched records
-        const customerIksanIds = Array.from(new Set(customerDownloadLinks.map((cdl: any) => cdl.customerIksanId)));
+        console.log(customerDownloadLinks, "customerDownloadLinks");
+
+        // Extract unique customerIksanIds from the fetched records, filtering out undefined values
+        const customerIksanIds = Array.from(new Set(customerDownloadLinks.map((cdl: any) => cdl.customerIksanId).filter((id: any) => id !== undefined)));
+
+        console.log(customerIksanIds, "customerIksanIds");
 
         // Fetch the corresponding CustomerIksanId records
         const customers = await db.select().from(customerIksanId)
             .where(inArray(customerIksanId.id, customerIksanIds))
             .execute();
 
+        console.log(customers, "customers");
+
         // Create a map of customerId to customer details
         const customerMap = new Map<number, { id: number; name: string; email: string }>(customers.map((customer: any) => [customer.id, customer]));
 
+        console.log(customerMap, "customerMap");
+
         // Map the fetched records to include customer details
-        const downloadLinks = customerDownloadLinks.map((cdl: any) => ({
-            customerId: cdl.customerIksanId,
-            customerName: customerMap.get(cdl.customerIksanId)?.name,
-            customerEmail: customerMap.get(cdl.customerIksanId)?.email,
-            links: cdl.downloadLink ? [cdl.downloadLink.link] : [],
-        }));
+        const downloadLinks = customerDownloadLinks.map((cdl: any) => {
+            const customerName = customerMap.get(cdl.customerIksanId)?.name;
+            const customerEmail = customerMap.get(cdl.customerIksanId)?.email;
+            const links = cdl.DownloadLink ? [cdl.DownloadLink.link] : [];
+
+            console.log({
+                customerId: cdl.customerIksanId,
+                customerName,
+                customerEmail,
+                links,
+            }, "downloadLinkEntry");
+
+            return {
+                customerId: cdl.customerIksanId,
+                customerName,
+                customerEmail,
+                links,
+            };
+        });
+
+        console.log(downloadLinks, "downloadLinks");
 
         return downloadLinks;
     } catch (error) {
