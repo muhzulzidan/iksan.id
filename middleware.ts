@@ -8,28 +8,14 @@ const isProtectedRoute = createRouteMatcher(protectedRoutes);
 export default clerkMiddleware(async (auth, req: NextRequest) => {
     console.log('Middleware invoked');
 
-    const { userId, redirectToSignIn } = await auth()
+    const { userId, redirectToSignIn } = await auth();
+    console.log('User ID:', userId);
 
     if (!userId && isProtectedRoute(req)) {
+        console.log('User not authenticated, redirecting to sign-in');
         // Add custom logic to run before redirecting
-
-        return redirectToSignIn()
+        return redirectToSignIn();
     }
-
-    // const url = new URL(req.nextUrl.origin);
-
-    // if (!userId) {
-    //     console.log('User not authenticated, redirecting to sign-in');
-
-    //     // Store the current URL in a cookie
-    //     // const cookie = serialize('redirectURL', req.nextUrl.pathname, { path: '/', httpOnly: true });
-    //     const response = NextResponse.redirect(url);
-    //     // response.headers.set('Set-Cookie', cookie);
-
-    //     // Redirect to the sign in page
-    //     url.pathname = "/sign-in";
-    //     return response;
-    // }
 
     console.log('User authenticated, proceeding to next middleware');
 
