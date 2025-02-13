@@ -22,6 +22,7 @@ const SkeletonDownloadList: React.FC = () => {
 export default async function SettingsAccountPage() {
   try {
     // Get the Backend API User object when you need access to the user's information
+    console.log('SettingsAccountPage invoked');
     const user = await currentUser();
 
     // Check if the user and email address are defined
@@ -39,7 +40,7 @@ export default async function SettingsAccountPage() {
     const customer = customers[0];
     console.log(customer, "customer");
     const CustomerTransactions = await getCustomerTransactions(customer.id.toString());
-    // console.log(CustomerTransactions, "CustomerTransactions");
+    console.log(CustomerTransactions, "CustomerTransactions");
     const downloadLinks = await getCustomerDownloadLinks(customer.id);
     console.log(downloadLinks, "downloadLinks");
 

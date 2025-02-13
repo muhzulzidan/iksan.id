@@ -14,11 +14,12 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
   const [isLoading, setIsLoading] = useState(true);
   const { removeFromCart } = useStore();
   const router = useRouter();
+  console.log(CustomerTransactions, "CustomerTransactions");
 
   // Extract the PaymentId from CustomerTransactions
-  const PaymentId = CustomerTransactions.find((transaction: any) => transaction.status === 'PAID')?.xenditId;
-
+  const PaymentId = CustomerTransactions.find((transaction: any) => transaction.CustomerOrder.status === 'PAID')?.CustomerOrder.xenditId;
   console.log(PaymentId, "PaymentId");
+
   function chunkArray(array: any[], chunkSize: number) {
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
@@ -37,7 +38,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
     console.log(userData, "user");
 
     const checkPaymentStatus = async () => {
-      // console.log('Checking payment status');
+      console.log('Checking payment status');
       try {
         const response = await fetch(`/api/payment-status-xendit?xenditId=${PaymentId}`, {
           method: 'GET',
@@ -45,14 +46,13 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
             'Content-Type': 'application/json',
           },
         });
-        // console.log(response, "response");
         if (!response.ok) {
           console.log('Failed to fetch payment status', response);
           throw new Error('Failed to fetch payment status');
         }
 
         const payment = await response.json();
-        // console.log(payment, "payment");
+        console.log(payment, "payment");
 
         if (payment && payment.order && payment.order.status === 'PAID') {
           setIsPaid(true);
@@ -61,8 +61,8 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
           // Extract productSlugs from orderItems of PAID transactions
           const productSlugs = CustomerTransactions
-            .filter((transaction: any) => transaction.status === 'PAID')
-            .flatMap((transaction: any) => transaction.orderItems.map((item: any) => item.productSlug));
+            .filter((transaction: any) => transaction.CustomerOrder.status === 'PAID')
+            .flatMap((transaction: any) => transaction.OrderItem.productSlug);
 
           for (const slug of productSlugs) {
             // Normalize the slug using slugify
@@ -87,13 +87,9 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
                 downloadLinks: chunk,
               });
 
-              // console.log(customerDownloadLinkResponse, "customerDownloadLinkResponse");
-
               if (customerDownloadLinkResponse.status === 200) {
                 // Reset the cart
                 productSlugs.forEach((slug: string) => removeFromCart(slug));
-                // console.log('Redirecting to /my-account/download');
-                // window.location.reload(); // Reload the page
               } else {
                 console.error('Error adding links and user id to customer-download-link', customerDownloadLinkResponse.data);
               }
@@ -111,8 +107,6 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
     };
 
     checkPaymentStatus();
-    // const intervalId = setInterval(checkPaymentStatus, 10000);
-    // return () => clearInterval(intervalId);
   }, [PaymentId, CustomerTransactions, userData, router, removeFromCart]);
 
   const transformedData = downloadsData.map((download: string, index: any) => {

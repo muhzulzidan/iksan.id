@@ -44,7 +44,7 @@ import { customerIksanId } from '@/drizzle/schema'; // Import your Drizzle ORM s
 export async function getUser() {
     try {
         const user = await currentUser();
-        console.log('get-user Current user:', user);
+        // console.log('get-user Current user:', user);
 
         if (!user) {
             throw new Error('No user found');
