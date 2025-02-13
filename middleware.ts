@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from 'cookie';
-const protectedRoutes = ['/my-account(.*)', '/admin(.*)'];
+const protectedRoutes = ['/my-account(.*)', '/admin(.*)', '/checkout(.*)'];
 
 const isProtectedRoute = createRouteMatcher(protectedRoutes);
 
