@@ -12,6 +12,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
   const [isPaid, setIsPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState('');
   const { removeFromCart } = useStore();
   const router = useRouter();
   console.log(CustomerTransactions, "CustomerTransactions");
@@ -39,6 +40,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
     const checkPaymentStatus = async () => {
       console.log('Checking payment status');
+      setLoadingMessage('Memeriksa status pembayaran...');
       try {
         const response = await fetch(`/api/payment-status-xendit?xenditId=${PaymentId}`, {
           method: 'GET',
@@ -48,7 +50,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
         });
         if (!response.ok) {
           console.log('Failed to fetch payment status', response);
-          throw new Error('Failed to fetch payment status');
+          throw new Error('Gagal mengambil status pembayaran');
         }
 
         const payment = await response.json();
@@ -56,6 +58,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
         if (payment && payment.order && payment.order.status === 'PAID') {
           setIsPaid(true);
+          setLoadingMessage('Pembayaran dikonfirmasi. Menghasilkan tautan unduhan...');
 
           const downloadLinks = [];
 
@@ -98,10 +101,15 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
             }
           }
 
+          setLoadingMessage('');
+          setIsLoading(false);
+        } else {
+          setLoadingMessage('Pembayaran belum dikonfirmasi. Mohon tunggu...');
           setIsLoading(false);
         }
       } catch (err) {
         console.error('Error fetching payment status', err);
+        setLoadingMessage('Gagal mengambil status pembayaran');
         setIsLoading(false);
       }
     };
@@ -125,12 +133,24 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
       <section className="pb-24">
         {/* Displaying the list of downloads */}
         {
-          downloadsData && downloadsData.length > 0 ? (
-            <div className="">
-              <DataTable data={transformedData} />
+          isLoading ? (
+            <div className="flex items-center justify-center pb-6">
+              <div className="flex items-center space-x-2">
+                <svg className="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                <span>{loadingMessage}</span>
+              </div>
             </div>
           ) : (
-            <div>No Downloads yet</div>
+            downloadsData && downloadsData.length > 0 ? (
+              <div className="">
+                <DataTable data={transformedData} />
+              </div>
+            ) : (
+              <div>Belum ada unduhan</div>
+            )
           )
         }
         <div>

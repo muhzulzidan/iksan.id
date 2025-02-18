@@ -1,7 +1,5 @@
-import { pgTable, varchar, timestamp, text, integer, uniqueIndex, serial, foreignKey, doublePrecision } from "drizzle-orm/pg-core"
-import { sql } from "drizzle-orm"
-
-
+import { pgTable, varchar, timestamp, text, integer, uniqueIndex, serial, foreignKey, doublePrecision } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const prismaMigrations = pgTable("_prisma_migrations", {
 	id: varchar({ length: 36 }).primaryKey().notNull(),
@@ -22,10 +20,10 @@ export const user = pgTable("User", {
 	email: text().notNull(),
 	username: text().notNull(),
 }, (table) => [
-	uniqueIndex("User_celeryId_key").using("btree", table.celeryId.asc().nullsLast().op("text_ops")),
-	uniqueIndex("User_customerId_key").using("btree", table.customerId.asc().nullsLast().op("text_ops")),
-	uniqueIndex("User_email_key").using("btree", table.email.asc().nullsLast().op("text_ops")),
-	uniqueIndex("User_username_key").using("btree", table.username.asc().nullsLast().op("text_ops")),
+	uniqueIndex("User_celeryId_key").on(table.celeryId),
+	uniqueIndex("User_customerId_key").on(table.customerId),
+	uniqueIndex("User_email_key").on(table.email),
+	uniqueIndex("User_username_key").on(table.username),
 ]);
 
 export const downloadIksanId = pgTable("DownloadIksanId", {
@@ -43,7 +41,7 @@ export const customerIksanId = pgTable("CustomerIksanId", {
 	email: text().notNull(),
 	phoneNumber: text(),
 }, (table) => [
-	uniqueIndex("CustomerIksanId_email_key").using("btree", table.email.asc().nullsLast().op("text_ops")),
+	uniqueIndex("CustomerIksanId_email_key").on(table.email),
 ]);
 
 export const customerOrder = pgTable("CustomerOrder", {
@@ -55,12 +53,12 @@ export const customerOrder = pgTable("CustomerOrder", {
 	createdAt: timestamp({ precision: 3, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
 	paidAt: timestamp({ precision: 3, mode: 'string' }),
 }, (table) => [
-	uniqueIndex("CustomerOrder_xenditId_key").using("btree", table.xenditId.asc().nullsLast().op("text_ops")),
+	uniqueIndex("CustomerOrder_xenditId_key").on(table.xenditId),
 	foreignKey({
-			columns: [table.customerId],
-			foreignColumns: [customerIksanId.id],
-			name: "CustomerOrder_customerId_fkey"
-		}).onUpdate("cascade").onDelete("restrict"),
+		columns: [table.customerId],
+		foreignColumns: [customerIksanId.id],
+		name: "CustomerOrder_customerId_fkey"
+	}).onUpdate("cascade").onDelete("restrict"),
 ]);
 
 export const customerDownloadLink = pgTable("CustomerDownloadLink", {
@@ -73,12 +71,12 @@ export const downloadLink = pgTable("DownloadLink", {
 	link: text().notNull(),
 	customerDownloadLinkId: integer().notNull(),
 }, (table) => [
-	uniqueIndex("DownloadLink_link_key").using("btree", table.link.asc().nullsLast().op("text_ops")),
+	uniqueIndex("DownloadLink_link_key").on(table.link),
 	foreignKey({
-			columns: [table.customerDownloadLinkId],
-			foreignColumns: [customerDownloadLink.id],
-			name: "DownloadLink_customerDownloadLinkId_fkey"
-		}).onUpdate("cascade").onDelete("restrict"),
+		columns: [table.customerDownloadLinkId],
+		foreignColumns: [customerDownloadLink.id],
+		name: "DownloadLink_customerDownloadLinkId_fkey"
+	}).onUpdate("cascade").onDelete("restrict"),
 ]);
 
 export const payment = pgTable("Payment", {
@@ -88,12 +86,12 @@ export const payment = pgTable("Payment", {
 	createdAt: timestamp({ precision: 3, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`).notNull(),
 	orderId: integer().notNull(),
 }, (table) => [
-	uniqueIndex("Payment_orderId_key").using("btree", table.orderId.asc().nullsLast().op("int4_ops")),
+	uniqueIndex("Payment_orderId_key").on(table.orderId),
 	foreignKey({
-			columns: [table.orderId],
-			foreignColumns: [customerOrder.id],
-			name: "Payment_orderId_fkey"
-		}).onUpdate("cascade").onDelete("restrict"),
+		columns: [table.orderId],
+		foreignColumns: [customerOrder.id],
+		name: "Payment_orderId_fkey"
+	}).onUpdate("cascade").onDelete("restrict"),
 ]);
 
 export const orderItem = pgTable("OrderItem", {
@@ -103,10 +101,10 @@ export const orderItem = pgTable("OrderItem", {
 	orderId: integer().notNull(),
 	productSlug: text().notNull(),
 }, (table) => [
-	uniqueIndex("OrderItem_orderId_productSlug_key").using("btree", table.orderId.asc().nullsLast().op("int4_ops"), table.productSlug.asc().nullsLast().op("int4_ops")),
+	uniqueIndex("OrderItem_orderId_productSlug_key").on(table.orderId, table.productSlug),
 	foreignKey({
-			columns: [table.orderId],
-			foreignColumns: [customerOrder.id],
-			name: "OrderItem_orderId_fkey"
-		}).onUpdate("cascade").onDelete("restrict"),
+		columns: [table.orderId],
+		foreignColumns: [customerOrder.id],
+		name: "OrderItem_orderId_fkey"
+	}).onUpdate("cascade").onDelete("restrict"),
 ]);
