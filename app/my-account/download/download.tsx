@@ -13,6 +13,7 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
   const [isPaid, setIsPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [previousDownloads, setPreviousDownloads] = useState<string[]>(downloadsData);
   const { removeFromCart } = useStore();
   const router = useRouter();
   console.log(CustomerTransactions, "CustomerTransactions");
@@ -116,6 +117,14 @@ const DownloadListPage = ({ downloadsData, CustomerTransactions, userData, custo
 
     checkPaymentStatus();
   }, [PaymentId, CustomerTransactions, userData, router, removeFromCart]);
+
+  useEffect(() => {
+    // Refresh the page or re-fetch data when new downloads are added
+    if (downloadsData.length > previousDownloads.length) {
+      setPreviousDownloads(downloadsData);
+      router.refresh(); // This will refresh the page
+    }
+  }, [downloadsData, previousDownloads, router]);
 
   const transformedData = downloadsData.map((download: string, index: any) => {
     const urlParts = download.split('/');
