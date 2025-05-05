@@ -37,14 +37,44 @@ export async function GET(req: NextRequest,) {
 
     console.log('template.file:', template.file);
 
+
+
     let fileUrl;
     if (template.file && Array.isArray(template.file)) {
-        const file = template.file[0] as unknown as File;
-        console.log('First file object:', file);
-        if (file && file.fields && file.fields.file && file.fields.file.url) {
-            fileUrl = file.fields.file.url.substring(2);
+        // Use 'any' and add a type guard for 'fields'
+        const fileObj = template.file.find(
+            (f: any) =>
+                typeof f === 'object' &&
+                f !== null &&
+                'fields' in f &&
+                f.fields &&
+                f.fields.file &&
+                f.fields.file.url
+        );
+        console.log('Selected file object:', fileObj);
+
+        if (
+            fileObj &&
+            typeof fileObj === 'object' &&
+            'fields' in fileObj &&
+            fileObj.fields &&
+            typeof fileObj.fields === 'object' &&
+            'file' in fileObj.fields &&
+            fileObj.fields.file &&
+            typeof fileObj.fields.file === 'object' &&
+            'url' in fileObj.fields.file &&
+            fileObj.fields.file.url
+        ) {
+            if (typeof fileObj.fields.file.url === 'string') {
+                fileUrl = fileObj.fields.file.url.startsWith('//')
+                    ? fileObj.fields.file.url.substring(2)
+                    : fileObj.fields.file.url;
+            } else {
+                console.log('fileObj.fields.file.url is not a string:', fileObj.fields.file.url);
+                return NextResponse.json({ error: 'File URL is not a string' }, { status: 404 });
+            }
         } else {
-            console.log('File fields structure:', file);
+            console.log('No valid file object with fields.file.url found:', template.file);
             return NextResponse.json({ error: 'File fields not found' }, { status: 404 });
         }
     } else {
@@ -54,7 +84,5 @@ export async function GET(req: NextRequest,) {
 
     console.log('fileUrl:', fileUrl);
 
-    console.log('Download recorded for fileUrl:', fileUrl);
     return NextResponse.json({ fileUrl: `https://${fileUrl}` });
-    // redirect(`https://${fileUrl}`);
 }
