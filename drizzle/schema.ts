@@ -1,6 +1,14 @@
-import { pgTable, varchar, timestamp, text, integer, uniqueIndex, serial, foreignKey, doublePrecision } from "drizzle-orm/pg-core";
+import { pgTable, varchar, timestamp, text, integer, uniqueIndex, serial, foreignKey, doublePrecision, jsonb } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
+
+export const xenditWebhookLog = pgTable('xendit_webhook_log', {
+	id: serial('id').primaryKey(),
+	receivedAt: timestamp('received_at').defaultNow(),
+	eventType: varchar('event_type', { length: 100 }),
+	amount: integer('amount'),
+	payload: jsonb('payload'),
+});
 export const prismaMigrations = pgTable("_prisma_migrations", {
 	id: varchar({ length: 36 }).primaryKey().notNull(),
 	checksum: varchar({ length: 64 }).notNull(),
