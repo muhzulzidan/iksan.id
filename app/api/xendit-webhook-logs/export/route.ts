@@ -30,8 +30,9 @@
 //     });
 // }
 
-console.log('Xendit Webhook Logs Export Route Loaded');
-
+export async function GET() {
+    return new Response("Not implemented", { status: 501 });
+  }
 // page examples placholder
 
 

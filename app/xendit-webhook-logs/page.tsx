@@ -53,4 +53,6 @@
 //     );
 // }
 
-console.log('Xendit Webhook Logs Page Loaded');
+export default function XenditWebhookLogsPage() {
+    return <div>Placeholder: Xendit Webhook Logs Page</div>;
+  }
